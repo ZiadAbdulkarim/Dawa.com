@@ -1,0 +1,71 @@
+<div class="dash-section animate-fade-in">
+  <div class="dash-header">
+    <div>
+      <h1 class="dash-title">{{ t('مرحباً', 'Welcome') }}, {{ lang.isArabic ? auth.currentUser()?.nameAr : auth.currentUser()?.nameEn }} 👋</h1>
+      <p>{{ t('نظرة عامة على صيدليتك', 'Pharmacy Overview') }}</p>
+    </div>
+  </div>
+
+  <div class="stats-grid">
+    <!-- Total Medicines -->
+    <div class="stat-card surface animate-fade-in stagger-1">
+      <div class="stat-icon primary"><span class="material-icons-round">medication</span></div>
+      <div class="stat-info">
+        <span class="stat-value">{{ totalMedicines() }}</span>
+        <span class="stat-label">{{ t('إجمالي الأدوية', 'Total Medicines') }}</span>
+      </div>
+    </div>
+
+    <!-- Subscription Status -->
+    <div class="stat-card surface animate-fade-in stagger-2">
+      <div class="stat-icon success"><span class="material-icons-round">verified</span></div>
+      <div class="stat-info">
+        <span class="stat-value">{{ t('نشط', 'Active') }}</span>
+        <span class="stat-label">{{ t('حالة الاشتراك', 'Subscription Status') }}</span>
+      </div>
+    </div>
+
+    <!-- Expiry Date -->
+    <div class="stat-card surface animate-fade-in stagger-3">
+      <div class="stat-icon warning"><span class="material-icons-round">event</span></div>
+      <div class="stat-info">
+        <span class="stat-value">{{ auth.currentUser()?.subscriptionExpiry | date:'mediumDate' }}</span>
+        <span class="stat-label">{{ t('تاريخ الانتهاء', 'Expiry Date') }}</span>
+      </div>
+    </div>
+
+    <!-- Optional: Views / rating -->
+    <div class="stat-card surface animate-fade-in stagger-4">
+      <div class="stat-icon accent"><span class="material-icons-round">visibility</span></div>
+      <div class="stat-info">
+        <span class="stat-value">{{ stats.views.toLocaleString() }}</span>
+        <span class="stat-label">{{ t('مشاهدة اليوم', 'Views Today') }}</span>
+      </div>
+      <span class="stat-trend up"><span class="material-icons-round">trending_up</span> +12%</span>
+    </div>
+  </div>
+
+  <!-- Most Viewed Medicines (Optional Request) -->
+  <div class="surface dash-section mt-4">
+    <div class="dash-section-header">
+      <h2>{{ t('الأدوية الأكثر مشاهدة', 'Most Viewed Medicines') }}</h2>
+    </div>
+    
+    <div class="med-list">
+      @for (med of mostViewed(); track med.id) {
+        <div class="med-list-item">
+          <div class="med-icon" [style.background]="med.imageGradient">
+            <span class="material-icons-round">{{ med.imageIcon }}</span>
+          </div>
+          <div class="med-info">
+            <div class="med-name">{{ lang.isArabic ? med.nameAr : med.nameEn }}</div>
+            <div class="med-sub">{{ lang.isArabic ? med.genericNameAr : med.genericNameEn }}</div>
+          </div>
+          <div class="med-badge">
+            <span class="badge badge-primary">{{ med.category }}</span>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</div>

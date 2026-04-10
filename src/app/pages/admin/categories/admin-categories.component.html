@@ -1,0 +1,74 @@
+<div class="admin-section animate-fade-in surface">
+  <div class="admin-table-header">
+    <h2>{{ t('إدارة التصنيفات', 'Manage Categories') }}</h2>
+    <button class="btn btn-primary btn-sm" (click)="openModal()">
+      <span class="material-icons-round">add</span>
+      {{ t('إضافة تصنيف', 'Add Category') }}
+    </button>
+  </div>
+
+  <div class="admin-table-wrap">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>{{ t('الرقم التعريفي', 'ID') }}</th>
+          <th>{{ t('اسم التصنيف', 'Category Name') }}</th>
+          <th>{{ t('الإجراءات', 'Actions') }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (cat of categories(); track cat.id) {
+          <tr>
+            <td><strong>{{ cat.id }}</strong></td>
+            <td>
+              <div class="fw-bold">{{ lang.isArabic ? cat.nameAr : cat.nameEn }}</div>
+              <div class="text-sm text-muted" dir="ltr">{{ lang.isArabic ? cat.nameEn : cat.nameAr }}</div>
+            </td>
+            <td>
+              <div class="table-actions">
+                <button class="btn btn-ghost btn-icon" (click)="openModal(cat)" [title]="t('تعديل', 'Edit')">
+                  <span class="material-icons-round">edit</span>
+                </button>
+                <button class="btn btn-ghost btn-icon danger" (click)="deleteCategory(cat.id)" [title]="t('حذف', 'Delete')">
+                  <span class="material-icons-round">delete</span>
+                </button>
+              </div>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Add/Edit Modal Overlay -->
+  @if (showModal()) {
+    <div class="modal-overlay animate-fade-in" (click)="closeModal()">
+      <div class="modal-content animate-slide-up" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <h3>{{ editingId() ? t('تعديل التصنيف', 'Edit Category') : t('إضافة تصنيف جديد', 'Add New Category') }}</h3>
+          <button class="btn btn-ghost btn-icon" (click)="closeModal()">
+            <span class="material-icons-round">close</span>
+          </button>
+        </div>
+        
+        <form [formGroup]="categoryForm" (ngSubmit)="saveCategory()" class="modal-body">
+          <div class="form-group">
+            <label>{{ t('اسم التصنيف (عربي)', 'Category Name (Arabic)') }}</label>
+            <input type="text" formControlName="nameAr" class="input-wrap"/>
+          </div>
+          <div class="form-group">
+            <label>{{ t('اسم التصنيف (إنجليزي)', 'Category Name (English)') }}</label>
+            <input type="text" formControlName="nameEn" class="input-wrap" dir="ltr"/>
+          </div>
+
+          <div class="modal-actions mt-4">
+            <button type="button" class="btn btn-outline" (click)="closeModal()">{{ t('إلغاء', 'Cancel') }}</button>
+            <button type="submit" class="btn btn-primary" [disabled]="categoryForm.invalid">
+              {{ t('حفظ التصنيف', 'Save Category') }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  }
+</div>

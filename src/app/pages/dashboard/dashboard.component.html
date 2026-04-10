@@ -1,0 +1,110 @@
+<div class="dashboard-page container animate-fade-in">
+  <!-- Header -->
+  <div class="dash-header">
+    <div>
+      <h1 class="dash-title">{{ t('مرحباً', 'Welcome') }}, {{ lang.isArabic ? auth.currentUser()?.nameAr : auth.currentUser()?.nameEn }} 👋</h1>
+      <p>{{ t('لوحة تحكم الصيدلية', 'Pharmacy Dashboard') }}</p>
+    </div>
+    <div class="dash-actions">
+      <span class="badge badge-success">
+        <span class="material-icons-round">verified</span>
+        {{ t('اشتراك نشط', 'Active Subscription') }}
+      </span>
+    </div>
+  </div>
+
+  <!-- Stats Cards -->
+  <div class="stats-grid">
+    <div class="stat-card surface animate-fade-in stagger-1">
+      <div class="stat-icon primary"><span class="material-icons-round">visibility</span></div>
+      <div class="stat-info">
+        <span class="stat-value">{{ stats.views.toLocaleString() }}</span>
+        <span class="stat-label">{{ t('مشاهدة اليوم', 'Views Today') }}</span>
+      </div>
+      <span class="stat-trend up"><span class="material-icons-round">trending_up</span> +12%</span>
+    </div>
+    <div class="stat-card surface animate-fade-in stagger-2">
+      <div class="stat-icon accent"><span class="material-icons-round">search</span></div>
+      <div class="stat-info">
+        <span class="stat-value">{{ stats.searches }}</span>
+        <span class="stat-label">{{ t('بحث عن أدويتك', 'Searches for Your Meds') }}</span>
+      </div>
+      <span class="stat-trend up"><span class="material-icons-round">trending_up</span> +5%</span>
+    </div>
+    <div class="stat-card surface animate-fade-in stagger-3">
+      <div class="stat-icon warning"><span class="material-icons-round">medication</span></div>
+      <div class="stat-info">
+        <span class="stat-value">{{ medicines().length }}</span>
+        <span class="stat-label">{{ t('أدوية في مخزونك', 'Medicines in Stock') }}</span>
+      </div>
+    </div>
+    <div class="stat-card surface animate-fade-in stagger-4">
+      <div class="stat-icon success"><span class="material-icons-round">star</span></div>
+      <div class="stat-info">
+        <span class="stat-value">{{ stats.rating }}</span>
+        <span class="stat-label">{{ t('تقييمك', 'Your Rating') }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Medicine Table -->
+  <div class="surface dash-section">
+    <div class="dash-section-header">
+      <h2>{{ t('مخزون الأدوية', 'Medicine Inventory') }}</h2>
+      <button class="btn btn-primary btn-sm" id="add-medicine-btn">
+        <span class="material-icons-round">add</span>
+        {{ t('إضافة دواء', 'Add Medicine') }}
+      </button>
+    </div>
+
+    <div class="medicine-table-wrap">
+      <table class="medicine-table">
+        <thead>
+          <tr>
+            <th>{{ t('الدواء', 'Medicine') }}</th>
+            <th>{{ t('التصنيف', 'Category') }}</th>
+            <th>{{ t('الشكل', 'Form') }}</th>
+            <th>{{ t('الجرعة', 'Strength') }}</th>
+            <th>{{ t('الوصفة', 'Rx') }}</th>
+            <th>{{ t('الإجراءات', 'Actions') }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (med of medicines(); track med.id) {
+            <tr class="animate-fade-in">
+              <td>
+                <div class="med-cell">
+                  <span class="material-icons-round">medication</span>
+                  <div>
+                    <div class="med-cell-name">{{ lang.isArabic ? med.nameAr : med.nameEn }}</div>
+                    <div class="med-cell-sub">{{ lang.isArabic ? med.genericNameAr : med.genericNameEn }}</div>
+                  </div>
+                </div>
+              </td>
+              <td><span class="badge badge-primary">{{ med.category }}</span></td>
+              <td>{{ med.form }}</td>
+              <td>{{ med.strength }}</td>
+              <td>
+                @if (med.requiresPrescription) {
+                  <span class="badge badge-warning">{{ t('نعم', 'Yes') }}</span>
+                } @else {
+                  <span class="badge badge-success">{{ t('لا', 'No') }}</span>
+                }
+              </td>
+              <td>
+                <div class="table-actions">
+                  <button class="btn btn-ghost btn-icon" [id]="'edit-med-' + med.id" [title]="t('تعديل', 'Edit')">
+                    <span class="material-icons-round">edit</span>
+                  </button>
+                  <button class="btn btn-ghost btn-icon danger" [id]="'delete-med-' + med.id" [title]="t('حذف', 'Delete')">
+                    <span class="material-icons-round">delete</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

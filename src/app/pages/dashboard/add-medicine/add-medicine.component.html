@@ -1,0 +1,181 @@
+<div class="dash-section animate-fade-in surface add-container">
+  <div class="dash-section-header">
+    <h2>{{ t('إضافة دواء', 'Add Medicine') }}</h2>
+    @if (currentStep() === 2) {
+      <button class="btn btn-ghost btn-sm" (click)="goBack()">
+        <span class="material-icons-round">arrow_back</span>
+        {{ t('رجوع', 'Back') }}
+      </button>
+    }
+  </div>
+
+  <div class="stepper">
+    <div class="step" [class.active]="currentStep() >= 1" [class.completed]="currentStep() > 1">
+      <div class="step-circle">1</div>
+      <span>{{ t('البحث عن الدواء', 'Search Medicine') }}</span>
+    </div>
+    <div class="stepper-line" [class.active]="currentStep() === 2"></div>
+    <div class="step" [class.active]="currentStep() === 2">
+      <div class="step-circle">2</div>
+      <span>{{ t('تفاصيل المخزون', 'Stock Details') }}</span>
+    </div>
+  </div>
+
+  <!-- STEP 1: Search -->
+  @if (currentStep() === 1) {
+    <div class="step-content animate-fade-in">
+      <p class="step-desc">{{ t('ابحث عن الدواء في قاعدة البيانات، أو أضف دواءً جديداً.', 'Search the database, or add a new medicine.') }}</p>
+      
+      <div class="search-box">
+        <div class="input-wrap">
+          <span class="material-icons-round">search</span>
+          <input type="text" [placeholder]="t('اسم الدواء...', 'Medicine name...')" (input)="onSearchChange($event)" />
+        </div>
+        
+        @if (suggestions().length > 0) {
+          <div class="suggestions-list">
+            @for (med of suggestions(); track med.id) {
+              <div class="suggestion-item" (click)="selectExisting(med)">
+                <span class="material-icons-round">medication</span>
+                <div>
+                  <strong>{{ lang.isArabic ? med.nameAr : med.nameEn }}</strong>
+                  <br>
+                  <small>{{ lang.isArabic ? med.genericNameAr : med.genericNameEn }}</small>
+                </div>
+                <span class="material-icons-round ms-auto">chevron_right</span>
+              </div>
+            }
+          </div>
+        } @else if (searchQuery().length > 1) {
+          <div class="empty-suggestions">
+            <p>{{ t('لم يتم العثور على دواء مطابق', 'No matching medicine found') }}</p>
+            <button class="btn btn-primary" (click)="startNewMedicine()">
+              <span class="material-icons-round">add</span>
+              {{ t('إضافة كدواء جديد', 'Add as a New Medicine') }}
+            </button>
+          </div>
+        }
+      </div>
+      
+      <div class="divider-text">{{ t('أو', 'OR') }}</div>
+      
+      <button class="btn btn-outline w-full" (click)="startNewMedicine()">
+        <span class="material-icons-round">playlist_add</span>
+        {{ t('إضافة دواء غير موجود بالقائمة', 'Add medicine not in the list') }}
+      </button>
+    </div>
+  }
+
+  <!-- STEP 2: Forms -->
+  @if (currentStep() === 2) {
+    <div class="step-content animate-fade-in">
+      
+      <!-- Existing Medicine Flow -->
+      @if (addMode() === 'existing' && selectedMedicine()) {
+        <div class="selected-med-card">
+          <div class="med-icon" [style.background]="selectedMedicine()?.imageGradient || 'var(--primary)'">
+            <span class="material-icons-round">{{ selectedMedicine()?.imageIcon || 'medication' }}</span>
+          </div>
+          <div>
+            <h3>{{ lang.isArabic ? selectedMedicine()?.nameAr : selectedMedicine()?.nameEn }}</h3>
+            <p>{{ lang.isArabic ? selectedMedicine()?.genericNameAr : selectedMedicine()?.genericNameEn }}</p>
+            <span class="badge badge-primary mt-2">{{ selectedMedicine()?.category }}</span>
+          </div>
+        </div>
+
+        <form [formGroup]="stockForm" (ngSubmit)="submitExisting()" class="mt-4">
+          <div class="form-row">
+            <div class="form-group">
+              <label>{{ t('السعر (ج.م)', 'Price (EGP)') }}</label>
+              <input type="number" formControlName="price" class="input-wrap" [placeholder]="t('أدخل السعر', 'Enter price')" />
+            </div>
+            <div class="form-group">
+              <label>{{ t('الكمية', 'Quantity') }}</label>
+              <input type="number" formControlName="quantity" class="input-wrap" [placeholder]="t('أدخل الكمية', 'Enter quantity')" />
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary mt-4" [disabled]="stockForm.invalid">
+            <span class="material-icons-round">save</span>
+            {{ t('حفظ في المخزون', 'Save to Stock') }}
+          </button>
+        </form>
+      }
+
+      <!-- New Medicine Flow -->
+      @if (addMode() === 'new') {
+        <form [formGroup]="newMedicineForm" (ngSubmit)="submitNew()" class="new-med-form">
+          <h3 class="form-section-title">{{ t('بيانات الدواء الجديد', 'New Medicine Details') }}</h3>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label>{{ t('الاسم (عربي)', 'Name (Arabic)') }}</label>
+              <input type="text" formControlName="nameAr" class="input-wrap" />
+            </div>
+            <div class="form-group">
+              <label>{{ t('الاسم (إنجليزي)', 'Name (English)') }}</label>
+              <input type="text" formControlName="nameEn" class="input-wrap" dir="ltr" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>{{ t('التصنيف', 'Category') }}</label>
+            <select formControlName="category" class="input-wrap">
+              <option value="" disabled>{{ t('اختر التصنيف', 'Select category') }}</option>
+              @for (cat of categories; track cat.id) {
+                <option [value]="cat.id">{{ lang.isArabic ? cat.nameAr : cat.nameEn }}</option>
+              }
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>{{ t('الوصف', 'Description') }}</label>
+            <textarea formControlName="description" class="input-wrap" rows="3"></textarea>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>{{ t('دواعي الاستعمال', 'Uses (comma separated)') }}</label>
+              <textarea formControlName="uses" class="input-wrap" rows="2"></textarea>
+            </div>
+            <div class="form-group">
+              <label>{{ t('الآثار الجانبية', 'Side Effects (comma separated)') }}</label>
+              <textarea formControlName="sideEffects" class="input-wrap" rows="2"></textarea>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>{{ t('صورة الدواء', 'Medicine Image') }}</label>
+            <div class="file-upload-box">
+              <input type="file" formControlName="image" accept="image/*" id="med-img-upload" (change)="onImageUpload($event)">
+              <label for="med-img-upload" class="upload-label">
+                <span class="material-icons-round">cloud_upload</span>
+                <span>{{ t('اضغط لرفع صورة', 'Click to upload image') }}</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Price and quantity still needed for new meds -->
+          <h3 class="form-section-title mt-4">{{ t('تفاصيل المخزون', 'Stock Details') }}</h3>
+          <div class="form-row" [formGroup]="stockForm">
+            <div class="form-group">
+              <label>{{ t('السعر (ج.م)', 'Price (EGP)') }}</label>
+              <input type="number" formControlName="price" class="input-wrap" />
+            </div>
+            <div class="form-group">
+              <label>{{ t('الكمية', 'Quantity') }}</label>
+              <input type="number" formControlName="quantity" class="input-wrap" />
+            </div>
+          </div>
+
+          <div class="form-actions mt-4">
+            <button type="button" class="btn btn-outline" (click)="goBack()">{{ t('إلغاء', 'Cancel') }}</button>
+            <button type="submit" class="btn btn-primary" [disabled]="newMedicineForm.invalid || stockForm.invalid">
+              <span class="material-icons-round">add_circle</span>
+              {{ t('حفظ الدواء', 'Save Medicine') }}
+            </button>
+          </div>
+        </form>
+      }
+    </div>
+  }
+</div>

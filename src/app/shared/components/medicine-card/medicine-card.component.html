@@ -1,0 +1,72 @@
+<article class="medicine-card dawa-card animate-fade-in" [id]="'medicine-card-' + medicine.id">
+  <!-- Card header -->
+  <div class="card-header">
+    <div class="medicine-icon" [class]="'form-' + medicine.form">
+      <span class="material-icons-round">{{ formIcon }}</span>
+    </div>
+    <div class="card-badges">
+      @if (medicine.requiresPrescription) {
+        <span class="badge badge-warning">
+          <span class="material-icons-round">policy</span>
+          {{ t('بوصفة', 'Rx') }}
+        </span>
+      } @else {
+        <span class="badge badge-success">
+          <span class="material-icons-round">check_circle</span>
+          {{ t('بدون وصفة', 'OTC') }}
+        </span>
+      }
+    </div>
+  </div>
+
+  <!-- Card body -->
+  <div class="card-body">
+    <h3 class="medicine-name">{{ name }}</h3>
+    <p class="medicine-generic">{{ genericName }} · {{ medicine.strength }}</p>
+
+    <div class="medicine-meta">
+      <span class="meta-chip">
+        <span class="material-icons-round">category</span>
+        {{ t(
+          medicine.category === 'Pain Relief' ? 'مسكنات الألم' :
+          medicine.category === 'Antibiotics' ? 'مضادات حيوية' :
+          medicine.category === 'Cardiology' ? 'قلب وأوعية' :
+          medicine.category === 'Diabetes' ? 'السكري' :
+          medicine.category === 'Digestive' ? 'الهضمي' :
+          medicine.category === 'Respiratory' ? 'التنفسي' :
+          medicine.category === 'Dermatology' ? 'جلدية' : 'فيتامينات',
+          medicine.category
+        ) }}
+      </span>
+      <span class="meta-chip form-chip">
+        <span class="material-icons-round">{{ formIcon }}</span>
+        {{ t(
+          medicine.form === 'tablet' ? 'أقراص' :
+          medicine.form === 'capsule' ? 'كبسولات' :
+          medicine.form === 'syrup' ? 'شراب' :
+          medicine.form === 'injection' ? 'حقن' :
+          medicine.form === 'cream' ? 'كريم' :
+          medicine.form === 'drops' ? 'قطرات' : 'بخاخ',
+          medicine.form.charAt(0).toUpperCase() + medicine.form.slice(1)
+        ) }}
+      </span>
+    </div>
+  </div>
+
+  <!-- Card footer -->
+  <div class="card-footer">
+    <div class="pharmacy-count">
+      <span class="material-icons-round">local_pharmacy</span>
+      <strong>{{ pharmacyCount }}</strong>
+      <span>{{ t('صيدلية متاحة', 'pharmacies') }}</span>
+    </div>
+    <a
+      class="btn btn-primary btn-sm"
+      [routerLink]="['/medicine', medicine.id]"
+      [id]="'view-medicine-' + medicine.id"
+    >
+      {{ t('عرض', 'View') }}
+      <span class="material-icons-round">arrow_forward</span>
+    </a>
+  </div>
+</article>

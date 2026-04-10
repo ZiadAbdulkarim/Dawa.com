@@ -1,0 +1,180 @@
+<div class="auth-page">
+  <!-- Background decoration -->
+  <div class="auth-bg">
+    <div class="auth-blob auth-blob-1"></div>
+    <div class="auth-blob auth-blob-2"></div>
+  </div>
+
+  <div class="auth-card animate-fade-in-scale">
+    <!-- Logo -->
+    <div class="auth-logo">
+      <div class="logo-icon"><span class="material-icons-round">local_pharmacy</span></div>
+      <div>
+        <div class="logo-name">Dawa<span>.com</span></div>
+        <div class="logo-sub">{{ t('منصة الأدوية المصرية', 'Egypt Medicine Platform') }}</div>
+      </div>
+    </div>
+
+    <!-- Disclaimer -->
+    <div class="auth-disclaimer">
+      <span class="material-icons-round">info</span>
+      {{ t('هذا القسم مخصص للصيادلة والمسؤولين فقط. الزوار يمكنهم تصفح الأدوية بدون تسجيل دخول.', 'This section is for pharmacists and admins only. Visitors can browse medicines without logging in.') }}
+    </div>
+
+    <!-- Tabs -->
+    <div class="auth-tabs">
+      <button class="auth-tab" [class.active]="activeTab() === 'login'" (click)="switchTab('login')" id="tab-login">
+        <span class="material-icons-round">login</span>
+        {{ t('تسجيل الدخول', 'Login') }}
+      </button>
+      <button class="auth-tab" [class.active]="activeTab() === 'register'" (click)="switchTab('register')" id="tab-register">
+        <span class="material-icons-round">person_add</span>
+        {{ t('تسجيل صيدلية', 'Register') }}
+      </button>
+    </div>
+
+    <!-- Messages -->
+    @if (errorMessage()) {
+      <div class="auth-alert error animate-fade-in">
+        <span class="material-icons-round">error</span>
+        {{ errorMessage() }}
+      </div>
+    }
+    @if (successMessage()) {
+      <div class="auth-alert success animate-fade-in">
+        <span class="material-icons-round">check_circle</span>
+        {{ successMessage() }}
+      </div>
+    }
+
+    <!-- LOGIN FORM -->
+    @if (activeTab() === 'login') {
+      <form class="auth-form animate-slide-right" [formGroup]="loginForm" (ngSubmit)="onLogin()">
+        <div class="form-group">
+          <label class="form-label" for="login-email">{{ t('البريد الإلكتروني', 'Email') }}</label>
+          <div class="input-wrap" [class.error]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
+            <span class="material-icons-round">email</span>
+            <input id="login-email" type="email" formControlName="email"
+                   [placeholder]="t('أدخل بريدك الإلكتروني', 'Enter your email')" autocomplete="email" />
+          </div>
+          <div class="hint">{{ t('تجربة:', 'Demo:') }} pharmacist@dawa.com | admin@dawa.com | expired@dawa.com</div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="login-password">{{ t('كلمة المرور', 'Password') }}</label>
+          <div class="input-wrap" [class.error]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+            <span class="material-icons-round">lock</span>
+            <input id="login-password" [type]="showPassword() ? 'text' : 'password'" formControlName="password"
+                   [placeholder]="t('أدخل كلمة المرور', 'Enter your password')" autocomplete="current-password" />
+            <button type="button" class="toggle-pass" (click)="togglePassword()" id="toggle-password">
+              <span class="material-icons-round">{{ showPassword() ? 'visibility_off' : 'visibility' }}</span>
+            </button>
+          </div>
+          <div class="hint">{{ t('أي كلمة مرور تعمل في وضع التجربة', 'Any password works in demo mode') }}</div>
+        </div>
+
+        <div class="form-check">
+          <input id="remember-me" type="checkbox" formControlName="rememberMe" />
+          <label for="remember-me">{{ t('تذكرني', 'Remember me') }}</label>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-full btn-lg" id="login-submit-btn" [disabled]="isLoading()">
+          @if (isLoading()) {
+            <span class="spinner"></span>
+          } @else {
+            <span class="material-icons-round">login</span>
+          }
+          {{ isLoading() ? t('جاري الدخول...', 'Logging in...') : t('تسجيل الدخول', 'Login') }}
+        </button>
+      </form>
+    }
+
+    <!-- REGISTER FORM -->
+    @if (activeTab() === 'register') {
+      <form class="auth-form animate-slide-right" [formGroup]="registerForm" (ngSubmit)="onRegister()">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="reg-name-ar">{{ t('الاسم بالعربي', 'Name (Arabic)') }}</label>
+            <div class="input-wrap">
+              <span class="material-icons-round">person</span>
+              <input id="reg-name-ar" type="text" formControlName="nameAr" [placeholder]="t('الاسم الكامل', 'Full name')" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="reg-name-en">{{ t('الاسم بالإنجليزي', 'Name (English)') }}</label>
+            <div class="input-wrap">
+              <span class="material-icons-round">person</span>
+              <input id="reg-name-en" type="text" formControlName="nameEn" placeholder="Full name" />
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="reg-email">{{ t('البريد الإلكتروني', 'Email') }}</label>
+          <div class="input-wrap">
+            <span class="material-icons-round">email</span>
+            <input id="reg-email" type="email" formControlName="email" [placeholder]="t('البريد الإلكتروني', 'Email address')" />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="reg-phone">{{ t('رقم الهاتف', 'Phone') }}</label>
+            <div class="input-wrap">
+              <span class="material-icons-round">phone</span>
+              <input id="reg-phone" type="tel" formControlName="phone" placeholder="01XXXXXXXXX" dir="ltr" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="reg-license">{{ t('رقم الترخيص', 'License No.') }}</label>
+            <div class="input-wrap">
+              <span class="material-icons-round">badge</span>
+              <input id="reg-license" type="text" formControlName="licenseNumber" placeholder="LIC-XXXX" dir="ltr" />
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="reg-pharmacy">{{ t('اسم الصيدلية', 'Pharmacy Name') }}</label>
+          <div class="input-wrap">
+            <span class="material-icons-round">local_pharmacy</span>
+            <input id="reg-pharmacy" type="text" formControlName="pharmacyName" [placeholder]="t('صيدلية ...', 'Pharmacy name')" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="reg-password">{{ t('كلمة المرور', 'Password') }}</label>
+          <div class="input-wrap">
+            <span class="material-icons-round">lock</span>
+            <input id="reg-password" [type]="showPassword() ? 'text' : 'password'" formControlName="password"
+                   [placeholder]="t('٨ أحرف على الأقل', 'At least 8 characters')" />
+            <button type="button" class="toggle-pass" (click)="togglePassword()" id="toggle-reg-password">
+              <span class="material-icons-round">{{ showPassword() ? 'visibility_off' : 'visibility' }}</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="form-check">
+          <input id="reg-terms" type="checkbox" formControlName="terms" />
+          <label for="reg-terms">{{ t('أوافق على شروط الاستخدام وسياسة الخصوصية', 'I agree to the Terms of Service and Privacy Policy') }}</label>
+        </div>
+
+        <button type="submit" class="btn btn-accent w-full btn-lg" id="register-submit-btn" [disabled]="isLoading()">
+          @if (isLoading()) {
+            <span class="spinner"></span>
+          } @else {
+            <span class="material-icons-round">how_to_reg</span>
+          }
+          {{ isLoading() ? t('جاري التسجيل...', 'Registering...') : t('تسجيل الصيدلية', 'Register Pharmacy') }}
+        </button>
+      </form>
+    }
+
+    <div class="auth-footer-link">
+      <a routerLink="/" id="auth-back-home">
+        <span class="material-icons-round">arrow_back</span>
+        {{ t('العودة للرئيسية', 'Back to Home') }}
+      </a>
+    </div>
+  </div>
+</div>

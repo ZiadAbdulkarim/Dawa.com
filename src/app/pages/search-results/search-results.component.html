@@ -1,0 +1,185 @@
+<div class="search-page">
+
+  <!-- FILTER SIDEBAR -->
+  <aside class="filter-sidebar">
+    <div class="filter-panel">
+
+      <!-- Header -->
+      <div class="filter-header">
+        <span class="material-icons-round">tune</span>
+        {{ t('الفلاتر', 'Filters') }}
+        <button class="reset-btn" (click)="resetFilters()" id="reset-filters-btn">
+          {{ t('إعادة ضبط', 'Reset') }}
+        </button>
+      </div>
+
+      <!-- Category -->
+      <div class="filter-group">
+        <h4 class="filter-label">{{ t('التصنيف', 'Category') }}</h4>
+        <ul class="filter-list">
+          <li>
+            <button class="filter-option" [class.active]="selectedCategory() === ''"
+                    (click)="onCategoryChange('')" id="filter-cat-all">
+              <span class="material-icons-round">apps</span>
+              {{ t('الكل', 'All') }}
+            </button>
+          </li>
+          @for (cat of categories(); track cat.id) {
+            <li>
+              <button class="filter-option" [class.active]="selectedCategory() === cat.id"
+                      (click)="onCategoryChange(cat.id)" [id]="'filter-cat-' + cat.id">
+                <span class="filter-cat-dot" [style.background]="cat.color"></span>
+                {{ t(cat.nameAr, cat.nameEn) }}
+                <span class="filter-count">{{ cat.medicineCount }}</span>
+              </button>
+            </li>
+          }
+        </ul>
+      </div>
+
+      <!-- Availability -->
+      <div class="filter-group">
+        <h4 class="filter-label">{{ t('نوع الوصفة', 'Prescription') }}</h4>
+        <div class="avail-options">
+          @for (opt of availOpts; track opt.v) {
+            <button class="avail-chip" [class.active]="selectedAvailability() === opt.v"
+                    (click)="onAvailabilityChange(opt.v)" [id]="'filter-avail-' + opt.v">
+              {{ t(opt.labelAr, opt.labelEn) }}
+            </button>
+          }
+        </div>
+      </div>
+
+      <!-- Price Range -->
+      <div class="filter-group">
+        <h4 class="filter-label">{{ t('نطاق السعر (ج.م)', 'Price Range (EGP)') }}</h4>
+        <div class="price-inputs">
+          <input id="price-min" type="number" [placeholder]="t('من', 'Min')"
+                 [ngModel]="priceMin()" (ngModelChange)="priceMin.set($event); applyFiltersAndSort()"
+                 min="0" class="price-input" />
+          <span class="price-sep">–</span>
+          <input id="price-max" type="number" [placeholder]="t('إلى', 'Max')"
+                 [ngModel]="priceMax()" (ngModelChange)="priceMax.set($event); applyFiltersAndSort()"
+                 min="0" class="price-input" />
+        </div>
+      </div>
+
+    </div>
+  </aside>
+
+  <!-- RESULTS AREA -->
+  <main class="results-main">
+
+    <!-- Top bar -->
+    <div class="results-topbar">
+      <div class="results-meta">
+        @if (searchQuery()) {
+          <h1 class="results-title">
+            {{ t('نتائج:', 'Results:') }} <span>"{{ searchQuery() }}"</span>
+          </h1>
+        } @else if (selectedCategory()) {
+          <h1 class="results-title">{{ getCategoryName(selectedCategory()) }}</h1>
+        } @else {
+          <h1 class="results-title">{{ t('كل الأدوية', 'All Medicines') }}</h1>
+        }
+        @if (!isLoading()) {
+          <p class="results-count">
+            {{ results().length }} {{ t('نتيجة', 'results found') }}
+          </p>
+        }
+      </div>
+
+      <!-- Sort -->
+      <div class="sort-wrap">
+        <label class="sort-label" for="sort-select">{{ t('ترتيب:', 'Sort:') }}</label>
+        <select id="sort-select" class="sort-select"
+                [ngModel]="sortBy()" (ngModelChange)="onSortChange($event)">
+          @for (opt of sortOptions; track opt.value) {
+            <option [value]="opt.value">{{ t(opt.labelAr, opt.labelEn) }}</option>
+          }
+        </select>
+      </div>
+    </div>
+
+    <!-- Loading -->
+    @if (isLoading()) {
+      <div class="medicines-grid">
+        @for (i of skeletons; track i) {
+          <div class="med-card skeleton-card">
+            <div class="skeleton" style="height:150px; border-radius: 12px 12px 0 0;"></div>
+            <div style="padding:16px; display:flex; flex-direction:column; gap:8px;">
+              <div class="skeleton" style="height:14px; width:50%;"></div>
+              <div class="skeleton" style="height:20px; width:70%;"></div>
+              <div class="skeleton" style="height:14px; width:90%;"></div>
+            </div>
+          </div>
+        }
+      </div>
+    }
+
+    <!-- Results grid -->
+    @if (!isLoading() && results().length > 0) {
+      <div class="medicines-grid">
+        @for (med of results(); track med.id; let i = $index) {
+          <a class="med-card dawa-card animate-fade-in" [class]="'stagger-' + ((i%9)+1)"
+             [routerLink]="['/medicine', med.id]" [id]="'result-card-' + med.id">
+
+            <!-- Image area -->
+            <div class="med-card-img" [style.background]="med.imageGradient">
+              <span class="material-icons-round">{{ med.imageIcon }}</span>
+              <div class="img-badges">
+                @if (med.requiresPrescription) {
+                  <span class="img-badge rx">Rx</span>
+                } @else {
+                  <span class="img-badge otc">OTC</span>
+                }
+                <span class="img-badge form">{{ med.form }}</span>
+              </div>
+            </div>
+
+            <!-- Card body -->
+            <div class="med-card-body">
+              <span class="cat-label">{{ getCategoryName(med.categoryId) }}</span>
+              <h3 class="med-title">{{ lang.isArabic ? med.nameAr : med.nameEn }}</h3>
+              <p class="med-generic-name">{{ lang.isArabic ? med.genericNameAr : med.genericNameEn }} · {{ med.strength }}</p>
+              <p class="med-desc-text">
+                {{ (lang.isArabic ? med.descriptionAr : med.descriptionEn) | slice:0:90 }}...
+              </p>
+            </div>
+
+            <!-- Card footer -->
+            <div class="med-card-footer">
+              <div class="med-price">
+                @if (getPriceRange(med)) {
+                  <span class="material-icons-round">payments</span>
+                  <strong>{{ getPriceRange(med) }}</strong>
+                  <span>{{ t('ج.م', 'EGP') }}</span>
+                } @else {
+                  <span class="text-muted">{{ t('غير متاح', 'N/A') }}</span>
+                }
+              </div>
+              <div class="med-ph-count">
+                <span class="material-icons-round">local_pharmacy</span>
+                {{ getPharmacyCount(med) }} {{ t('صيدلية', '') }}
+              </div>
+            </div>
+
+          </a>
+        }
+      </div>
+    }
+
+    <!-- Empty -->
+    @if (!isLoading() && results().length === 0) {
+      <div class="empty-state animate-fade-in-scale">
+        <div class="empty-icon"><span class="material-icons-round">search_off</span></div>
+        <h2>{{ t('لا توجد نتائج', 'No Results Found') }}</h2>
+        <p>{{ t('جرب كلمات بحث مختلفة أو أعد ضبط الفلاتر', 'Try different keywords or reset the filters') }}</p>
+        <button class="btn btn-primary" (click)="resetFilters()" id="empty-reset-btn">
+          {{ t('إعادة ضبط الفلاتر', 'Reset Filters') }}
+        </button>
+      </div>
+    }
+
+  </main>
+</div>

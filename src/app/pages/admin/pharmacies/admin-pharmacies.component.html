@@ -1,0 +1,53 @@
+<div class="admin-section animate-fade-in surface">
+  <div class="admin-table-header">
+    <h2>{{ t('إدارة الصيدليات', 'Manage Pharmacies') }}</h2>
+  </div>
+
+  <div class="admin-table-wrap">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>{{ t('الصيدلية', 'Pharmacy') }}</th>
+          <th>{{ t('المدينة', 'City') }}</th>
+          <th>{{ t('الهاتف', 'Phone') }}</th>
+          <th>{{ t('حالة الاشتراك', 'Subscription Status') }}</th>
+          <th>{{ t('الإجراءات', 'Actions') }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (ph of pharmacies(); track ph.id) {
+          <tr>
+            <td>
+              <div class="ph-cell">
+                <span class="material-icons-round primary">storefront</span>
+                <span class="fw-bold">{{ lang.isArabic ? ph.nameAr : ph.nameEn }}</span>
+              </div>
+            </td>
+            <td>{{ lang.isArabic ? ph.cityAr : ph.city }}</td>
+            <td dir="ltr">{{ ph.phone }}</td>
+            <td>
+              @if (ph.subscriptionActive) {
+                <span class="badge badge-success">{{ t('نشط', 'Active') }}</span>
+              } @else {
+                <span class="badge badge-warning">{{ t('منتهي', 'Expired') }}</span>
+              }
+            </td>
+            <td>
+              <div class="table-actions">
+                <button class="btn btn-ghost btn-icon" (click)="viewDetails(ph)" [title]="t('عرض التفاصيل', 'View Details')">
+                  <span class="material-icons-round text-primary">visibility</span>
+                </button>
+                <button class="btn btn-ghost btn-icon warning" (click)="disablePharmacy(ph)" [title]="t('تعطيل', 'Disable')">
+                  <span class="material-icons-round text-warning">block</span>
+                </button>
+                <button class="btn btn-ghost btn-icon danger" (click)="deletePharmacy(ph.id)" [title]="t('حذف', 'Delete')">
+                  <span class="material-icons-round text-danger">delete</span>
+                </button>
+              </div>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

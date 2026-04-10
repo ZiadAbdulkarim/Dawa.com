@@ -1,0 +1,66 @@
+@if (pharmacy()) {
+  <div class="ph-detail-page container animate-fade-in">
+    <!-- Header Card -->
+    <div class="ph-header surface">
+      <div class="ph-logo">
+        <span class="material-icons-round">local_pharmacy</span>
+      </div>
+      <div class="ph-info">
+        <div class="ph-name-row">
+          <h1>{{ name }}</h1>
+          @if (pharmacy()!.isVerified) {
+            <span class="verified-chip badge badge-primary"><span class="material-icons-round">verified</span>{{ t('موثقة', 'Verified') }}</span>
+          }
+          <div class="open-badge" [class.open]="pharmacy()!.isOpen">
+            <span class="dot"></span>
+            {{ pharmacy()!.isOpen ? t('مفتوحة الآن', 'Open Now') : t('مغلقة', 'Closed') }}
+          </div>
+        </div>
+        <p class="ph-location"><span class="material-icons-round">location_on</span>{{ address }}, {{ area }}, {{ city }}</p>
+        <div class="ph-details-row">
+          <span><span class="material-icons-round">schedule</span>{{ hours }}</span>
+          <span><span class="material-icons-round">phone</span><span dir="ltr">{{ pharmacy()!.phone }}</span></span>
+        </div>
+        <div class="rating">
+          @for (s of stars; track s) {
+            <span class="material-icons-round star" [class.filled]="s < fullStars">star</span>
+          }
+          <span class="rating-value">{{ pharmacy()!.rating }}</span>
+          <span class="rating-count">({{ pharmacy()!.reviewCount }} {{ t('تقييم', 'reviews') }})</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Medicine Inventory -->
+    <div class="inventory-section">
+      <div class="section-header">
+        <h2 class="section-title">{{ t('الأدوية المتوفرة', 'Available Medicines') }}</h2>
+        <span class="results-count">{{ filteredMedicines().length }} {{ t('دواء', 'medicines') }}</span>
+      </div>
+
+      <!-- Inventory Search -->
+      <div class="inventory-search">
+        <span class="material-icons-round">search</span>
+        <input
+          id="inventory-search-input"
+          type="text"
+          [(ngModel)]="searchQuery"
+          (input)="filterMedicines()"
+          [placeholder]="t('ابحث في مخزون الصيدلية...', 'Search within pharmacy inventory...')"
+        />
+      </div>
+
+      <div class="medicines-grid">
+        @for (med of filteredMedicines(); track med.id; let i = $index) {
+          <app-medicine-card [medicine]="med" class="animate-fade-in" [class]="'stagger-' + ((i%8)+1)"></app-medicine-card>
+        }
+      </div>
+    </div>
+  </div>
+} @else {
+  <div class="not-found container">
+    <span class="material-icons-round">storefront</span>
+    <h2>{{ t('الصيدلية غير موجودة', 'Pharmacy Not Found') }}</h2>
+    <a routerLink="/search" class="btn btn-primary">{{ t('العودة', 'Go Back') }}</a>
+  </div>
+}

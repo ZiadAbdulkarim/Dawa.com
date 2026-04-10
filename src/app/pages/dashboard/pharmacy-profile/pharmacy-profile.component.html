@@ -1,0 +1,69 @@
+<div class="dash-section animate-fade-in surface profile-container">
+  <div class="dash-section-header">
+    <h2>{{ t('ملف الصيدلية', 'Pharmacy Profile') }}</h2>
+  </div>
+
+  @if (pharmacy()) {
+    <div class="profile-card">
+      <div class="profile-header">
+        <div class="profile-icon">
+          <span class="material-icons-round">storefront</span>
+        </div>
+        <div class="profile-title">
+          <h3>{{ lang.isArabic ? pharmacy()!.nameAr : pharmacy()!.nameEn }}</h3>
+          <span class="badge" [class.badge-success]="pharmacy()!.isVerified" [class.badge-ghost]="!pharmacy()!.isVerified">
+            <span class="material-icons-round" style="font-size: 14px;">{{ pharmacy()!.isVerified ? 'verified' : 'pending' }}</span>
+            {{ pharmacy()!.isVerified ? t('موثق', 'Verified') : t('غير موثق', 'Unverified') }}
+          </span>
+        </div>
+      </div>
+
+      <div class="profile-details">
+        <div class="detail-group">
+          <div class="detail-icon"><span class="material-icons-round">phone</span></div>
+          <div class="detail-content">
+            <label>{{ t('رقم الهاتف', 'Phone Number') }}</label>
+            <p dir="ltr">{{ pharmacy()!.phone }}</p>
+          </div>
+        </div>
+
+        <div class="detail-group">
+          <div class="detail-icon"><span class="material-icons-round">location_city</span></div>
+          <div class="detail-content">
+            <label>{{ t('المدينة والمنطقة', 'City & Area') }}</label>
+            <p>{{ lang.isArabic ? pharmacy()!.cityAr : pharmacy()!.city }} - {{ lang.isArabic ? pharmacy()!.areaAr : pharmacy()!.area }}</p>
+          </div>
+        </div>
+
+        <div class="detail-group">
+          <div class="detail-icon"><span class="material-icons-round">place</span></div>
+          <div class="detail-content">
+            <label>{{ t('العنوان التفصيلي', 'Detailed Address') }}</label>
+            <p>{{ lang.isArabic ? pharmacy()!.addressAr : pharmacy()!.address }}</p>
+          </div>
+        </div>
+        
+        <div class="detail-group">
+          <div class="detail-icon"><span class="material-icons-round">schedule</span></div>
+          <div class="detail-content">
+            <label>{{ t('ساعات العمل', 'Working Hours') }}</label>
+            <p>{{ lang.isArabic ? pharmacy()!.workingHoursAr : pharmacy()!.workingHours }}</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="profile-actions">
+        <button class="btn btn-primary" disabled>
+          <span class="material-icons-round">edit</span>
+          {{ t('تعديل البيانات', 'Edit Details') }}
+        </button>
+        <p class="hint">{{ t('ميزة التعديل غير متاحة في النسخة الحالية', 'Editing is not available in current version') }}</p>
+      </div>
+    </div>
+  } @else {
+    <div class="empty-state">
+      <span class="material-icons-round">error_outline</span>
+      <p>{{ t('لم يتم العثور على بيانات الصيدلية', 'Pharmacy data not found') }}</p>
+    </div>
+  }
+</div>

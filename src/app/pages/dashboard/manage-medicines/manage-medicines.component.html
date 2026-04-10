@@ -1,0 +1,67 @@
+<div class="dash-section animate-fade-in surface">
+  <div class="dash-section-header">
+    <h2>{{ t('إدارة الأدوية', 'Manage Medicines') }}</h2>
+    <a routerLink="/dashboard/add" class="btn btn-primary btn-sm" id="add-medicine-btn">
+      <span class="material-icons-round">add</span>
+      {{ t('إضافة دواء جديد', 'Add New Medicine') }}
+    </a>
+  </div>
+
+  <div class="medicine-table-wrap">
+    <table class="medicine-table">
+      <thead>
+        <tr>
+          <th>{{ t('الدواء', 'Medicine') }}</th>
+          <th>{{ t('السعر', 'Price') }}</th>
+          <th>{{ t('الكمية (في المخزون)', 'Quantity (In Stock)') }}</th>
+          <th>{{ t('الإجراءات', 'Actions') }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        @if (medicinesData().length === 0) {
+          <tr>
+            <td colspan="4" class="text-center empty-state">
+              <span class="material-icons-round">medication_liquid</span>
+              <p>{{ t('لا يوجد أدوية مضافة', 'No medicines added yet.') }}</p>
+            </td>
+          </tr>
+        }
+        @for (item of medicinesData(); track item.medicine.id) {
+          <tr class="animate-fade-in">
+            <td>
+              <div class="med-cell">
+                <div class="med-icon-small" [style.background]="item.medicine.imageGradient">
+                  <span class="material-icons-round" style="color: white; font-size: 1rem">{{ item.medicine.imageIcon }}</span>
+                </div>
+                <div>
+                  <div class="med-cell-name">{{ lang.isArabic ? item.medicine.nameAr : item.medicine.nameEn }}</div>
+                  <div class="med-cell-sub">{{ lang.isArabic ? item.medicine.genericNameAr : item.medicine.genericNameEn }}</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <strong>{{ item.price }} {{ t('ج.م', 'EGP') }}</strong>
+            </td>
+            <td>
+              @if (item.inStock) {
+                <span class="badge badge-success">{{ t('متوفر', 'In Stock') }}</span>
+              } @else {
+                <span class="badge badge-danger">{{ t('نفذت الكمية', 'Out of Stock') }}</span>
+              }
+            </td>
+            <td>
+              <div class="table-actions">
+                <button class="btn btn-ghost btn-icon" [title]="t('تعديل', 'Edit')">
+                  <span class="material-icons-round">edit</span>
+                </button>
+                <button class="btn btn-ghost btn-icon danger" [title]="t('حذف', 'Delete')" (click)="deleteMedicine(item.medicine.id)">
+                  <span class="material-icons-round">delete</span>
+                </button>
+              </div>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

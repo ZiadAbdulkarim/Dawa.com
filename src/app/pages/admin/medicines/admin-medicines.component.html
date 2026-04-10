@@ -1,0 +1,98 @@
+<div class="admin-section animate-fade-in surface">
+  <div class="admin-table-header">
+    <h2>{{ t('قاعدة بيانات الأدوية (الرئيسية)', 'Master Medicines Database') }}</h2>
+  </div>
+
+  <div class="admin-table-wrap">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>{{ t('الدواء', 'Medicine') }}</th>
+          <th>{{ t('التصنيف', 'Category') }}</th>
+          <th>{{ t('الإجراءات', 'Actions') }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (med of medicines(); track med.id) {
+          <tr>
+            <td>
+              <div class="td-cell">
+                <div class="med-icon" [style.background]="med.imageGradient">
+                  <span class="material-icons-round">{{ med.imageIcon }}</span>
+                </div>
+                <div>
+                  <div class="fw-bold">{{ lang.isArabic ? med.nameAr : med.nameEn }}</div>
+                  <div class="text-sm text-muted">{{ lang.isArabic ? med.genericNameAr : med.genericNameEn }}</div>
+                </div>
+              </div>
+            </td>
+            <td><span class="badge badge-primary">{{ med.category }}</span></td>
+            <td>
+              <div class="table-actions">
+                <button class="btn btn-ghost btn-icon" (click)="openEditModal(med)" [title]="t('تعديل', 'Edit')">
+                  <span class="material-icons-round">edit</span>
+                </button>
+                <button class="btn btn-ghost btn-icon danger" (click)="deleteMedicine(med.id)" [title]="t('حذف', 'Delete')">
+                  <span class="material-icons-round">delete</span>
+                </button>
+              </div>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Edit Modal Overlay -->
+  @if (editingMedicine()) {
+    <div class="modal-overlay animate-fade-in" (click)="closeModal()">
+      <div class="modal-content animate-slide-up" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <h3>{{ t('تعديل بيانات الدواء', 'Edit Medicine Data') }}</h3>
+          <button class="btn btn-ghost btn-icon" (click)="closeModal()">
+            <span class="material-icons-round">close</span>
+          </button>
+        </div>
+        
+        <form [formGroup]="editForm" (ngSubmit)="saveEdit()" class="modal-body">
+          <div class="form-row">
+            <div class="form-group">
+              <label>{{ t('الاسم (عربي)', 'Name (Arabic)') }}</label>
+              <input type="text" formControlName="nameAr" class="input-wrap"/>
+            </div>
+            <div class="form-group">
+              <label>{{ t('الاسم (إنجليزي)', 'Name (English)') }}</label>
+              <input type="text" formControlName="nameEn" class="input-wrap" dir="ltr"/>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>{{ t('الوصف (عربي)', 'Description (Arabic)') }}</label>
+            <textarea formControlName="descriptionAr" class="input-wrap" rows="3"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>{{ t('الوصف (إنجليزي)', 'Description (English)') }}</label>
+            <textarea formControlName="descriptionEn" class="input-wrap" rows="3" dir="ltr"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>{{ t('صورة الدواء', 'Medicine Image') }}</label>
+            <div class="file-upload-box">
+              <input type="file" formControlName="image" accept="image/*" id="med-img-upload-edit" (change)="onImageUpload($event)">
+              <label for="med-img-upload-edit" class="upload-label">
+                <span class="material-icons-round">cloud_upload</span>
+                <span>{{ t('اضغط لتحديث الصورة', 'Click to update image') }}</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="modal-actions mt-4">
+            <button type="button" class="btn btn-outline" (click)="closeModal()">{{ t('إلغاء', 'Cancel') }}</button>
+            <button type="submit" class="btn btn-primary" [disabled]="editForm.invalid">{{ t('حفظ التعديلات', 'Save Changes') }}</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  }
+</div>

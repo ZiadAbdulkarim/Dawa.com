@@ -1,0 +1,73 @@
+<aside class="sidebar">
+  <!-- Stats bar -->
+  <div class="sidebar-stats">
+    <div class="stat-item">
+      <span class="stat-value">{{ stats.totalMedicines }}+</span>
+      <span class="stat-label">{{ t('دواء', 'Medicines') }}</span>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-item">
+      <span class="stat-value">{{ stats.totalPharmacies }}</span>
+      <span class="stat-label">{{ t('صيدلية', 'Pharmacies') }}</span>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-item">
+      <span class="stat-value">{{ stats.cities }}</span>
+      <span class="stat-label">{{ t('مدينة', 'Cities') }}</span>
+    </div>
+  </div>
+
+  <!-- Categories -->
+  <div class="sidebar-section">
+    <h3 class="sidebar-section-title">
+      <span class="material-icons-round">category</span>
+      {{ t('التصنيفات', 'Categories') }}
+    </h3>
+    <ul class="category-list" role="list">
+      @for (cat of categories; track cat.id) {
+        <li>
+          <a
+            class="category-item"
+            [routerLink]="['/search']"
+            [queryParams]="{ category: cat.id }"
+            [class.active]="selectedCategory === cat.id"
+            [id]="'sidebar-cat-' + cat.id"
+          >
+            <span class="cat-icon" [style.background]="cat.color + '22'" [style.color]="cat.color">
+              <span class="material-icons-round">{{ cat.icon }}</span>
+            </span>
+            <span class="cat-name">{{ t(cat.nameAr, cat.nameEn) }}</span>
+            <span class="cat-count">{{ cat.medicineCount }}</span>
+          </a>
+        </li>
+      }
+    </ul>
+  </div>
+
+  <!-- City Filter -->
+  <div class="sidebar-section">
+    <h3 class="sidebar-section-title">
+      <span class="material-icons-round">location_city</span>
+      {{ t('تصفية بالمدينة', 'Filter by City') }}
+    </h3>
+    <div class="city-chips">
+      @for (city of cities; track city) {
+        <button
+          class="city-chip"
+          [class.active]="selectedCity === city"
+          (click)="filterByCity(city)"
+          [id]="'sidebar-city-' + city"
+        >
+          <span class="material-icons-round">location_on</span>
+          {{ city }}
+        </button>
+      }
+    </div>
+  </div>
+
+  <!-- Quick tip -->
+  <div class="sidebar-tip">
+    <span class="material-icons-round">info</span>
+    <p>{{ t('ابحث باسم الدواء أو المادة الفعالة للعثور على صيدليات قريبة منك', 'Search by medicine or active ingredient to find nearby pharmacies') }}</p>
+  </div>
+</aside>

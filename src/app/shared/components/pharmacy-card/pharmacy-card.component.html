@@ -1,0 +1,59 @@
+<article class="pharmacy-card dawa-card" [id]="'pharmacy-card-' + pharmacy.id">
+  <div class="pharmacy-header">
+    <div class="pharmacy-logo">
+      <span class="material-icons-round">local_pharmacy</span>
+    </div>
+    <div class="pharmacy-info">
+      <div class="pharmacy-name-row">
+        <h3 class="pharmacy-name">{{ name }}</h3>
+        @if (pharmacy.isVerified) {
+          <span class="verified-badge" [title]="t('موثقة', 'Verified')">
+            <span class="material-icons-round">verified</span>
+          </span>
+        }
+      </div>
+      <p class="pharmacy-location">
+        <span class="material-icons-round">location_on</span>
+        {{ area }}, {{ city }}
+      </p>
+    </div>
+    <div class="open-badge" [class.open]="pharmacy.isOpen" [class.closed]="!pharmacy.isOpen">
+      <span class="open-dot"></span>
+      {{ pharmacy.isOpen ? t('مفتوح', 'Open') : t('مغلق', 'Closed') }}
+    </div>
+  </div>
+
+  <div class="pharmacy-details">
+    <div class="detail-row">
+      <span class="material-icons-round">schedule</span>
+      <span>{{ hours }}</span>
+    </div>
+    <div class="detail-row">
+      <span class="material-icons-round">phone</span>
+      <span dir="ltr">{{ pharmacy.phone }}</span>
+    </div>
+    <div class="detail-row">
+      <span class="material-icons-round">place</span>
+      <span>{{ address }}</span>
+    </div>
+  </div>
+
+  <div class="pharmacy-footer">
+    <div class="rating">
+      <div class="stars">
+        @for (star of stars; track star) {
+          <span class="material-icons-round star" [class.filled]="star < fullStars">star</span>
+        }
+      </div>
+      <span class="rating-value">{{ pharmacy.rating }}</span>
+      <span class="rating-count">({{ pharmacy.reviewCount }})</span>
+    </div>
+    <a
+      class="btn btn-outline btn-sm"
+      [routerLink]="['/pharmacy', pharmacy.id]"
+      [id]="'view-pharmacy-' + pharmacy.id"
+    >
+      {{ t('عرض الصيدلية', 'View Pharmacy') }}
+    </a>
+  </div>
+</article>

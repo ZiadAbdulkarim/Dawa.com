@@ -1,0 +1,142 @@
+.admin-table-wrap {
+  overflow-x: auto;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 600px;
+
+  th, td {
+    padding: 1rem 1.25rem;
+    text-align: start;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  th {
+    font-weight: 600;
+    color: var(--text-secondary);
+    background: var(--bg-hover);
+    white-space: nowrap;
+  }
+
+  tbody tr {
+    transition: background-color 0.2s ease;
+    &:last-child td { border-bottom: none; }
+    &:hover { background: var(--bg-hover); }
+  }
+}
+
+.td-cell {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.med-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  
+  span { font-size: 1.25rem; }
+}
+
+.fw-bold { font-weight: 600; color: var(--text-primary); }
+.text-sm { font-size: 0.8125rem; }
+.text-muted { color: var(--text-secondary); }
+
+.table-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.modal-content {
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  width: 100%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+  
+  h3 { margin: 0; font-size: 1.25rem; color: var(--text-primary); }
+}
+
+.modal-body {
+  padding: 1.5rem;
+}
+
+// Removed local .form-row and .form-group styles as they are globally managed
+
+.file-upload-box {
+  position: relative;
+  border: 2px dashed var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  text-align: center;
+  transition: all 0.2s;
+  
+  &:hover {
+    border-color: var(--primary);
+    background: var(--primary-light);
+  }
+
+  input[type="file"] {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  .upload-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-secondary);
+    pointer-events: none;
+    
+    span.material-icons-round {
+      font-size: 2rem;
+      color: var(--primary);
+    }
+  }
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}

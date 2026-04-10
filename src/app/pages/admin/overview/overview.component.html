@@ -1,0 +1,31 @@
+<div class="admin-section animate-fade-in">
+  <div class="admin-section-header">
+    <h2>{{ t('نظرة عامة على المنصة', 'Platform Overview') }}</h2>
+  </div>
+
+  <div class="overview-grid">
+    <div class="overview-stat surface stagger-1 animate-fade-in">
+      <div class="ov-icon accent"><span class="material-icons-round">storefront</span></div>
+      <div class="ov-value">{{ stats.totalPharmacies }}</div>
+      <div class="ov-label">{{ t('إجمالي الصيدليات', 'Total Pharmacies') }}</div>
+    </div>
+    
+    <div class="overview-stat surface stagger-2 animate-fade-in">
+      <div class="ov-icon primary"><span class="material-icons-round">medication</span></div>
+      <div class="ov-value">{{ stats.totalMedicines }}</div>
+      <div class="ov-label">{{ t('إجمالي الأدوية', 'Total Medicines') }}</div>
+    </div>
+    
+    <div class="overview-stat surface stagger-3 animate-fade-in">
+      <div class="ov-icon success"><span class="material-icons-round">verified</span></div>
+      <div class="ov-value">{{ activeSubscriptionsCount }}</div>
+      <div class="ov-label">{{ t('اشتراكات نشطة', 'Active Subscriptions') }}</div>
+    </div>
+    
+    <div class="overview-stat surface stagger-4 animate-fade-in">
+      <div class="ov-icon warning"><span class="material-icons-round">gpp_bad</span></div>
+      <div class="ov-value">{{ expiredSubscriptionsCount }}</div>
+      <div class="ov-label">{{ t('اشتراكات منتهية', 'Expired Subscriptions') }}</div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,57 @@
+<div class="admin-section animate-fade-in surface">
+  <div class="admin-table-header">
+    <h2>{{ t('إدارة الاشتراكات', 'Manage Subscriptions') }}</h2>
+  </div>
+
+  <div class="admin-table-wrap">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>{{ t('المستخدم', 'User') }}</th>
+          <th>{{ t('تاريخ البدء', 'Start Date') }}</th>
+          <th>{{ t('تاريخ الانتهاء', 'End Date') }}</th>
+          <th>{{ t('التاريخ متوقع', 'Status') }}</th>
+          <th>{{ t('الإجراءات', 'Actions') }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (user of pharmacists(); track user.id) {
+          <tr>
+            <td>
+              <div class="fw-bold">{{ lang.isArabic ? user.nameAr : user.nameEn }}</div>
+              <div class="text-sm text-muted" dir="ltr">{{ user.email }}</div>
+            </td>
+            <td dir="ltr">{{ datePipe.transform(user.createdAt, 'mediumDate') }}</td>
+            <td dir="ltr">{{ user.subscriptionExpiry ? datePipe.transform(user.subscriptionExpiry, 'mediumDate') : '-' }}</td>
+            <td>
+              @if (user.subscriptionStatus === 'active') {
+                <span class="badge badge-success">{{ t('نشط', 'Active') }}</span>
+              } @else if (user.subscriptionStatus === 'expired') {
+                <span class="badge badge-danger">{{ t('منتهي', 'Expired') }}</span>
+              } @else {
+                <span class="badge badge-warning">{{ user.subscriptionStatus || t('غير محدد', 'Not set') }}</span>
+              }
+            </td>
+            <td>
+              <div class="table-actions">
+                @if (user.subscriptionStatus !== 'active') {
+                  <button class="btn btn-ghost btn-icon" (click)="activate(user)" [title]="t('تفعيل', 'Activate')">
+                    <span class="material-icons-round text-success">check_circle</span>
+                  </button>
+                }
+                @if (user.subscriptionStatus === 'active') {
+                  <button class="btn btn-ghost btn-icon" (click)="extend(user)" [title]="t('تمديد عام', 'Extend 1 Year')">
+                    <span class="material-icons-round text-primary">update</span>
+                  </button>
+                  <button class="btn btn-ghost btn-icon warning" (click)="disable(user)" [title]="t('إيقاف', 'Disable')">
+                    <span class="material-icons-round text-danger">cancel</span>
+                  </button>
+                }
+              </div>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

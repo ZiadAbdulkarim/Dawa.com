@@ -1,0 +1,49 @@
+// ============================================
+// DAWA.COM – RTL / LTR LAYOUT OVERRIDES
+// ============================================
+
+// Direction-aware spacing utilities
+[dir="rtl"] {
+  .ms-auto  { margin-right: auto !important; margin-left: unset !important; }
+  .me-auto  { margin-left: auto !important;  margin-right: unset !important; }
+
+  // Navbar & layout flips
+  .nav-actions { flex-direction: row-reverse; }
+
+  // Icon mirroring for directional icons
+  .icon-arrow,
+  .icon-chevron { transform: scaleX(-1); }
+
+  // Sidebar position
+  .sidebar { border-left: 1px solid var(--border-default); border-right: none; }
+
+  // Search icon position
+  .search-icon-start { right: 16px; left: unset; }
+  .search-input { padding-right: 48px; padding-left: 16px; }
+
+  // Card action buttons align
+  .card-actions { flex-direction: row-reverse; }
+
+  // Breadcrumb separator
+  .breadcrumb-sep { transform: scaleX(-1); }
+}
+
+[dir="ltr"] {
+  .sidebar { border-right: 1px solid var(--border-default); border-left: none; }
+  .search-icon-start { left: 16px; right: unset; }
+  .search-input { padding-left: 48px; padding-right: 16px; }
+}
+
+// Material component RTL patches
+[dir="rtl"] {
+  .mat-mdc-form-field { text-align: right; }
+  .mdc-text-field { direction: rtl; }
+  .mat-mdc-tab-labels { flex-direction: row-reverse; }
+  .mat-mdc-snack-bar-container { direction: rtl; }
+
+  // Ripple / chip direction
+  .mat-chip { direction: rtl; }
+
+  // Slider
+  .mat-mdc-slider { direction: rtl; }
+}

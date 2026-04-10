@@ -1,0 +1,43 @@
+<div class="admin-layout container">
+  <!-- Sidebar -->
+  <aside class="admin-sidebar surface">
+    <div class="sidebar-header">
+      <span class="material-icons-round text-primary" style="font-size: 2rem;">admin_panel_settings</span>
+      <h3>{{ t('لوحة الإدارة', 'Admin Panel') }}</h3>
+    </div>
+    
+    <nav class="sidebar-nav">
+      <a routerLink="/admin" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-item">
+        <span class="material-icons-round">dashboard</span>
+        {{ t('نظرة عامة', 'Overview') }}
+      </a>
+      
+      <div class="nav-section-title">{{ t('البيانات الأساسية', 'Master Data') }}</div>
+      
+      <a routerLink="/admin/medicines" routerLinkActive="active" class="nav-item">
+        <span class="material-icons-round">medication</span>
+        {{ t('إدارة الأدوية', 'Manage Medicines') }}
+      </a>
+      <a routerLink="/admin/categories" routerLinkActive="active" class="nav-item">
+        <span class="material-icons-round">category</span>
+        {{ t('إدارة التصنيفات', 'Manage Categories') }}
+      </a>
+      
+      <div class="nav-section-title">{{ t('الشبكة', 'Network') }}</div>
+      
+      <a routerLink="/admin/pharmacies" routerLinkActive="active" class="nav-item">
+        <span class="material-icons-round">storefront</span>
+        {{ t('إدارة الصيدليات', 'Manage Pharmacies') }}
+      </a>
+      <a routerLink="/admin/subscriptions" routerLinkActive="active" class="nav-item">
+        <span class="material-icons-round">card_membership</span>
+        {{ t('إدارة الاشتراكات', 'Manage Subscriptions') }}
+      </a>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="admin-content">
+    <router-outlet></router-outlet>
+  </main>
+</div>

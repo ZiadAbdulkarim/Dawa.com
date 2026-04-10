@@ -1,0 +1,233 @@
+<div class="med-detail-page">
+
+  @if (medicine()) {
+    <!-- Breadcrumb -->
+    <div class="breadcrumb container">
+      <a routerLink="/">{{ t('الرئيسية', 'Home') }}</a>
+      <span class="material-icons-round">chevron_right</span>
+      <a routerLink="/search">{{ t('الأدوية', 'Medicines') }}</a>
+      <span class="material-icons-round">chevron_right</span>
+      <span>{{ lang.isArabic ? medicine()!.nameAr : medicine()!.nameEn }}</span>
+    </div>
+
+    <!-- ===== MEDICINE HEADER CARD ===== -->
+    <section class="med-hero">
+      <div class="container med-hero-inner">
+
+        <!-- Medicine Image -->
+        <div class="med-image-wrap" [style.background]="medicine()!.imageGradient">
+          <span class="material-icons-round">{{ medicine()!.imageIcon }}</span>
+          @if (medicine()!.requiresPrescription) {
+            <div class="med-rx-badge">
+              <span class="material-icons-round">policy</span>
+              {{ t('يستلزم وصفة طبية', 'Prescription Required') }}
+            </div>
+          } @else {
+            <div class="med-otc-badge">
+              <span class="material-icons-round">check_circle</span>
+              {{ t('بدون وصفة طبية', 'Over the Counter') }}
+            </div>
+          }
+        </div>
+
+        <!-- Medicine Info -->
+        <div class="med-hero-info">
+          <div class="med-hero-cat">
+            <span class="cat-chip">{{ medicine()!.category }}</span>
+            <span class="form-chip"><span class="material-icons-round">{{ formIcon }}</span>{{ medicine()!.form }}</span>
+            <span class="strength-chip"><span class="material-icons-round">science</span>{{ medicine()!.strength }}</span>
+          </div>
+
+          <h1 class="med-hero-name">{{ lang.isArabic ? medicine()!.nameAr : medicine()!.nameEn }}</h1>
+          <p class="med-hero-generic">{{ lang.isArabic ? medicine()!.genericNameAr : medicine()!.genericNameEn }}</p>
+
+          <p class="med-hero-desc">{{ lang.isArabic ? medicine()!.descriptionAr : medicine()!.descriptionEn }}</p>
+
+          <!-- Availability summary -->
+          <div class="med-avail-bar">
+            <div class="avail-stat primary">
+              <span class="material-icons-round">local_pharmacy</span>
+              <span><strong>{{ pharmacies().length }}</strong> {{ t('صيدلية تملكه', 'pharmacies have this') }}</span>
+            </div>
+            @if (pharmacies().length > 0) {
+              <div class="avail-stat accent">
+                <span class="material-icons-round">payments</span>
+                <span>{{ t('من', 'From') }} <strong>{{ getMinPrice() }} {{ t('ج.م', 'EGP') }}</strong></span>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== INFO SECTIONS ===== -->
+    <div class="med-sections container">
+
+      <!-- DESCRIPTION -->
+      <div class="info-card">
+        <div class="info-card-header">
+          <span class="material-icons-round">info</span>
+          {{ t('نبذة عن الدواء', 'About This Medicine') }}
+        </div>
+        <div class="info-card-body">
+          <p>{{ lang.isArabic ? medicine()!.descriptionAr : medicine()!.descriptionEn }}</p>
+        </div>
+      </div>
+
+      <!-- USES -->
+      <div class="info-card">
+        <div class="info-card-header uses">
+          <span class="material-icons-round">check_circle</span>
+          {{ t('استخدامات الدواء', 'Uses & Indications') }}
+        </div>
+        <div class="info-card-body">
+          <ul class="uses-list">
+            @for (use of (lang.isArabic ? medicine()!.usesAr : medicine()!.usesEn); track use) {
+              <li>
+                <span class="use-dot material-icons-round">check</span>
+                <span>{{ use }}</span>
+              </li>
+            }
+          </ul>
+        </div>
+      </div>
+
+      <!-- SIDE EFFECTS -->
+      <div class="info-card">
+        <div class="info-card-header side-effects">
+          <span class="material-icons-round">warning</span>
+          {{ t('الآثار الجانبية', 'Side Effects') }}
+        </div>
+        <div class="info-card-body">
+          <ul class="se-list">
+            @for (se of (lang.isArabic ? medicine()!.sideEffectsAr : medicine()!.sideEffectsEn); track se) {
+              <li>
+                <span class="se-dot material-icons-round">error_outline</span>
+                <span>{{ se }}</span>
+              </li>
+            }
+          </ul>
+          <div class="se-disclaimer">
+            <span class="material-icons-round">info</span>
+            {{ t('استشر طبيبك أو صيدلانيك قبل تناول أي دواء', 'Consult your doctor or pharmacist before taking any medicine') }}
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ===== PHARMACIES SECTION ===== -->
+    <section class="pharmacies-section">
+      <div class="container">
+
+        <div class="pharmacies-header">
+          <div class="pharmacies-title-wrap">
+            <div class="pharmacies-title-icon">
+              <span class="material-icons-round">local_pharmacy</span>
+            </div>
+            <div>
+              <h2>{{ t('الصيدليات التي تبيعه', 'Pharmacies Selling This') }}</h2>
+              <p>
+                {{ t('صيدليات موثوقة باشتراك نشط', 'Verified pharmacies with active subscription') }} ·
+                <strong>{{ pharmacies().length }}</strong> {{ t('صيدلية', 'pharmacies') }}
+              </p>
+            </div>
+          </div>
+          <div class="subscription-note">
+            <span class="material-icons-round">verified</span>
+            {{ t('جميع الصيدليات المعروضة لديها اشتراك نشط وبيانات موثقة', 'All shown pharmacies have an active subscription and verified information') }}
+          </div>
+        </div>
+
+        @if (pharmacies().length === 0) {
+          <div class="no-pharmacies">
+            <span class="material-icons-round">search_off</span>
+            <h3>{{ t('لا توجد صيدليات متاحة', 'No pharmacies available') }}</h3>
+            <p>{{ t('لا يوجد حالياً صيدليات تحمل هذا الدواء بصلاحيات نشطة', 'No pharmacies currently carry this medicine with active subscription') }}</p>
+          </div>
+        }
+
+        <div class="pharmacy-cards-grid">
+          @for (ph of pharmacies(); track ph.id; let i = $index) {
+            <div class="pharmacy-card animate-fade-in" [class]="'stagger-' + (i + 1)">
+
+              <!-- Card header -->
+              <div class="ph-card-header">
+                <div class="ph-logo">
+                  <span class="material-icons-round">local_pharmacy</span>
+                </div>
+                <div class="ph-title-wrap">
+                  <div class="ph-name-row">
+                    <h3>{{ lang.isArabic ? ph.nameAr : ph.nameEn }}</h3>
+                    @if (ph.isVerified) {
+                      <span class="ph-verified" [title]="t('موثقة', 'Verified')">
+                        <span class="material-icons-round">verified</span>
+                      </span>
+                    }
+                  </div>
+                  <div class="ph-open-badge" [class.open]="ph.isOpen">
+                    <span class="open-dot"></span>
+                    {{ ph.isOpen ? t('مفتوحة الآن', 'Open Now') : t('مغلقة حالياً', 'Closed') }}
+                  </div>
+                </div>
+
+                <!-- Price pill -->
+                <div class="ph-price-pill" [class.unavailable]="!isInStock(ph.id, medicine()!.id)">
+                  @if (isInStock(ph.id, medicine()!.id)) {
+                    <span class="price-val">{{ getPrice(ph.id, medicine()!.id) }}</span>
+                    <span class="price-cur">{{ t('ج.م', 'EGP') }}</span>
+                  } @else {
+                    <span class="material-icons-round">remove_shopping_cart</span>
+                    {{ t('نفد', 'Out of Stock') }}
+                  }
+                </div>
+              </div>
+
+              <!-- Card details -->
+              <div class="ph-card-details">
+                <div class="ph-detail-row">
+                  <span class="material-icons-round">location_on</span>
+                  <span>{{ lang.isArabic ? ph.addressAr : ph.address }}, {{ lang.isArabic ? ph.areaAr : ph.area }}, {{ lang.isArabic ? ph.cityAr : ph.city }}</span>
+                </div>
+                <div class="ph-detail-row">
+                  <span class="material-icons-round">phone</span>
+                  <a [href]="'tel:' + ph.phone" dir="ltr" class="ph-phone">{{ ph.phone }}</a>
+                </div>
+                <div class="ph-detail-row">
+                  <span class="material-icons-round">schedule</span>
+                  <span>{{ lang.isArabic ? ph.workingHoursAr : ph.workingHours }}</span>
+                </div>
+              </div>
+
+              <!-- Rating -->
+              <div class="ph-card-rating">
+                <div class="stars-row">
+                  @for (s of stars; track s) {
+                    <span class="material-icons-round star" [class.filled]="s < ph.rating">star</span>
+                  }
+                  <span class="rating-num">{{ ph.rating }}</span>
+                  <span class="rating-reviews">({{ ph.reviewCount }})</span>
+                </div>
+                <a [routerLink]="['/pharmacy', ph.id]" class="ph-view-btn" [id]="'view-ph-' + ph.id">
+                  {{ t('عرض الصيدلية', 'View Pharmacy') }}
+                  <span class="material-icons-round">arrow_forward</span>
+                </a>
+              </div>
+
+            </div>
+          }
+        </div>
+
+      </div>
+    </section>
+
+  } @else {
+    <div class="not-found container">
+      <span class="material-icons-round">medication_liquid</span>
+      <h2>{{ t('الدواء غير موجود', 'Medicine Not Found') }}</h2>
+      <a routerLink="/search" class="btn btn-primary" id="med-not-found-back">
+        {{ t('العودة للبحث', 'Back to Search') }}
+      </a>
+    </div>
+  }
+</div>

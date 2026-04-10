@@ -1,0 +1,46 @@
+<div class="dashboard-layout container">
+  <!-- Sidebar -->
+  <aside class="dashboard-sidebar surface">
+    <div class="sidebar-header">
+      <h3>{{ t('لوحة التحكم', 'Dashboard') }}</h3>
+    </div>
+    <nav class="sidebar-nav">
+      
+      <!-- Only active users can see these links -->
+      @if (!isExpired) {
+        <a routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-item">
+          <span class="material-icons-round">dashboard</span>
+          {{ t('نظرة عامة', 'Overview') }}
+        </a>
+        <a routerLink="/dashboard/manage" routerLinkActive="active" class="nav-item">
+          <span class="material-icons-round">list_alt</span>
+          {{ t('إدارة الأدوية', 'Manage Medicines') }}
+        </a>
+        <a routerLink="/dashboard/add" routerLinkActive="active" class="nav-item">
+          <span class="material-icons-round">add_circle</span>
+          {{ t('إضافة دواء', 'Add Medicine') }}
+        </a>
+        <a routerLink="/dashboard/profile" routerLinkActive="active" class="nav-item">
+          <span class="material-icons-round">storefront</span>
+          {{ t('ملف الصيدلية', 'Pharmacy Profile') }}
+        </a>
+      }
+
+      <!-- Subscription Link (always visible) -->
+      <div class="sidebar-divider"></div>
+      <a routerLink="/dashboard/subscription" routerLinkActive="active" class="nav-item" [class.warning-text]="isExpired">
+        <span class="material-icons-round">card_membership</span>
+        {{ t('الاشتراك', 'Subscription') }}
+        @if (isExpired) {
+          <span class="material-icons-round error-icon">error</span>
+        }
+      </a>
+      
+    </nav>
+  </aside>
+
+  <!-- Main Content Area -->
+  <main class="dashboard-content">
+    <router-outlet></router-outlet>
+  </main>
+</div>

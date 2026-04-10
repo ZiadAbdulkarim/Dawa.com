@@ -1,0 +1,166 @@
+<div class="admin-page container animate-fade-in">
+  <div class="admin-header">
+    <h1>{{ t('لوحة الإدارة', 'Admin Panel') }}</h1>
+    <p>{{ t('إدارة المنصة والصيدليات والمستخدمين', 'Manage platform, pharmacies, and users') }}</p>
+  </div>
+
+  <!-- Tabs -->
+  <div class="admin-tabs">
+    <button class="admin-tab" [class.active]="activeTab() === 'overview'" (click)="activeTab.set('overview')" id="admin-tab-overview">
+      <span class="material-icons-round">dashboard</span>{{ t('نظرة عامة', 'Overview') }}
+    </button>
+    <button class="admin-tab" [class.active]="activeTab() === 'pharmacies'" (click)="activeTab.set('pharmacies')" id="admin-tab-pharmacies">
+      <span class="material-icons-round">local_pharmacy</span>{{ t('الصيدليات', 'Pharmacies') }}
+    </button>
+    <button class="admin-tab" [class.active]="activeTab() === 'users'" (click)="activeTab.set('users')" id="admin-tab-users">
+      <span class="material-icons-round">people</span>{{ t('المستخدمون', 'Users') }}
+    </button>
+  </div>
+
+  <!-- OVERVIEW -->
+  @if (activeTab() === 'overview') {
+    <div class="overview-grid animate-fade-in">
+      <div class="overview-stat surface">
+        <div class="ov-icon primary"><span class="material-icons-round">medication</span></div>
+        <div class="ov-value">{{ stats.totalMedicines }}</div>
+        <div class="ov-label">{{ t('إجمالي الأدوية', 'Total Medicines') }}</div>
+      </div>
+      <div class="overview-stat surface">
+        <div class="ov-icon accent"><span class="material-icons-round">local_pharmacy</span></div>
+        <div class="ov-value">{{ stats.totalPharmacies }}</div>
+        <div class="ov-label">{{ t('إجمالي الصيدليات', 'Total Pharmacies') }}</div>
+      </div>
+      <div class="overview-stat surface">
+        <div class="ov-icon warning"><span class="material-icons-round">people</span></div>
+        <div class="ov-value">{{ mockUsers.length }}</div>
+        <div class="ov-label">{{ t('إجمالي المستخدمين', 'Total Users') }}</div>
+      </div>
+      <div class="overview-stat surface">
+        <div class="ov-icon success"><span class="material-icons-round">location_city</span></div>
+        <div class="ov-value">{{ stats.cities }}</div>
+        <div class="ov-label">{{ t('المدن المغطاة', 'Cities Covered') }}</div>
+      </div>
+    </div>
+  }
+
+  <!-- PHARMACIES -->
+  @if (activeTab() === 'pharmacies') {
+    <div class="surface admin-table-section animate-fade-in">
+      <div class="admin-table-header">
+        <h2>{{ t('إدارة الصيدليات', 'Manage Pharmacies') }}</h2>
+      </div>
+      <div class="admin-table-wrap">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>{{ t('الصيدلية', 'Pharmacy') }}</th>
+              <th>{{ t('المدينة', 'City') }}</th>
+              <th>{{ t('الهاتف', 'Phone') }}</th>
+              <th>{{ t('الحالة', 'Status') }}</th>
+              <th>{{ t('موثقة', 'Verified') }}</th>
+              <th>{{ t('الإجراءات', 'Actions') }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (ph of pharmacies(); track ph.id) {
+              <tr>
+                <td>
+                  <div class="ph-cell">
+                    <span class="material-icons-round">local_pharmacy</span>
+                    {{ lang.isArabic ? ph.nameAr : ph.nameEn }}
+                  </div>
+                </td>
+                <td>{{ lang.isArabic ? ph.cityAr : ph.city }}</td>
+                <td dir="ltr">{{ ph.phone }}</td>
+                <td>
+                  @if (ph.isOpen) {
+                    <span class="badge badge-success">{{ t('مفتوح', 'Open') }}</span>
+                  } @else {
+                    <span class="badge badge-danger">{{ t('مغلق', 'Closed') }}</span>
+                  }
+                </td>
+                <td>
+                  @if (ph.isVerified) {
+                    <span class="badge badge-primary">{{ t('موثق', 'Verified') }}</span>
+                  } @else {
+                    <span class="badge">{{ t('غير موثق', 'Unverified') }}</span>
+                  }
+                </td>
+                <td>
+                  <div class="table-actions">
+                    <button class="btn btn-ghost btn-icon" [id]="'admin-verify-' + ph.id">
+                      <span class="material-icons-round">verified</span>
+                    </button>
+                    <button class="btn btn-ghost btn-icon danger" [id]="'admin-delete-ph-' + ph.id">
+                      <span class="material-icons-round">delete</span>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  }
+
+  <!-- USERS -->
+  @if (activeTab() === 'users') {
+    <div class="surface admin-table-section animate-fade-in">
+      <div class="admin-table-header">
+        <h2>{{ t('إدارة المستخدمين', 'Manage Users') }}</h2>
+      </div>
+      <div class="admin-table-wrap">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>{{ t('المستخدم', 'User') }}</th>
+              <th>{{ t('البريد', 'Email') }}</th>
+              <th>{{ t('الدور', 'Role') }}</th>
+              <th>{{ t('الاشتراك', 'Subscription') }}</th>
+              <th>{{ t('الحالة', 'Status') }}</th>
+              <th>{{ t('الإجراءات', 'Actions') }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (user of mockUsers; track user.id) {
+              <tr>
+                <td>{{ lang.isArabic ? user.nameAr : user.nameEn }}</td>
+                <td dir="ltr">{{ user.email }}</td>
+                <td>
+                  <span class="badge" [class.badge-primary]="user.role==='pharmacist'" [class.badge-accent]="user.role==='admin'">
+                    {{ user.role === 'admin' ? t('مسؤول', 'Admin') : t('صيدلي', 'Pharmacist') }}
+                  </span>
+                </td>
+                <td>
+                  @if (user.subscriptionStatus) {
+                    <span class="badge" [class.badge-success]="user.subscriptionStatus==='active'" [class.badge-warning]="user.subscriptionStatus==='trial'">
+                      {{ user.subscriptionStatus }}
+                    </span>
+                  } @else { <span class="text-muted">–</span> }
+                </td>
+                <td>
+                  @if (user.isApproved) {
+                    <span class="badge badge-success">{{ t('معتمد', 'Approved') }}</span>
+                  } @else {
+                    <span class="badge badge-warning">{{ t('قيد المراجعة', 'Pending') }}</span>
+                  }
+                </td>
+                <td>
+                  <div class="table-actions">
+                    <button class="btn btn-ghost btn-icon" [id]="'admin-approve-' + user.id">
+                      <span class="material-icons-round">check_circle</span>
+                    </button>
+                    <button class="btn btn-ghost btn-icon danger" [id]="'admin-delete-user-' + user.id">
+                      <span class="material-icons-round">delete</span>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  }
+</div>

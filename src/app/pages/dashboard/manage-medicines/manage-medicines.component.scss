@@ -1,0 +1,83 @@
+.medicine-table-wrap {
+  overflow-x: auto;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
+  margin-top: 1rem;
+}
+
+.medicine-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 600px;
+  background: var(--surface);
+
+  th, td {
+    padding: 1rem 1.25rem;
+    text-align: start;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  th {
+    font-weight: 600;
+    color: var(--text-secondary);
+    background: var(--bg-hover);
+    white-space: nowrap;
+  }
+
+  tbody tr {
+    transition: background-color 0.2s ease;
+    
+    &:last-child td { border-bottom: none; }
+    &:hover { background: var(--bg-hover); }
+  }
+}
+
+.empty-state {
+  padding: 3rem 1rem !important;
+  color: var(--text-secondary);
+  
+  span {
+    font-size: 3rem;
+    opacity: 0.5;
+    margin-bottom: 1rem;
+  }
+}
+
+.text-center {
+  text-align: center;
+}
+
+.med-cell {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.med-icon-small {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.med-cell-name {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.med-cell-sub {
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+}
+
+.table-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.badge-danger {
+  background: var(--warning-light);
+  color: var(--warning-dark);
+}

@@ -1,0 +1,75 @@
+// ============================================
+// DAWA.COM – LIGHT / DARK THEMES
+// ============================================
+
+// LIGHT THEME (default)
+[data-theme="light"] {
+  --bg-base:       #F0F5FB;
+  --bg-surface:    #FFFFFF;
+  --bg-elevated:   #FFFFFF;
+  --bg-muted:      #E8EEF6;
+  --bg-hover:      #EBF2FA;
+  --bg-sidebar:    #FFFFFF;
+  --bg-navbar:     rgba(255,255,255,0.92);
+
+  --text-primary:   #0F1C2E;
+  --text-secondary: #4A6080;
+  --text-muted:     #8CA0BA;
+  --text-on-primary:#FFFFFF;
+  --text-on-accent: #FFFFFF;
+
+  --border-default: #D4E1F0;
+  --border-muted:   #E8EEF6;
+  --border-hover:   #A8C3DC;
+
+  --input-bg:       #FFFFFF;
+  --input-border:   #C0D5E8;
+  --input-focus:    #0C73B8;
+
+  --badge-bg:       #E8F4FD;
+  --badge-text:     #0C73B8;
+
+  --code-bg:        #F0F5FB;
+
+  --overlay-bg:     rgba(15, 28, 46, 0.5);
+
+  --navbar-shadow:  0 2px 20px rgba(0,0,0,0.08);
+  --card-shadow:    0 2px 12px rgba(0,0,0,0.06);
+  --card-shadow-hover: 0 8px 32px rgba(12,115,184,0.15);
+}
+
+// DARK THEME
+[data-theme="dark"] {
+  --bg-base:       #0A1628;
+  --bg-surface:    #0F1F36;
+  --bg-elevated:   #162640;
+  --bg-muted:      #1A2D47;
+  --bg-hover:      #1E3350;
+  --bg-sidebar:    #0F1F36;
+  --bg-navbar:     rgba(10, 22, 40, 0.92);
+
+  --text-primary:   #E8F0FA;
+  --text-secondary: #8AAAC8;
+  --text-muted:     #5A7A9A;
+  --text-on-primary:#FFFFFF;
+  --text-on-accent: #FFFFFF;
+
+  --border-default: #1E3350;
+  --border-muted:   #162640;
+  --border-hover:   #2A4A6A;
+
+  --input-bg:       #162640;
+  --input-border:   #1E3350;
+  --input-focus:    #3B9DE0;
+
+  --badge-bg:       #0C2A45;
+  --badge-text:     #3B9DE0;
+
+  --code-bg:        #0A1628;
+
+  --overlay-bg:     rgba(0, 0, 0, 0.7);
+
+  --navbar-shadow:  0 2px 20px rgba(0,0,0,0.4);
+  --card-shadow:    0 2px 12px rgba(0,0,0,0.3);
+  --card-shadow-hover: 0 8px 32px rgba(59,157,224,0.20);
+}

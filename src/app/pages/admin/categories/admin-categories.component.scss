@@ -1,0 +1,80 @@
+// Reusing modal and table standard styles
+
+.admin-table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+
+  h2 { margin: 0; font-size: 1.25rem; font-weight: 700; color: var(--text-primary); }
+}
+
+.admin-table-wrap {
+  overflow-x: auto;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 500px;
+
+  th, td {
+    padding: 1rem 1.25rem;
+    text-align: start;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  th {
+    font-weight: 600;
+    color: var(--text-secondary);
+    background: var(--bg-hover);
+    white-space: nowrap;
+  }
+
+  tbody tr {
+    transition: background-color 0.2s ease;
+    &:last-child td { border-bottom: none; }
+    &:hover { background: var(--bg-hover); }
+  }
+}
+
+.fw-bold { font-weight: 600; color: var(--text-primary); }
+.text-sm { font-size: 0.8125rem; }
+.text-muted { color: var(--text-secondary); }
+
+.table-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* Modal Overlay base classes */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 1000; padding: 1rem;
+}
+
+.modal-content {
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  width: 100%; max-width: 500px;
+  box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+}
+
+.modal-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 1.5rem; border-bottom: 1px solid var(--border-color);
+  h3 { margin: 0; font-size: 1.25rem; }
+}
+
+.modal-body { padding: 1.5rem; }
+
+// Removed local .form-group styles as they are globally managed
+
+.modal-actions {
+  display: flex; justify-content: flex-end; gap: 1rem;
+}

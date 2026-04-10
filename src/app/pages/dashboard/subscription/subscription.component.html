@@ -1,0 +1,49 @@
+<div class="dash-section animate-fade-in surface subscription-container">
+  <div class="dash-section-header">
+    <h2>{{ t('إدارة الاشتراك', 'Subscription Management') }}</h2>
+  </div>
+
+  @if (isExpired) {
+    <div class="alert danger-alert">
+      <span class="material-icons-round">warning</span>
+      {{ t('اشتراكك منتهي! يرجى تجديد الاشتراك للوصول إلى لوحة التحكم الخاصة بك.', 'Your subscription has expired! Please renew to access your dashboard.') }}
+    </div>
+  }
+
+  <div class="subscription-card" [class.expired]="isExpired">
+    <div class="sub-header">
+      <div class="sub-icon">
+        <span class="material-icons-round">card_membership</span>
+      </div>
+      <div class="sub-title">
+        <h3>{{ t('اشتراك الصيدلية الأساسي', 'Basic Pharmacy Subscription') }}</h3>
+        <span class="badge" [class.badge-success]="!isExpired" [class.badge-danger]="isExpired">
+          {{ isExpired ? t('منتهي', 'Expired') : t('نشط', 'Active') }}
+        </span>
+      </div>
+    </div>
+
+    <div class="sub-details">
+      <div class="detail-item">
+        <span class="detail-label">{{ t('تاريخ الانتهاء', 'Expiry Date') }}</span>
+        <span class="detail-value" dir="ltr">{{ datePipe.transform(auth.currentUser()?.subscriptionExpiry, 'longDate') }}</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">{{ t('تكلفة التجديد', 'Renewal Cost') }}</span>
+        <span class="detail-value">500 {{ t('ج.م / سنوياً', 'EGP / Year') }}</span>
+      </div>
+    </div>
+
+    <div class="sub-actions">
+      <button class="btn btn-lg w-full" [class.btn-primary]="!isExpired" [class.btn-accent]="isExpired" (click)="renew()" [disabled]="isRenewing()">
+        @if (isRenewing()) {
+          <span class="spinner"></span>
+          {{ t('جاري التجديد...', 'Renewing...') }}
+        } @else {
+          <span class="material-icons-round">autorenew</span>
+          {{ t('تجديد الاشتراك الآن', 'Renew Subscription Now') }}
+        }
+      </button>
+    </div>
+  </div>
+</div>
