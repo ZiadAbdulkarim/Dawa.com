@@ -3,6 +3,8 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { LanguageService } from '../../../core/services/language.service';
 import { AuthService } from '../../../core/services/auth.service';
 
+import { DialogService } from '../../../core/services/dialog.service';
+
 @Component({
   selector: 'app-subscription',
   standalone: true,
@@ -14,6 +16,7 @@ import { AuthService } from '../../../core/services/auth.service';
 export class SubscriptionComponent {
   lang = inject(LanguageService);
   auth = inject(AuthService);
+  dialog = inject(DialogService);
   datePipe = inject(DatePipe);
 
   // Manage UI state for 'renewing' simulation
@@ -27,11 +30,11 @@ export class SubscriptionComponent {
     this.isRenewing.set(true);
     setTimeout(() => {
       this.isRenewing.set(false);
-      // In a real app this would trigger an API call. Here we just show a message.
-      alert(this.t('تم تجديد الاشتراك بنجاح! شكراً لك.', 'Subscription renewed successfully! Thank you.'));
-      // Note: we are not mutating the mock data permanently as it would require 
-      // updating Auth mock state deeply which isn't necessary for the UI mockup.
-      // A reload of the mock might be needed or just keep the alert.
+      this.dialog.alert({
+        title: this.t('تم التجديد بنجاح', 'Renewal Successful'),
+        message: this.t('تم تجديد الاشتراك بنجاح! شكراً لك.', 'Subscription renewed successfully! Thank you.'),
+        type: 'success'
+      });
     }, 1500);
   }
 

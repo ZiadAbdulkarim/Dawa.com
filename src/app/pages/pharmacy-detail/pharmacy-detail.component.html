@@ -1,9 +1,23 @@
 @if (pharmacy()) {
   <div class="ph-detail-page container animate-fade-in">
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+      <a routerLink="/">{{ t('الرئيسية', 'Home') }}</a>
+      <span class="material-icons-round">chevron_right</span>
+      <a routerLink="/search">{{ t('الصيدليات', 'Pharmacies') }}</a>
+      <span class="material-icons-round">chevron_right</span>
+      <span>{{ name }}</span>
+    </div>
+
     <!-- Header Card -->
     <div class="ph-header surface">
-      <div class="ph-logo">
-        <span class="material-icons-round">local_pharmacy</span>
+      <div class="ph-logo" [class.has-image]="!!pharmacy()!.logoUrl">
+        @if (pharmacy()!.logoUrl) {
+          <img [src]="pharmacy()!.logoUrl" [alt]="name" class="pharmacy-photo" loading="lazy" />
+        } @else {
+          <span class="material-icons-round">local_pharmacy</span>
+        }
       </div>
       <div class="ph-info">
         <div class="ph-name-row">
@@ -19,7 +33,7 @@
         <p class="ph-location"><span class="material-icons-round">location_on</span>{{ address }}, {{ area }}, {{ city }}</p>
         <div class="ph-details-row">
           <span><span class="material-icons-round">schedule</span>{{ hours }}</span>
-          <span><span class="material-icons-round">phone</span><span dir="ltr">{{ pharmacy()!.phone }}</span></span>
+          <span><span class="material-icons-round">phone</span><a [href]="'tel:' + pharmacy()!.phone" class="ph-phone-link" dir="ltr">{{ pharmacy()!.phone }}</a></span>
         </div>
         <div class="rating">
           @for (s of stars; track s) {
@@ -50,11 +64,18 @@
         />
       </div>
 
-      <div class="medicines-grid">
-        @for (med of filteredMedicines(); track med.id; let i = $index) {
-          <app-medicine-card [medicine]="med" class="animate-fade-in" [class]="'stagger-' + ((i%8)+1)"></app-medicine-card>
-        }
-      </div>
+      @if (filteredMedicines().length > 0) {
+        <div class="medicines-grid">
+          @for (med of filteredMedicines(); track med.id; let i = $index) {
+            <app-medicine-card [medicine]="med" class="animate-fade-in" [class]="'stagger-' + ((i%8)+1)"></app-medicine-card>
+          }
+        </div>
+      } @else {
+        <div class="empty-inventory">
+          <span class="material-icons-round">search_off</span>
+          <p>{{ t('لا توجد أدوية تطابق بحثك في هذه الصيدلية', 'No medicines matching your search in this pharmacy') }}</p>
+        </div>
+      }
     </div>
   </div>
 } @else {

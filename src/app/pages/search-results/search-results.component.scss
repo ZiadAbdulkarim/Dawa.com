@@ -29,6 +29,13 @@
     overflow: visible;
     border-inline-end: none;
     border-bottom: 1px solid var(--border-default);
+
+    .filter-group {
+      display: none;
+    }
+    &.mobile-expanded .filter-group {
+      display: flex;
+    }
   }
 }
 
@@ -44,6 +51,17 @@
   font-weight: 700; font-size: var(--font-size-base);
   color: var(--text-primary);
   .material-icons-round { color: var(--dawa-primary); font-size: 20px; }
+
+  .mobile-toggle-btn {
+    display: none;
+    background: none; border: none; cursor: pointer;
+    color: var(--text-secondary); padding: 4px; border-radius: var(--radius-sm);
+    .material-icons-round { font-size: 22px; color: var(--text-primary); }
+    @media (max-width: 1024px) {
+      display: flex; align-items: center; justify-content: center;
+    }
+  }
+
   .reset-btn {
     margin-inline-start: auto;
     background: none; border: none; cursor: pointer;
@@ -81,6 +99,7 @@
     color: var(--dawa-primary);
     font-weight: 700;
     .material-icons-round { color: var(--dawa-primary); }
+    .filter-count { background: rgba(12,115,184,0.15); color: var(--dawa-primary); }
   }
 }
 
@@ -173,6 +192,7 @@
   height: 150px;
   display: flex; align-items: center; justify-content: center;
   position: relative;
+  overflow: hidden;
   .material-icons-round { font-size: 56px; color: rgba(255,255,255,0.88); }
   .img-badges { position: absolute; top: 10px; inset-inline-start: 10px; display: flex; flex-direction: column; gap: 4px; }
 }

@@ -30,8 +30,8 @@
           <tr class="animate-fade-in">
             <td>
               <div class="med-cell">
-                <div class="med-icon-small" [style.background]="item.medicine.imageGradient">
-                  <span class="material-icons-round" style="color: white; font-size: 1rem">{{ item.medicine.imageIcon }}</span>
+                <div class="med-icon-small" [style.background]="item.medicine.imageUrl ? 'var(--bg-surface)' : item.medicine.imageGradient">
+                  <app-medicine-image [medicine]="item.medicine" />
                 </div>
                 <div>
                   <div class="med-cell-name">{{ lang.isArabic ? item.medicine.nameAr : item.medicine.nameEn }}</div>
@@ -51,7 +51,7 @@
             </td>
             <td>
               <div class="table-actions">
-                <button class="btn btn-ghost btn-icon" [title]="t('تعديل', 'Edit')">
+                <button class="btn btn-ghost btn-icon" [title]="t('تعديل', 'Edit')" (click)="openEditModal(item)">
                   <span class="material-icons-round">edit</span>
                 </button>
                 <button class="btn btn-ghost btn-icon danger" [title]="t('حذف', 'Delete')" (click)="deleteMedicine(item.medicine.id)">
@@ -65,3 +65,51 @@
     </table>
   </div>
 </div>
+
+<!-- Edit Modal Overlay -->
+@if (editingEntry(); as entry) {
+  <div class="modal-overlay animate-fade-in" (click)="closeEditModal()" role="dialog" aria-modal="true">
+    <div class="modal-content animate-slide-up" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>{{ t('تعديل بيانات الدواء', 'Edit Medicine Data') }}</h3>
+        <button type="button" class="btn btn-ghost btn-icon" (click)="closeEditModal()" [title]="t('إغلاق', 'Close')">
+          <span class="material-icons-round">close</span>
+        </button>
+      </div>
+      
+      <form [formGroup]="editForm" (ngSubmit)="saveEdit()" class="modal-form">
+        <div class="modal-body">
+          <div class="surface mb-4 p-3" style="border-radius: 8px; border: 1px solid var(--border-color); display: flex; align-items: center; gap: 1rem;">
+            <div class="med-icon-small" [style.background]="entry.medicine.imageUrl ? 'var(--bg-surface)' : entry.medicine.imageGradient">
+              <app-medicine-image [medicine]="entry.medicine" />
+            </div>
+            <div>
+               <p class="m-0" style="font-size: 1.1rem; font-weight: 600;">{{ lang.isArabic ? entry.medicine.nameAr : entry.medicine.nameEn }}</p>
+               <p class="text-muted text-sm m-0 mt-1">{{ lang.isArabic ? entry.medicine.genericNameAr : entry.medicine.genericNameEn }}</p>
+            </div>
+          </div>
+          <div class="form-row" style="align-items: flex-end;">
+            <div class="form-group" style="flex: 1;">
+              <label>{{ t('السعر', 'Price') }}</label>
+              <div style="position: relative;">
+                <input type="number" formControlName="price" class="input-wrap" style="padding-left: 3rem;" [dir]="'ltr'" />
+                <span class="text-muted" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); pointer-events: none;">{{ t('ج.م', 'EGP') }}</span>
+              </div>
+            </div>
+            <div class="form-group" style="flex: 1; padding-bottom: 0.75rem;">
+              <label class="d-flex align-items-center m-0" style="cursor: pointer; gap: 0.5rem; justify-content: center; user-select: none;">
+                <input type="checkbox" formControlName="inStock" style="width: 1.2rem; height: 1.2rem; cursor: pointer;" />
+                <span style="font-weight: 500; font-size: 1rem;">{{ t('متوفر في المخزون', 'In Stock') }}</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn btn-outline" (click)="closeEditModal()">{{ t('إلغاء', 'Cancel') }}</button>
+          <button type="submit" class="btn btn-primary" [disabled]="editForm.invalid">{{ t('حفظ التعديلات', 'Save Changes') }}</button>
+        </div>
+      </form>
+    </div>
+  </div>
+}

@@ -4,6 +4,8 @@ import { LanguageService } from '../../../core/services/language.service';
 import { AuthService } from '../../../core/services/auth.service';
 import { User } from '../../../core/models/user.model';
 
+import { DialogService } from '../../../core/services/dialog.service';
+
 @Component({
   selector: 'app-admin-subscriptions',
   standalone: true,
@@ -15,6 +17,7 @@ import { User } from '../../../core/models/user.model';
 export class AdminSubscriptionsComponent implements OnInit {
   lang = inject(LanguageService);
   auth = inject(AuthService);
+  dialog = inject(DialogService);
   datePipe = inject(DatePipe);
 
   pharmacists = signal<User[]>([]);
@@ -23,8 +26,15 @@ export class AdminSubscriptionsComponent implements OnInit {
     this.pharmacists.set(this.auth.getMockUsers().filter(u => u.role === 'pharmacist'));
   }
 
-  activate(user: User) {
-    if (confirm(this.t('هل تريد تفعيل هذا الاشتراك؟', 'Do you want to activate this subscription?'))) {
+  async activate(user: User) {
+    const confirmed = await this.dialog.confirm({
+      title: this.t('تفعيل الاشتراك', 'Activate Subscription'),
+      message: this.t('هل تريد تفعيل هذا الاشتراك؟', 'Do you want to activate this subscription?'),
+      confirmText: this.t('تفعيل', 'Activate'),
+      cancelText: this.t('إلغاء', 'Cancel')
+    });
+
+    if (confirmed) {
       this.pharmacists.update(users => users.map(u => {
         if (u.id === user.id) {
           const newExpiry = u.subscriptionExpiry && u.subscriptionExpiry > new Date() ? u.subscriptionExpiry : new Date(new Date().setFullYear(new Date().getFullYear() + 1));
@@ -32,6 +42,7 @@ export class AdminSubscriptionsComponent implements OnInit {
         }
         return u;
       }));
+      this.dialog.toast(this.t('تم تفعيل الاشتراك بنجاح', 'Subscription activated successfully'), 'success');
     }
   }
 
@@ -44,17 +55,30 @@ export class AdminSubscriptionsComponent implements OnInit {
       }
       return u;
     }));
-    alert(this.t('تم تمديد الاشتراك لمدة عام بنجاح.', 'Subscription extended by 1 year successfully.'));
+    this.dialog.alert({
+      title: this.t('تمديد الاشتراك', 'Extend Subscription'),
+      message: this.t('تم تمديد الاشتراك لمدة عام بنجاح.', 'Subscription extended by 1 year successfully.'),
+      type: 'success'
+    });
   }
 
-  disable(user: User) {
-    if (confirm(this.t('هل أنت متأكد من تعطيل وإيقاف هذا الاشتراك؟', 'Are you sure you want to disable this subscription?'))) {
+  async disable(user: User) {
+    const confirmed = await this.dialog.confirm({
+      title: this.t('تعطيل الاشتراك', 'Disable Subscription'),
+      message: this.t('هل أنت متأكد من تعطيل وإيقاف هذا الاشتراك؟', 'Are you sure you want to disable this subscription?'),
+      isDanger: true,
+      confirmText: this.t('تعطيل', 'Disable'),
+      cancelText: this.t('إلغاء', 'Cancel')
+    });
+
+    if (confirmed) {
       this.pharmacists.update(users => users.map(u => {
         if (u.id === user.id) {
           return { ...u, subscriptionStatus: 'expired' };
         }
         return u;
       }));
+      this.dialog.toast(this.t('تم تعطيل الاشتراك', 'Subscription disabled'), 'warning');
     }
   }
 

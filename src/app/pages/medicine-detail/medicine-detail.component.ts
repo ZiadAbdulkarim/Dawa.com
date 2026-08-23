@@ -6,10 +6,12 @@ import { DataService } from '../../core/services/data.service';
 import { Medicine } from '../../core/models/medicine.model';
 import { Pharmacy } from '../../core/models/pharmacy.model';
 
+import { MedicineImageComponent } from '../../shared/components/medicine-image/medicine-image.component';
+
 @Component({
   selector: 'app-medicine-detail',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, MedicineImageComponent],
   templateUrl: './medicine-detail.component.html',
   styleUrls: ['./medicine-detail.component.scss'],
 })
@@ -42,16 +44,26 @@ export class MedicineDetailComponent implements OnInit {
 
   // 🔥 دالة داخلية للحساب مرة واحدة
   private calculateMinPrice(medicineId: string, pharmacies: Pharmacy[]): void {
-    const prices = pharmacies
+    const inStockPrices = pharmacies
+      .filter(p => this.data.isMedicineInStock(p.id, medicineId))
       .map(p => this.data.getMedicinePrice(p.id, medicineId))
       .filter((p): p is number => p !== null);
 
-    if (!prices.length) {
+    if (inStockPrices.length) {
+      this.minPrice.set(String(Math.min(...inStockPrices)));
+      return;
+    }
+
+    const allPrices = pharmacies
+      .map(p => this.data.getMedicinePrice(p.id, medicineId))
+      .filter((p): p is number => p !== null);
+
+    if (!allPrices.length) {
       this.minPrice.set('–');
       return;
     }
 
-    this.minPrice.set(String(Math.min(...prices)));
+    this.minPrice.set(String(Math.min(...allPrices)));
   }
 
   // 👇 خليها موجودة لو template بيستخدمها

@@ -4,6 +4,8 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { LanguageService } from '../../../core/services/language.service';
 import { DataService } from '../../../core/services/data.service';
 
+import { DialogService } from '../../../core/services/dialog.service';
+
 interface Category {
   id: string;
   nameAr: string;
@@ -15,11 +17,12 @@ interface Category {
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './admin-categories.component.html',
-  styleUrls: ['./admin-categories.component.scss'] /* we can reuse some global modal styles but will define specific here */
+  styleUrls: ['./admin-categories.component.scss']
 })
 export class AdminCategoriesComponent {
   lang = inject(LanguageService);
   data = inject(DataService);
+  dialog = inject(DialogService);
   fb = inject(FormBuilder);
 
   categories = signal<Category[]>(this.data.getCategories());
@@ -59,7 +62,7 @@ export class AdminCategoriesComponent {
       this.categories.update(cats => cats.map(c => 
         c.id === editing ? { ...c, nameAr: vals.nameAr, nameEn: vals.nameEn } : c
       ));
-      alert(this.t('تم التعديل بنجاح!', 'Edited successfully!'));
+      this.dialog.toast(this.t('تم التعديل بنجاح!', 'Edited successfully!'), 'success');
     } else {
       const newCat: Category = {
         id: 'c' + (this.categories().length + 1),
@@ -67,14 +70,23 @@ export class AdminCategoriesComponent {
         nameEn: vals.nameEn
       };
       this.categories.update(cats => [...cats, newCat]);
-      alert(this.t('تمت الإضافة بنجاح!', 'Added successfully!'));
+      this.dialog.toast(this.t('تمت الإضافة بنجاح!', 'Added successfully!'), 'success');
     }
     this.closeModal();
   }
 
-  deleteCategory(id: string) {
-    if (confirm(this.t('هل أنت متأكد من حذف هذا التصنيف؟', 'Are you sure you want to delete this category?'))) {
+  async deleteCategory(id: string) {
+    const confirmed = await this.dialog.confirm({
+      title: this.t('تأكيد الحذف', 'Confirm Deletion'),
+      message: this.t('هل أنت متأكد من حذف هذا التصنيف؟', 'Are you sure you want to delete this category?'),
+      isDanger: true,
+      confirmText: this.t('حذف', 'Delete'),
+      cancelText: this.t('إلغاء', 'Cancel')
+    });
+
+    if (confirmed) {
       this.categories.update(cats => cats.filter(c => c.id !== id));
+      this.dialog.toast(this.t('تم الحذف بنجاح', 'Deleted successfully'), 'success');
     }
   }
 

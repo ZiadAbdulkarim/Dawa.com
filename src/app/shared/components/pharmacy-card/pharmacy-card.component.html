@@ -1,7 +1,11 @@
 <article class="pharmacy-card dawa-card" [id]="'pharmacy-card-' + pharmacy.id">
   <div class="pharmacy-header">
-    <div class="pharmacy-logo">
-      <span class="material-icons-round">local_pharmacy</span>
+    <div class="pharmacy-logo" [class.has-image]="!!pharmacy.logoUrl">
+      @if (pharmacy.logoUrl) {
+        <img [src]="pharmacy.logoUrl" [alt]="name" class="pharmacy-photo" loading="lazy" />
+      } @else {
+        <span class="material-icons-round">local_pharmacy</span>
+      }
     </div>
     <div class="pharmacy-info">
       <div class="pharmacy-name-row">

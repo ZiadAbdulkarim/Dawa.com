@@ -1,13 +1,16 @@
 <div class="search-page">
 
   <!-- FILTER SIDEBAR -->
-  <aside class="filter-sidebar">
+  <aside class="filter-sidebar" [class.mobile-expanded]="filtersExpanded()">
     <div class="filter-panel">
 
       <!-- Header -->
       <div class="filter-header">
         <span class="material-icons-round">tune</span>
         {{ t('الفلاتر', 'Filters') }}
+        <button class="mobile-toggle-btn" (click)="toggleMobileFilters()" id="toggle-mobile-filters-btn" aria-label="Toggle Filters">
+          <span class="material-icons-round">{{ filtersExpanded() ? 'expand_less' : 'expand_more' }}</span>
+        </button>
         <button class="reset-btn" (click)="resetFilters()" id="reset-filters-btn">
           {{ t('إعادة ضبط', 'Reset') }}
         </button>
@@ -125,8 +128,8 @@
              [routerLink]="['/medicine', med.id]" [id]="'result-card-' + med.id">
 
             <!-- Image area -->
-            <div class="med-card-img" [style.background]="med.imageGradient">
-              <span class="material-icons-round">{{ med.imageIcon }}</span>
+            <div class="med-card-img" [style.background]="med.imageUrl ? 'var(--bg-surface)' : med.imageGradient">
+              <app-medicine-image [medicine]="med" />
               <div class="img-badges">
                 @if (med.requiresPrescription) {
                   <span class="img-badge rx">Rx</span>
@@ -160,7 +163,7 @@
               </div>
               <div class="med-ph-count">
                 <span class="material-icons-round">local_pharmacy</span>
-                {{ getPharmacyCount(med) }} {{ t('صيدلية', '') }}
+                {{ getPharmacyCount(med) }} {{ getPharmacyCount(med) === 1 ? t('صيدلية', 'pharmacy') : t('صيدليات', 'pharmacies') }}
               </div>
             </div>
 

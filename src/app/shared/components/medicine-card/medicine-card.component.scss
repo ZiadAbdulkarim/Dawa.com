@@ -22,8 +22,13 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  overflow: hidden;
 
   .material-icons-round { font-size: 26px; }
+
+  &.has-image {
+    border: 1px solid var(--border-muted);
+  }
 
   &.form-tablet, &.form-capsule {
     background: rgba(12, 115, 184, 0.12);

@@ -14,6 +14,7 @@ export interface Medicine {
   sideEffectsEn: string[];
   imageGradient: string;      // CSS gradient for visual card
   imageIcon: string;          // Material icon name
+  imageUrl?: string;          // Public asset path, e.g. /assets/images/medicines/paracetamol.jpeg
   availableCount: number;
   requiresPrescription: boolean;
   form: 'tablet' | 'capsule' | 'syrup' | 'injection' | 'cream' | 'drops' | 'inhaler';

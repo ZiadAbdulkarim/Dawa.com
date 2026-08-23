@@ -5,55 +5,110 @@
 .form-group {
   display: flex;
   flex-direction: column;
-  gap: var(--space-xs, 0.5rem);
-  margin-bottom: var(--space-md, 1.25rem);
+  gap: var(--space-xs);
+  margin-bottom: var(--space-md);
 
   label {
-    font-size: var(--font-size-sm, 0.875rem);
-    font-weight: 500;
+    font-size: var(--font-size-sm);
+    font-weight: 600;
     color: var(--text-secondary);
-    display: block; // Always visible
-    margin-bottom: 2px;
+    display: block;
+    margin-bottom: 4px;
   }
 
-  .input-wrap, .form-control {
+  .input-wrap,
+  .form-control,
+  input[type="text"],
+  input[type="number"],
+  input[type="email"],
+  input[type="password"],
+  input[type="search"],
+  select,
+  textarea {
     width: 100%;
     padding: 0.75rem 1rem;
-    border: 1px solid var(--border-default, var(--border-color));
-    border-radius: var(--radius-md, 8px);
-    background: var(--input-bg, var(--bg-surface));
+    border: 1.5px solid var(--border-default);
+    border-radius: var(--radius-md);
+    background: var(--bg-surface);
     color: var(--text-primary);
     font-family: inherit;
-    font-size: var(--font-size-base, 1rem);
+    font-size: var(--font-size-base);
     line-height: 1.5;
-    transition: border-color var(--transition-fast, 0.2s) ease, box-shadow var(--transition-fast, 0.2s) ease;
+    transition: border-color var(--transition-fast) ease, box-shadow var(--transition-fast) ease, background-color var(--transition-fast) ease;
+    
+    &::placeholder {
+      color: var(--text-muted);
+      opacity: 0.8;
+    }
+
+    &:hover:not(:disabled):not(:focus):not(.error) {
+      border-color: var(--dawa-primary-light);
+    }
     
     &:focus {
       outline: none;
-      border-color: var(--input-focus, var(--primary));
-      box-shadow: 0 0 0 3px rgba(12, 115, 184, 0.15); // Clear focus state
+      border-color: var(--dawa-primary);
+      box-shadow: 0 0 0 3px rgba(12, 115, 184, 0.15);
       background: var(--bg-surface);
     }
     
+    &.error,
+    &.ng-invalid.ng-touched {
+      border-color: var(--dawa-danger);
+      box-shadow: 0 0 0 3px rgba(229, 57, 53, 0.12);
+    }
+
     &:disabled {
       background: var(--bg-muted);
+      border-color: var(--border-muted);
+      color: var(--text-muted);
       cursor: not-allowed;
       opacity: 0.7;
     }
   }
 
-  textarea.input-wrap, textarea.form-control {
-    resize: vertical; // Prevent horizontal layout breaking
+  select.input-wrap,
+  select.form-control,
+  select {
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2364748b'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: left 0.75rem center;
+    background-size: 1.25rem;
+    padding-inline-end: 2.25rem;
+
+    [dir="rtl"] &,
+    &:dir(rtl) {
+      background-position: left 0.75rem center;
+    }
+
+    [dir="ltr"] &,
+    &:dir(ltr) {
+      background-position: right 0.75rem center;
+    }
+
+    option {
+      background: var(--bg-surface);
+      color: var(--text-primary);
+    }
+  }
+
+  textarea.input-wrap,
+  textarea.form-control,
+  textarea {
+    resize: vertical;
     min-height: 100px;
   }
 }
 
 .form-row {
   display: flex;
-  gap: var(--space-md, 1rem);
-  margin-bottom: var(--space-sm, 1rem);
+  gap: var(--space-md);
+  margin-bottom: var(--space-sm);
   
-  // Responsive alignment
   @media (max-width: 640px) {
     flex-direction: column;
     gap: 0;
@@ -62,6 +117,6 @@
 
   .form-group {
     flex: 1;
-    min-width: 0; // Prevent flex item blowout
+    min-width: 0;
   }
 }

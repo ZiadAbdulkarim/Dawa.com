@@ -5,10 +5,12 @@ import { Medicine } from '../../../core/models/medicine.model';
 import { LanguageService } from '../../../core/services/language.service';
 import { DataService } from '../../../core/services/data.service';
 
+import { MedicineImageComponent } from '../medicine-image/medicine-image.component';
+
 @Component({
   selector: 'app-medicine-card',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, MedicineImageComponent],
   templateUrl: './medicine-card.component.html',
   styleUrls: ['./medicine-card.component.scss'],
 })

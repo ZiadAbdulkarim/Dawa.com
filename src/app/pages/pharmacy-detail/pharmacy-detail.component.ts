@@ -67,7 +67,7 @@ export class PharmacyDetailComponent implements OnInit {
     return this.lang.isArabic ? ph.workingHoursAr : ph.workingHours;
   }
 
-  get stars(): number[] { return Array(5).fill(0).map((_, i) => i); }
+  get stars(): number[] { return [0, 1, 2, 3, 4]; }
   get fullStars(): number { return Math.floor(this.pharmacy()?.rating ?? 0); }
 
   filterMedicines(): void {
@@ -75,8 +75,10 @@ export class PharmacyDetailComponent implements OnInit {
     if (!q) { this.filteredMedicines.set(this.medicines()); return; }
     this.filteredMedicines.set(
       this.medicines().filter(m =>
-        m.nameAr.includes(this.searchQuery) ||
-        m.nameEn.toLowerCase().includes(q)
+        m.nameAr.toLowerCase().includes(q) ||
+        m.nameEn.toLowerCase().includes(q) ||
+        m.genericNameAr.toLowerCase().includes(q) ||
+        m.genericNameEn.toLowerCase().includes(q)
       )
     );
   }

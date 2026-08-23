@@ -4,20 +4,20 @@
 
 :root {
   // Brand Colors
-  --dawa-primary: #0C73B8;
-  --dawa-primary-light: #3B9DE0;
-  --dawa-primary-dark: #085A91;
-  --dawa-accent: #00B899;
-  --dawa-accent-light: #33CCAD;
-  --dawa-accent-dark: #008F78;
-  --dawa-danger: #E53935;
-  --dawa-warning: #F59E0B;
-  --dawa-success: #10B981;
+  --dawa-primary: #085A91;
+  --dawa-primary-light: #0C73B8;
+  --dawa-primary-dark: #064069;
+  --dawa-accent: #059669;
+  --dawa-accent-light: #10B981;
+  --dawa-accent-dark: #047857;
+  --dawa-danger: #DC2626;
+  --dawa-warning: #D97706;
+  --dawa-success: #059669;
 
   // Gradients
-  --dawa-gradient-primary: linear-gradient(135deg, #0C73B8 0%, #00B899 100%);
-  --dawa-gradient-hero: linear-gradient(135deg, #0C73B8 0%, #085A91 50%, #00B899 100%);
-  --dawa-gradient-card: linear-gradient(145deg, rgba(12,115,184,0.08) 0%, rgba(0,184,153,0.04) 100%);
+  --dawa-gradient-primary: linear-gradient(135deg, var(--dawa-primary) 0%, var(--dawa-primary-light) 100%);
+  --dawa-gradient-hero: linear-gradient(135deg, var(--bg-surface) 0%, var(--bg-muted) 100%);
+  --dawa-gradient-card: var(--bg-surface);
 
   // Spacing Scale
   --space-xs:  4px;
@@ -29,19 +29,19 @@
   --space-3xl: 64px;
 
   // Border Radius
-  --radius-sm:  6px;
-  --radius-md:  12px;
-  --radius-lg:  20px;
-  --radius-xl:  28px;
+  --radius-sm:  4px;
+  --radius-md:  8px;
+  --radius-lg:  12px;
+  --radius-xl:  16px;
   --radius-full: 9999px;
 
   // Shadows
-  --shadow-sm: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06);
-  --shadow-md: 0 4px 16px rgba(0,0,0,0.10), 0 2px 6px rgba(0,0,0,0.06);
-  --shadow-lg: 0 10px 40px rgba(0,0,0,0.12), 0 4px 12px rgba(0,0,0,0.08);
-  --shadow-xl: 0 20px 60px rgba(0,0,0,0.15), 0 8px 24px rgba(0,0,0,0.10);
-  --shadow-primary: 0 8px 24px rgba(12, 115, 184, 0.30);
-  --shadow-accent: 0 8px 24px rgba(0, 184, 153, 0.30);
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+  --shadow-primary: 0 4px 12px rgba(8, 90, 145, 0.20);
+  --shadow-accent: 0 4px 12px rgba(5, 150, 105, 0.20);
 
   // Transitions
   --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
@@ -57,8 +57,8 @@
   --z-toast: 500;
 
   // Typography
-  --font-ar: 'Cairo', sans-serif;
-  --font-en: 'Inter', sans-serif;
+  --font-ar: 'Alexandria', sans-serif;
+  --font-en: 'Alexandria', sans-serif;
   --font-size-xs:   12px;
   --font-size-sm:   14px;
   --font-size-base: 16px;

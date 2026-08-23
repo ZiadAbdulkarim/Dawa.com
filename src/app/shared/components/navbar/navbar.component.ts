@@ -32,6 +32,11 @@ export class NavbarComponent {
   @HostListener('window:scroll')
   onScroll() { this.isScrolled.set(window.scrollY > 10); }
 
+  get isHomePage(): boolean {
+    const url = this.router.url.split('?')[0];
+    return url === '/' || url === '';
+  }
+
   onSearchInput(): void {
     if (this.searchQuery.length >= 2) {
       this.suggestions.set(this.data.searchMedicines(this.searchQuery).slice(0, 6));
