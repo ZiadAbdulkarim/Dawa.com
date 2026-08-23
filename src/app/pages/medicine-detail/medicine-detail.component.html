@@ -15,8 +15,11 @@
       <div class="container med-hero-inner">
 
         <!-- Medicine Image -->
-        <div class="med-image-wrap" [style.background]="medicine()!.imageGradient">
-          <span class="material-icons-round">{{ medicine()!.imageIcon }}</span>
+        <div
+          class="med-image-wrap"
+          [style.background]="medicine()!.imageUrl ? 'var(--bg-surface)' : medicine()!.imageGradient"
+        >
+          <app-medicine-image [medicine]="medicine()!" />
           @if (medicine()!.requiresPrescription) {
             <div class="med-rx-badge">
               <span class="material-icons-round">policy</span>
@@ -153,8 +156,12 @@
 
               <!-- Card header -->
               <div class="ph-card-header">
-                <div class="ph-logo">
-                  <span class="material-icons-round">local_pharmacy</span>
+                <div class="ph-logo" [class.has-image]="!!ph.logoUrl">
+                  @if (ph.logoUrl) {
+                    <img [src]="ph.logoUrl" [alt]="lang.isArabic ? ph.nameAr : ph.nameEn" class="pharmacy-photo" loading="lazy" />
+                  } @else {
+                    <span class="material-icons-round">local_pharmacy</span>
+                  }
                 </div>
                 <div class="ph-title-wrap">
                   <div class="ph-name-row">

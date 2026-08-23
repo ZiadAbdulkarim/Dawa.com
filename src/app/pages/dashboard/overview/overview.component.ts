@@ -6,10 +6,12 @@ import { AuthService } from '../../../core/services/auth.service';
 import { DataService } from '../../../core/services/data.service';
 import { Medicine } from '../../../core/models/medicine.model';
 
+import { MedicineImageComponent } from '../../../shared/components/medicine-image/medicine-image.component';
+
 @Component({
   selector: 'app-overview',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, MedicineImageComponent],
   templateUrl: './overview.component.html',
   styleUrls: ['./overview.component.scss']
 })

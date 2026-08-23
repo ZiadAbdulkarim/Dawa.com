@@ -17,8 +17,8 @@
           <tr>
             <td>
               <div class="td-cell">
-                <div class="med-icon" [style.background]="med.imageGradient">
-                  <span class="material-icons-round">{{ med.imageIcon }}</span>
+                <div class="med-icon" [style.background]="med.imageUrl ? 'var(--bg-surface)' : med.imageGradient">
+                  <app-medicine-image [medicine]="med" />
                 </div>
                 <div>
                   <div class="fw-bold">{{ lang.isArabic ? med.nameAr : med.nameEn }}</div>
@@ -42,19 +42,21 @@
       </tbody>
     </table>
   </div>
+</div>
 
-  <!-- Edit Modal Overlay -->
-  @if (editingMedicine()) {
-    <div class="modal-overlay animate-fade-in" (click)="closeModal()">
-      <div class="modal-content animate-slide-up" (click)="$event.stopPropagation()">
-        <div class="modal-header">
-          <h3>{{ t('تعديل بيانات الدواء', 'Edit Medicine Data') }}</h3>
-          <button class="btn btn-ghost btn-icon" (click)="closeModal()">
-            <span class="material-icons-round">close</span>
-          </button>
-        </div>
-        
-        <form [formGroup]="editForm" (ngSubmit)="saveEdit()" class="modal-body">
+<!-- Edit Modal Overlay -->
+@if (editingMedicine(); as med) {
+  <div class="modal-overlay animate-fade-in" (click)="closeModal()" role="dialog" aria-modal="true">
+    <div class="modal-content animate-slide-up" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>{{ t('تعديل بيانات الدواء', 'Edit Medicine Data') }}</h3>
+        <button type="button" class="btn btn-ghost btn-icon" (click)="closeModal()" [title]="t('إغلاق', 'Close')">
+          <span class="material-icons-round">close</span>
+        </button>
+      </div>
+      
+      <form [formGroup]="editForm" (ngSubmit)="saveEdit()" class="modal-form">
+        <div class="modal-body">
           <div class="form-row">
             <div class="form-group">
               <label>{{ t('الاسم (عربي)', 'Name (Arabic)') }}</label>
@@ -86,13 +88,13 @@
               </label>
             </div>
           </div>
+        </div>
 
-          <div class="modal-actions mt-4">
-            <button type="button" class="btn btn-outline" (click)="closeModal()">{{ t('إلغاء', 'Cancel') }}</button>
-            <button type="submit" class="btn btn-primary" [disabled]="editForm.invalid">{{ t('حفظ التعديلات', 'Save Changes') }}</button>
-          </div>
-        </form>
-      </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-outline" (click)="closeModal()">{{ t('إلغاء', 'Cancel') }}</button>
+          <button type="submit" class="btn btn-primary" [disabled]="editForm.invalid">{{ t('حفظ التعديلات', 'Save Changes') }}</button>
+        </div>
+      </form>
     </div>
-  }
-</div>
+  </div>
+}

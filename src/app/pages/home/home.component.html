@@ -6,8 +6,8 @@
       {{ t('موقع موثوق للبحث عن الأدوية', 'Egypt\'s Trusted Medicine Search Platform') }}
     </p>
     <h1 class="hero-title">
-      {{ t('ابحث عن دوائك،', 'Find Your Medicine,') }}<br>
-      <span class="hero-gradient-text">{{ t('اعرف أين تجده الآن', 'Know Where to Get It Now') }}</span>
+      {{ t('إبحث عن دوائك،', 'Find Your Medicine,') }}<br>
+      <span class="hero-gradient-text">{{ t('إعرف أين تجده الآن', 'Know Where to Get It Now') }}</span>
     </h1>
     <p class="hero-sub">{{ t('أكثر من ١٢٠٠ دواء متاح في صيدليات موثوقة في مصر', 'Over 1,200 medicines available at trusted pharmacies across Egypt') }}</p>
 
@@ -15,7 +15,6 @@
     <div class="main-search-wrap">
       <div class="main-search-box" [class.has-suggestions]="showSuggestions()">
         <div class="main-search-inner">
-          <span class="material-icons-round search-ico">search</span>
           <input
             id="home-main-search"
             type="text"
@@ -23,7 +22,7 @@
             (input)="onSearchInput()"
             (keyup.enter)="onSearch()"
             (blur)="closeSuggestions()"
-            [placeholder]="t('ابحث عن اسم الدواء أو المادة الفعالة...', 'Search by medicine name or active ingredient...')"
+            [placeholder]="t('إبحث عن إسم الدواء أو المادة الفعالة...', 'Search by medicine name or active ingredient...')"
             autocomplete="off"
           />
           <button class="btn btn-primary search-action-btn" (click)="onSearch()" id="home-search-btn">
@@ -37,8 +36,8 @@
           <div class="search-suggestions animate-fade-in-scale">
             @for (med of suggestions(); track med.id) {
               <button class="suggestion-row" (mousedown)="selectSuggestion(med)" [id]="'sug-' + med.id">
-                <div class="sug-icon" [style.background]="med.imageGradient">
-                  <span class="material-icons-round">{{ med.imageIcon }}</span>
+                <div class="sug-icon" [style.background]="med.imageUrl ? 'var(--bg-surface)' : med.imageGradient">
+                  <app-medicine-image [medicine]="med" />
                 </div>
                 <div class="sug-info">
                   <span class="sug-name">{{ lang.isArabic ? med.nameAr : med.nameEn }}</span>
@@ -133,8 +132,12 @@
         @for (ph of activePharmacies(); track ph.id) {
           <li>
             <a class="sidebar-ph-item" [routerLink]="['/pharmacy', ph.id]" [id]="'home-sidebar-ph-' + ph.id">
-              <div class="sidebar-ph-logo">
-                <span class="material-icons-round">local_pharmacy</span>
+              <div class="sidebar-ph-logo" [class.has-image]="!!ph.logoUrl">
+                @if (ph.logoUrl) {
+                  <img [src]="ph.logoUrl" [alt]="lang.isArabic ? ph.nameAr : ph.nameEn" class="pharmacy-photo" loading="lazy" />
+                } @else {
+                  <span class="material-icons-round">local_pharmacy</span>
+                }
               </div>
               <div class="sidebar-ph-info">
                 <span class="sidebar-ph-name">{{ lang.isArabic ? ph.nameAr : ph.nameEn }}</span>
@@ -154,6 +157,24 @@
   <!-- MAIN CONTENT -->
   <main class="home-main">
 
+    <!-- How it works -->
+    <section class="home-section how-section">
+      <div class="section-header">
+        <h2 class="section-title">{{ t('كيف يعمل دواء.كوم؟', 'How Does Dawa.com Work?') }}</h2>
+      </div>
+      <div class="steps-row">
+        @for (step of howSteps; track step.n) {
+          <div class="step-card">
+            <div class="step-num">{{ step.n }}</div>
+            <div class="step-icon"><span class="material-icons-round">{{ step.icon }}</span></div>
+            <h4>{{ t(step.titleAr, step.titleEn) }}</h4>
+            <p>{{ t(step.descAr, step.descEn) }}</p>
+          </div>
+          @if (step.n < 3) { <div class="step-arrow material-icons-round">arrow_forward</div> }
+        }
+      </div>
+    </section>
+
     <!-- Popular Medicines -->
     <section class="home-section">
       <div class="section-header">
@@ -170,8 +191,8 @@
              [routerLink]="['/medicine', med.id]" [id]="'home-med-' + med.id">
 
             <!-- Card image -->
-            <div class="med-img" [style.background]="med.imageGradient">
-              <span class="material-icons-round">{{ med.imageIcon }}</span>
+            <div class="med-img" [style.background]="med.imageUrl ? 'var(--bg-surface)' : med.imageGradient">
+              <app-medicine-image [medicine]="med" />
               @if (med.requiresPrescription) {
                 <span class="rx-chip">Rx</span>
               }
@@ -206,24 +227,6 @@
               </div>
             </div>
           </a>
-        }
-      </div>
-    </section>
-
-    <!-- How it works -->
-    <section class="home-section how-section">
-      <div class="section-header">
-        <h2 class="section-title">{{ t('كيف يعمل دواء.كوم؟', 'How Does Dawa.com Work?') }}</h2>
-      </div>
-      <div class="steps-row">
-        @for (step of howSteps; track step.n) {
-          <div class="step-card">
-            <div class="step-num">{{ step.n }}</div>
-            <div class="step-icon"><span class="material-icons-round">{{ step.icon }}</span></div>
-            <h4>{{ t(step.titleAr, step.titleEn) }}</h4>
-            <p>{{ t(step.descAr, step.descEn) }}</p>
-          </div>
-          @if (step.n < 3) { <div class="step-arrow material-icons-round">arrow_forward</div> }
         }
       </div>
     </section>

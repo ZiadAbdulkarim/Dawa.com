@@ -25,7 +25,10 @@
   margin: 0 auto;
   padding: 0 var(--space-lg);
 
-  @media (max-width: 768px) { padding: 0 var(--space-md); gap: var(--space-sm); }
+  @media (max-width: 768px) {
+    padding: 0 var(--space-md);
+    gap: var(--space-sm);
+  }
 }
 
 // ── Logo ────────────────────────────────────
@@ -46,15 +49,21 @@
     justify-content: center;
     box-shadow: var(--shadow-primary);
 
-    .material-icons-round { color: #fff; font-size: 22px; }
+    .material-icons-round {
+      color: #fff;
+      font-size: 22px;
+    }
   }
 
   .logo-text {
     display: flex;
     flex-direction: column;
     line-height: 1.1;
+    width: 150px;
 
-    @media (max-width: 480px) { display: none; }
+    @media (max-width: 480px) {
+      display: none;
+    }
   }
 
   .logo-main {
@@ -83,7 +92,9 @@
   max-width: 560px;
   position: relative;
 
-  @media (max-width: 768px) { display: none; }
+  @media (max-width: 768px) {
+    display: none;
+  }
 }
 
 .search-wrapper {
@@ -91,9 +102,17 @@
   align-items: center;
   background: var(--input-bg);
   border: 1.5px solid var(--input-border);
-  border-radius: var(--radius-lg);
-  overflow: visible;
-  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  padding: 4px 4px 4px 6px;
+  gap: var(--space-sm);
+
+  [dir="rtl"] & {
+    padding: 4px 6px 4px 4px;
+  }
+
+  transition: border-color var(--transition-fast),
+  box-shadow var(--transition-fast);
 
   &:focus-within {
     border-color: var(--input-focus);
@@ -101,7 +120,6 @@
   }
 
   .search-icon {
-    padding: 0 var(--space-md);
     color: var(--text-muted);
     font-size: 20px;
     flex-shrink: 0;
@@ -115,14 +133,16 @@
     font-family: inherit;
     font-size: var(--font-size-sm);
     color: var(--text-primary);
-    padding: 10px 0;
+    padding: 6px 0;
 
-    &::placeholder { color: var(--text-muted); }
+    &::placeholder {
+      color: var(--text-muted);
+    }
   }
 
   .search-btn {
-    margin: 4px;
-    border-radius: var(--radius-md) !important;
+    margin: 0;
+    border-radius: var(--radius-lg) !important;
     flex-shrink: 0;
   }
 }
@@ -148,10 +168,19 @@
   cursor: pointer;
   transition: background var(--transition-fast);
 
-  &:hover { background: var(--bg-hover); }
-  & + & { border-top: 1px solid var(--border-muted); }
+  &:hover {
+    background: var(--bg-hover);
+  }
 
-  .suggestion-icon { color: var(--dawa-primary); font-size: 18px; flex-shrink: 0; }
+  &+& {
+    border-top: 1px solid var(--border-muted);
+  }
+
+  .suggestion-icon {
+    color: var(--dawa-primary);
+    font-size: 18px;
+    flex-shrink: 0;
+  }
 
   .suggestion-text {
     flex: 1;
@@ -159,8 +188,16 @@
     flex-direction: column;
     min-width: 0;
 
-    .suggestion-name { font-size: var(--font-size-sm); font-weight: 600; color: var(--text-primary); }
-    .suggestion-sub  { font-size: var(--font-size-xs); color: var(--text-muted); }
+    .suggestion-name {
+      font-size: var(--font-size-sm);
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .suggestion-sub {
+      font-size: var(--font-size-xs);
+      color: var(--text-muted);
+    }
   }
 
   .suggestion-count {
@@ -172,7 +209,9 @@
     font-weight: 600;
     flex-shrink: 0;
 
-    .material-icons-round { font-size: 14px; }
+    .material-icons-round {
+      font-size: 14px;
+    }
   }
 }
 
@@ -196,13 +235,19 @@
   transition: transform var(--transition-base);
 }
 
-.theme-btn:hover .material-icons-round { transform: rotate(20deg); }
+.theme-btn:hover .material-icons-round {
+  transform: rotate(20deg);
+}
 
 // ── User Menu ────────────────────────────────
 .user-menu {
   position: relative;
 
-  &:hover .user-dropdown { opacity: 1; visibility: visible; transform: translateY(0); }
+  &:hover .user-dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
 }
 
 .user-btn {
@@ -231,7 +276,9 @@
   font-weight: 600;
   color: var(--text-primary);
 
-  @media (max-width: 1024px) { display: none; }
+  @media (max-width: 1024px) {
+    display: none;
+  }
 }
 
 .user-dropdown {
@@ -268,15 +315,30 @@
   font-family: inherit;
   transition: all var(--transition-fast);
 
-  &:hover { background: var(--bg-hover); color: var(--text-primary); }
-  &.danger { color: var(--dawa-danger); &:hover { background: rgba(229,57,53,0.08); } }
+  &:hover {
+    background: var(--bg-hover);
+    color: var(--text-primary);
+  }
 
-  .material-icons-round { font-size: 18px; }
+  &.danger {
+    color: var(--dawa-danger);
+
+    &:hover {
+      background: rgba(229, 57, 53, 0.08);
+    }
+  }
+
+  .material-icons-round {
+    font-size: 18px;
+  }
 }
 
 .mobile-menu-btn {
   display: none !important;
-  @media (max-width: 768px) { display: flex !important; }
+
+  @media (max-width: 768px) {
+    display: flex !important;
+  }
 }
 
 // ── Mobile Menu ──────────────────────────────
@@ -286,7 +348,9 @@
   padding: var(--space-md);
   display: none;
 
-  @media (max-width: 768px) { display: block; }
+  @media (max-width: 768px) {
+    display: block;
+  }
 }
 
 .mobile-search {
@@ -299,7 +363,10 @@
   padding: 0 var(--space-md);
   margin-bottom: var(--space-md);
 
-  .material-icons-round { color: var(--text-muted); font-size: 20px; }
+  .material-icons-round {
+    color: var(--text-muted);
+    font-size: 20px;
+  }
 
   input {
     flex: 1;
@@ -310,7 +377,10 @@
     font-size: var(--font-size-sm);
     color: var(--text-primary);
     padding: 10px 0;
-    &::placeholder { color: var(--text-muted); }
+
+    &::placeholder {
+      color: var(--text-muted);
+    }
   }
 }
 
@@ -339,10 +409,22 @@
   width: 100%;
   transition: all var(--transition-fast);
 
-  &:hover { background: var(--bg-hover); color: var(--text-primary); }
-  &.primary { color: var(--dawa-primary); }
-  &.danger  { color: var(--dawa-danger); }
-  .material-icons-round { font-size: 20px; }
+  &:hover {
+    background: var(--bg-hover);
+    color: var(--text-primary);
+  }
+
+  &.primary {
+    color: var(--dawa-primary);
+  }
+
+  &.danger {
+    color: var(--dawa-danger);
+  }
+
+  .material-icons-round {
+    font-size: 20px;
+  }
 }
 
 .mobile-toggles {
@@ -366,11 +448,19 @@
   cursor: pointer;
   transition: all var(--transition-fast);
 
-  &:hover { background: var(--bg-hover); color: var(--text-primary); }
-  .material-icons-round { font-size: 16px; }
+  &:hover {
+    background: var(--bg-hover);
+    color: var(--text-primary);
+  }
+
+  .material-icons-round {
+    font-size: 16px;
+  }
 }
 
 // Always hide mobile menu on desktop
 @media (min-width: 769px) {
-  .mobile-menu { display: none !important; }
+  .mobile-menu {
+    display: none !important;
+  }
 }

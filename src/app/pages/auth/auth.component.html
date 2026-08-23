@@ -59,7 +59,10 @@
           <input id="login-email" type="email" formControlName="email"
             [placeholder]="t('أدخل بريدك الإلكتروني', 'Enter your email')" autocomplete="email" />
         </div>
-        <div>لتجربة / Demo: pharmacist&#64;dawa.com | admin&#64;dawa.com | expired&#64;dawa.com</div>
+        <div class="demo-accounts-hint">
+          <span class="material-icons-round">account_circle</span>
+          <span>{{ t('حسابات للتجربة:', 'Demo accounts:') }} <code>pharmacist&#64;dawa.com</code> | <code>admin&#64;dawa.com</code> | <code>expired&#64;dawa.com</code></span>
+        </div>
       </div>
 
       <div class="form-group">
@@ -69,7 +72,8 @@
           <span class="material-icons-round">lock</span>
           <input id="login-password" [type]="showPassword() ? 'text' : 'password'" formControlName="password"
             [placeholder]="t('أدخل كلمة المرور', 'Enter your password')" autocomplete="current-password" />
-          <button type="button" class="toggle-pass" (click)="togglePassword()" id="toggle-password">
+          <button type="button" class="toggle-pass" (click)="togglePassword()" id="toggle-password"
+            [attr.aria-label]="showPassword() ? t('إخفاء كلمة المرور', 'Hide password') : t('إظهار كلمة المرور', 'Show password')">
             <span class="material-icons-round">{{ showPassword() ? 'visibility_off' : 'visibility' }}</span>
           </button>
         </div>
@@ -98,7 +102,7 @@
       <div class="form-row">
         <div class="form-group">
           <label class="form-label" for="reg-name-ar">{{ t('الاسم بالعربي', 'Name (Arabic)') }}</label>
-          <div class="input-wrap">
+          <div class="input-wrap" [class.error]="registerForm.get('nameAr')?.invalid && registerForm.get('nameAr')?.touched">
             <span class="material-icons-round">person</span>
             <input id="reg-name-ar" type="text" formControlName="nameAr"
               [placeholder]="t('الاسم الكامل', 'Full name')" />
@@ -106,7 +110,7 @@
         </div>
         <div class="form-group">
           <label class="form-label" for="reg-name-en">{{ t('الاسم بالإنجليزي', 'Name (English)') }}</label>
-          <div class="input-wrap">
+          <div class="input-wrap" [class.error]="registerForm.get('nameEn')?.invalid && registerForm.get('nameEn')?.touched">
             <span class="material-icons-round">person</span>
             <input id="reg-name-en" type="text" formControlName="nameEn" placeholder="Full name" />
           </div>
@@ -115,7 +119,7 @@
 
       <div class="form-group">
         <label class="form-label" for="reg-email">{{ t('البريد الإلكتروني', 'Email') }}</label>
-        <div class="input-wrap">
+        <div class="input-wrap" [class.error]="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
           <span class="material-icons-round">email</span>
           <input id="reg-email" type="email" formControlName="email"
             [placeholder]="t('البريد الإلكتروني', 'Email address')" />
@@ -125,14 +129,14 @@
       <div class="form-row">
         <div class="form-group">
           <label class="form-label" for="reg-phone">{{ t('رقم الهاتف', 'Phone') }}</label>
-          <div class="input-wrap">
+          <div class="input-wrap" [class.error]="registerForm.get('phone')?.invalid && registerForm.get('phone')?.touched">
             <span class="material-icons-round">phone</span>
             <input id="reg-phone" type="tel" formControlName="phone" placeholder="01XXXXXXXXX" dir="ltr" />
           </div>
         </div>
         <div class="form-group">
           <label class="form-label" for="reg-license">{{ t('رقم الترخيص', 'License No.') }}</label>
-          <div class="input-wrap">
+          <div class="input-wrap" [class.error]="registerForm.get('licenseNumber')?.invalid && registerForm.get('licenseNumber')?.touched">
             <span class="material-icons-round">badge</span>
             <input id="reg-license" type="text" formControlName="licenseNumber" placeholder="LIC-XXXX" dir="ltr" />
           </div>
@@ -141,7 +145,7 @@
 
       <div class="form-group">
         <label class="form-label" for="reg-pharmacy">{{ t('اسم الصيدلية', 'Pharmacy Name') }}</label>
-        <div class="input-wrap">
+        <div class="input-wrap" [class.error]="registerForm.get('pharmacyName')?.invalid && registerForm.get('pharmacyName')?.touched">
           <span class="material-icons-round">local_pharmacy</span>
           <input id="reg-pharmacy" type="text" formControlName="pharmacyName"
             [placeholder]="t('صيدلية ...', 'Pharmacy name')" />
@@ -150,11 +154,12 @@
 
       <div class="form-group">
         <label class="form-label" for="reg-password">{{ t('كلمة المرور', 'Password') }}</label>
-        <div class="input-wrap">
+        <div class="input-wrap" [class.error]="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">
           <span class="material-icons-round">lock</span>
           <input id="reg-password" [type]="showPassword() ? 'text' : 'password'" formControlName="password"
             [placeholder]="t('٨ أحرف على الأقل', 'At least 8 characters')" />
-          <button type="button" class="toggle-pass" (click)="togglePassword()" id="toggle-reg-password">
+          <button type="button" class="toggle-pass" (click)="togglePassword()" id="toggle-reg-password"
+            [attr.aria-label]="showPassword() ? t('إخفاء كلمة المرور', 'Hide password') : t('إظهار كلمة المرور', 'Show password')">
             <span class="material-icons-round">{{ showPassword() ? 'visibility_off' : 'visibility' }}</span>
           </button>
         </div>
@@ -162,8 +167,7 @@
 
       <div class="form-check">
         <input id="reg-terms" type="checkbox" formControlName="terms" />
-        <label for="reg-terms">{{ t('أوافق على شروط الاستخدام وسياسة الخصوصية', 'I agree to the Terms of Service and
-          Privacy Policy') }}</label>
+        <label for="reg-terms">{{ t('أوافق على شروط الاستخدام وسياسة الخصوصية', 'I agree to the Terms of Service and Privacy Policy') }}</label>
       </div>
 
       <button type="submit" class="btn btn-accent w-full btn-lg" id="register-submit-btn" [disabled]="isLoading()">

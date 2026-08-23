@@ -33,9 +33,9 @@
 
   --overlay-bg:     rgba(15, 28, 46, 0.5);
 
-  --navbar-shadow:  0 2px 20px rgba(0,0,0,0.08);
-  --card-shadow:    0 2px 12px rgba(0,0,0,0.06);
-  --card-shadow-hover: 0 8px 32px rgba(12,115,184,0.15);
+  --navbar-shadow:  0 1px 3px rgba(0,0,0,0.05);
+  --card-shadow:    0 1px 3px rgba(0,0,0,0.05);
+  --card-shadow-hover: 0 4px 12px rgba(0,0,0,0.08);
 }
 
 // DARK THEME
@@ -69,7 +69,7 @@
 
   --overlay-bg:     rgba(0, 0, 0, 0.7);
 
-  --navbar-shadow:  0 2px 20px rgba(0,0,0,0.4);
-  --card-shadow:    0 2px 12px rgba(0,0,0,0.3);
-  --card-shadow-hover: 0 8px 32px rgba(59,157,224,0.20);
+  --navbar-shadow:  0 1px 3px rgba(0,0,0,0.2);
+  --card-shadow:    0 1px 3px rgba(0,0,0,0.3);
+  --card-shadow-hover: 0 4px 12px rgba(0,0,0,0.4);
 }

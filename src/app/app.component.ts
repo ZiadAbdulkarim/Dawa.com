@@ -1,16 +1,18 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { NavbarComponent } from './shared/components/navbar/navbar.component';
+import { DialogContainerComponent } from './shared/components/dialog-container/dialog-container.component';
 import { ThemeService } from './core/services/theme.service';
 import { LanguageService } from './core/services/language.service';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, NavbarComponent],
+  imports: [RouterOutlet, NavbarComponent, DialogContainerComponent],
   template: `
     <app-navbar></app-navbar>
     <router-outlet></router-outlet>
+    <app-dialog-container></app-dialog-container>
   `,
   styles: [`
     :host {

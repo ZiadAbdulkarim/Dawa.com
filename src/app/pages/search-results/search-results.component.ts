@@ -7,10 +7,12 @@ import { DataService } from '../../core/services/data.service';
 import { Medicine } from '../../core/models/medicine.model';
 import { Category } from '../../core/models/category.model';
 
+import { MedicineImageComponent } from '../../shared/components/medicine-image/medicine-image.component';
+
 @Component({
   selector: 'app-search-results',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule],
+  imports: [CommonModule, RouterModule, FormsModule, MedicineImageComponent],
   templateUrl: './search-results.component.html',
   styleUrls: ['./search-results.component.scss'],
 })
@@ -26,6 +28,9 @@ export class SearchResultsComponent implements OnInit {
   categories = signal<Category[]>([]);
   isLoading = signal(true);
   skeletons = Array(9).fill(0);
+
+  // Mobile filter collapse toggle
+  filtersExpanded = signal(false);
 
   // Filters
   selectedCategory = signal<string>('');
@@ -83,12 +88,30 @@ export class SearchResultsComponent implements OnInit {
     if (this.selectedAvailability() === 'prescription') res = res.filter(m => m.requiresPrescription);
     if (this.selectedAvailability() === 'otc') res = res.filter(m => !m.requiresPrescription);
 
-    // Price filter
-    if (this.priceMin() !== null) res = res.filter(m => m.basePrice >= this.priceMin()!);
-    if (this.priceMax() !== null) res = res.filter(m => m.basePrice <= this.priceMax()!);
+    // Price filter (handle null, empty string, or NaN cleanly)
+    const minP = this.priceMin();
+    const maxP = this.priceMax();
+    if (minP !== null && minP !== undefined && !isNaN(Number(minP)) && String(minP) !== '') {
+      res = res.filter(m => m.basePrice >= Number(minP));
+    }
+    if (maxP !== null && maxP !== undefined && !isNaN(Number(maxP)) && String(maxP) !== '') {
+      res = res.filter(m => m.basePrice <= Number(maxP));
+    }
 
     // Sort
     switch (this.sortBy()) {
+      case 'relevance':
+        if (this.searchQuery().trim()) {
+          const q = this.searchQuery().toLowerCase().trim();
+          res.sort((a, b) => {
+            const aName = (this.lang.isArabic ? a.nameAr : a.nameEn).toLowerCase();
+            const bName = (this.lang.isArabic ? b.nameAr : b.nameEn).toLowerCase();
+            const aExact = aName === q ? 2 : aName.startsWith(q) ? 1 : 0;
+            const bExact = bName === q ? 2 : bName.startsWith(q) ? 1 : 0;
+            return bExact - aExact;
+          });
+        }
+        break;
       case 'name-asc':
         res.sort((a, b) => (this.lang.isArabic ? a.nameAr : a.nameEn).localeCompare(this.lang.isArabic ? b.nameAr : b.nameEn));
         break;
@@ -114,14 +137,18 @@ export class SearchResultsComponent implements OnInit {
     this.applyFiltersAndSort();
   }
 
-  onSortChange(sort: typeof this.sortBy extends () => infer T ? T : never): void {
-    this.sortBy.set(sort as any);
+  onSortChange(sort: 'relevance' | 'name-asc' | 'name-desc' | 'price-asc' | 'price-desc' | 'availability'): void {
+    this.sortBy.set(sort);
     this.applyFiltersAndSort();
   }
 
   onAvailabilityChange(v: 'all' | 'prescription' | 'otc'): void {
     this.selectedAvailability.set(v);
     this.applyFiltersAndSort();
+  }
+
+  toggleMobileFilters(): void {
+    this.filtersExpanded.update(v => !v);
   }
 
   resetFilters(): void {

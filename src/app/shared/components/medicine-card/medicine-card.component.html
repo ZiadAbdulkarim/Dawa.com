@@ -1,8 +1,17 @@
 <article class="medicine-card dawa-card animate-fade-in" [id]="'medicine-card-' + medicine.id">
   <!-- Card header -->
   <div class="card-header">
-    <div class="medicine-icon" [class]="'form-' + medicine.form">
-      <span class="material-icons-round">{{ formIcon }}</span>
+    <div
+      class="medicine-icon"
+      [class]="'form-' + medicine.form"
+      [class.has-image]="!!medicine.imageUrl"
+      [style.background]="medicine.imageUrl ? 'var(--bg-surface)' : null"
+    >
+      @if (medicine.imageUrl) {
+        <app-medicine-image [medicine]="medicine" />
+      } @else {
+        <span class="material-icons-round">{{ formIcon }}</span>
+      }
     </div>
     <div class="card-badges">
       @if (medicine.requiresPrescription) {

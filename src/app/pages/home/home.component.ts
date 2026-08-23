@@ -8,10 +8,12 @@ import { Medicine } from '../../core/models/medicine.model';
 import { Category } from '../../core/models/category.model';
 import { Pharmacy } from '../../core/models/pharmacy.model';
 
+import { MedicineImageComponent } from '../../shared/components/medicine-image/medicine-image.component';
+
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule],
+  imports: [CommonModule, RouterModule, FormsModule, MedicineImageComponent],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })
@@ -84,10 +86,6 @@ export class HomeComponent implements OnInit {
     const min = Math.min(...prices);
     const max = Math.max(...prices);
     return min === max ? `${min} ${this.t('ج.م', 'EGP')}` : `${min}–${max} ${this.t('ج.م', 'EGP')}`;
-  }
-
-  getCategoryPharmacyIds(pharmacies: Pharmacy[]): string {
-    return pharmacies.slice(0, 3).map(p => this.lang.isArabic ? p.nameAr : p.nameEn).join('، ');
   }
 
   t(ar: string, en: string): string { return this.lang.t(ar, en); }

@@ -3,15 +3,18 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { LanguageService } from '../../../core/services/language.service';
 import { DataService } from '../../../core/services/data.service';
+import { DialogService } from '../../../core/services/dialog.service';
 import { Medicine } from '../../../core/models/medicine.model';
 
 type Step = 1 | 2;
 type AddMode = 'existing' | 'new' | null;
 
+import { MedicineImageComponent } from '../../../shared/components/medicine-image/medicine-image.component';
+
 @Component({
   selector: 'app-add-medicine',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, MedicineImageComponent],
   templateUrl: './add-medicine.component.html',
   styleUrls: ['./add-medicine.component.scss']
 })
@@ -19,6 +22,8 @@ export class AddMedicineComponent {
   lang = inject(LanguageService);
   data = inject(DataService);
   fb = inject(FormBuilder);
+
+  dialog = inject(DialogService);
 
   currentStep = signal<Step>(1);
   addMode = signal<AddMode>(null);
@@ -29,17 +34,17 @@ export class AddMedicineComponent {
 
   // Forms
   stockForm: FormGroup = this.fb.group({
-    price: ['', [Validators.required, Validators.min(0)]],
-    quantity: ['', [Validators.required, Validators.min(1)]] // quantity will act as dummy for inStock
+    price: [null, [Validators.required, Validators.min(1)]],
+    quantity: [null, [Validators.required, Validators.min(1)]]
   });
 
   newMedicineForm: FormGroup = this.fb.group({
     nameAr: ['', Validators.required],
     nameEn: ['', Validators.required],
     category: ['', Validators.required],
-    description: ['', Validators.required],
-    uses: ['', Validators.required],
-    sideEffects: ['', Validators.required],
+    description: [''],
+    uses: [''],
+    sideEffects: [''],
     image: [null]
   });
 
@@ -48,10 +53,10 @@ export class AddMedicineComponent {
   }
 
   onSearchChange(event: Event) {
-    const q = (event.target as HTMLInputElement).value;
-    this.searchQuery.set(q);
-    if (q.trim().length > 1) {
-      this.suggestions.set(this.data.searchMedicines(q).slice(0, 5));
+    const query = (event.target as HTMLInputElement).value;
+    this.searchQuery.set(query);
+    if (query.trim().length > 1) {
+      this.suggestions.set(this.data.searchMedicines(query));
     } else {
       this.suggestions.set([]);
     }
@@ -81,21 +86,29 @@ export class AddMedicineComponent {
     // Just a mock handler for the file input
   }
 
-  submitExisting() {
+  async submitExisting() {
     if (this.stockForm.invalid) {
       this.stockForm.markAllAsTouched();
       return;
     }
-    alert(this.t('تم إضافة الدواء للمخزون بنجاح!', 'Medicine added to stock successfully!'));
+    await this.dialog.alert({
+      title: this.t('تمت الإضافة بنجاح', 'Added Successfully'),
+      message: this.t('تم إضافة الدواء للمخزون بنجاح!', 'Medicine added to stock successfully!'),
+      type: 'success'
+    });
     this.goBack();
   }
 
-  submitNew() {
+  async submitNew() {
     if (this.newMedicineForm.invalid) {
       this.newMedicineForm.markAllAsTouched();
       return;
     }
-    alert(this.t('تم تسجيل الدواء الجديد وإضافته بنجاح!', 'New medicine registered and added successfully!'));
+    await this.dialog.alert({
+      title: this.t('تم التسجيل بنجاح', 'Registered Successfully'),
+      message: this.t('تم تسجيل الدواء الجديد وإضافته بنجاح!', 'New medicine registered and added successfully!'),
+      type: 'success'
+    });
     this.goBack();
   }
 

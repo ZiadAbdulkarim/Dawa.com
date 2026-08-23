@@ -73,6 +73,26 @@ export class DataService {
     return this.medicines().filter(m => ids.includes(m.id));
   }
 
+  updateMedicine(updated: Medicine) {
+    this.medicines.update(meds => meds.map(m => m.id === updated.id ? updated : m));
+  }
+
+  deleteMedicine(id: string) {
+    this.medicines.update(meds => meds.filter(m => m.id !== id));
+  }
+
+  updatePharmacyMedicine(pharmacyId: string, medicineId: string, price: number, inStock: boolean) {
+    this.pharmacies.update(pharms => pharms.map(p => {
+      if (p.id === pharmacyId) {
+        const entries = p.medicineEntries.map(e => 
+          e.medicineId === medicineId ? { ...e, price, inStock } : e
+        );
+        return { ...p, medicineEntries: entries };
+      }
+      return p;
+    }));
+  }
+
   getStats() {
     return {
       totalMedicines: this.medicines().length,

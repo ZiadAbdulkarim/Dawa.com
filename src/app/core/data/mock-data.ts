@@ -26,6 +26,7 @@ export const MOCK_MEDICINES: Medicine[] = [
     sideEffectsEn: ['Rare nausea', 'Skin rash in allergic cases', 'Liver damage with overdose'],
     imageGradient: 'linear-gradient(135deg, #E53935 0%, #EF9A9A 100%)',
     imageIcon: 'medication',
+    imageUrl: '/assets/images/medicines/paracetamol.jpeg',
     availableCount: 14, requiresPrescription: false, form: 'tablet', strength: '500mg', basePrice: 12,
   },
   {
@@ -40,6 +41,7 @@ export const MOCK_MEDICINES: Medicine[] = [
     sideEffectsEn: ['Diarrhea', 'Nausea and vomiting', 'Skin rash', 'Rare anaphylaxis'],
     imageGradient: 'linear-gradient(135deg, #8E24AA 0%, #CE93D8 100%)',
     imageIcon: 'coronavirus',
+    imageUrl: '/assets/images/medicines/amoxicillin.jpeg',
     availableCount: 9, requiresPrescription: true, form: 'capsule', strength: '500mg', basePrice: 35,
   },
   {
@@ -54,6 +56,7 @@ export const MOCK_MEDICINES: Medicine[] = [
     sideEffectsEn: ['Muscle pain', 'Headache', 'Digestive upset', 'Rarely elevated liver enzymes'],
     imageGradient: 'linear-gradient(135deg, #D81B60 0%, #F48FB1 100%)',
     imageIcon: 'favorite',
+    imageUrl: '/assets/images/medicines/atorvastatin.jpeg',
     availableCount: 7, requiresPrescription: true, form: 'tablet', strength: '20mg', basePrice: 55,
   },
   {
@@ -68,6 +71,7 @@ export const MOCK_MEDICINES: Medicine[] = [
     sideEffectsEn: ['Initial nausea and diarrhea', 'Decreased appetite', 'Long-term B12 deficiency'],
     imageGradient: 'linear-gradient(135deg, #039BE5 0%, #81D4FA 100%)',
     imageIcon: 'water_drop',
+    imageUrl: '/assets/images/medicines/metformin.jpeg',
     availableCount: 11, requiresPrescription: true, form: 'tablet', strength: '500mg', basePrice: 28,
   },
   {
@@ -82,6 +86,7 @@ export const MOCK_MEDICINES: Medicine[] = [
     sideEffectsEn: ['Headache', 'Diarrhea or constipation', 'Nausea', 'Long-term magnesium deficiency'],
     imageGradient: 'linear-gradient(135deg, #7CB342 0%, #C5E1A5 100%)',
     imageIcon: 'restaurant',
+    imageUrl: '/assets/images/medicines/omeprazole.jpeg',
     availableCount: 16, requiresPrescription: false, form: 'capsule', strength: '20mg', basePrice: 22,
   },
   {
@@ -96,6 +101,7 @@ export const MOCK_MEDICINES: Medicine[] = [
     sideEffectsEn: ['Rapid heartbeat', 'Mild tremor', 'Headache', 'Low potassium at high doses'],
     imageGradient: 'linear-gradient(135deg, #00ACC1 0%, #80DEEA 100%)',
     imageIcon: 'air',
+    imageUrl: '/assets/images/medicines/salbutamol.jpeg',
     availableCount: 5, requiresPrescription: true, form: 'inhaler', strength: '100mcg', basePrice: 65,
   },
   {
@@ -110,6 +116,7 @@ export const MOCK_MEDICINES: Medicine[] = [
     sideEffectsEn: ['Skin thinning with prolonged use', 'Local acne', 'Skin discoloration'],
     imageGradient: 'linear-gradient(135deg, #F4511E 0%, #FFAB91 100%)',
     imageIcon: 'spa',
+    imageUrl: '/assets/images/medicines/hydrocortisone.jpeg',
     availableCount: 8, requiresPrescription: false, form: 'cream', strength: '1%', basePrice: 18,
   },
   {
@@ -124,6 +131,7 @@ export const MOCK_MEDICINES: Medicine[] = [
     sideEffectsEn: ['Nausea at very high doses', 'High calcium with overdose', 'Constipation'],
     imageGradient: 'linear-gradient(135deg, #F9A825 0%, #FFF176 100%)',
     imageIcon: 'stars',
+    imageUrl: '/assets/images/medicines/vitamin-d3.jpeg',
     availableCount: 20, requiresPrescription: false, form: 'tablet', strength: '1000IU', basePrice: 45,
   },
   {
@@ -138,6 +146,7 @@ export const MOCK_MEDICINES: Medicine[] = [
     sideEffectsEn: ['Stomach upset', 'Heartburn', 'Dizziness', 'Kidney risk with long-term use'],
     imageGradient: 'linear-gradient(135deg, #E53935 0%, #FFAB91 100%)',
     imageIcon: 'healing',
+    imageUrl: '/assets/images/medicines/Ibuprofen.png',
     availableCount: 13, requiresPrescription: false, form: 'tablet', strength: '400mg', basePrice: 15,
   },
   {
@@ -152,6 +161,7 @@ export const MOCK_MEDICINES: Medicine[] = [
     sideEffectsEn: ['Nausea and diarrhea', 'Abdominal pain', 'QT prolongation (rare)', 'Hearing disturbance at high doses'],
     imageGradient: 'linear-gradient(135deg, #8E24AA 0%, #E1BEE7 100%)',
     imageIcon: 'biotech',
+    imageUrl: '/assets/images/medicines/Azithromycin.jpeg',
     availableCount: 6, requiresPrescription: true, form: 'tablet', strength: '500mg', basePrice: 42,
   },
   {
@@ -166,6 +176,7 @@ export const MOCK_MEDICINES: Medicine[] = [
     sideEffectsEn: ['Dry persistent cough', 'Dizziness', 'High potassium', 'Low BP at start of treatment'],
     imageGradient: 'linear-gradient(135deg, #D81B60 0%, #F48FB1 100%)',
     imageIcon: 'monitor_heart',
+    imageUrl: '/assets/images/medicines/Lisinopril.jpeg',
     availableCount: 10, requiresPrescription: true, form: 'tablet', strength: '10mg', basePrice: 32,
   },
   {
@@ -180,6 +191,7 @@ export const MOCK_MEDICINES: Medicine[] = [
     sideEffectsEn: ['Mild headache', 'Rarely dry mouth', 'Mild drowsiness in rare cases'],
     imageGradient: 'linear-gradient(135deg, #00ACC1 0%, #B2EBF2 100%)',
     imageIcon: 'air',
+    imageUrl: '/assets/images/medicines/loratadine.jpeg',
     availableCount: 15, requiresPrescription: false, form: 'tablet', strength: '10mg', basePrice: 20,
   },
 ];
@@ -191,6 +203,7 @@ export const MOCK_PHARMACIES: Pharmacy[] = [
     address: '15 Abbas Al Akkad St, Nasr City', addressAr: '١٥ شارع عباس العقاد، مدينة نصر',
     phone: '01001234567', workingHours: '8AM – 12AM', workingHoursAr: '٨ ص – ١٢ م',
     isOpen: true, rating: 4.7, reviewCount: 234, isVerified: true, subscriptionActive: true,
+    logoUrl: '/assets/images/pharmacies/al-noor-pharmacy.png',
     medicineEntries: [
       { medicineId: 'med-1', price: 11, inStock: true },
       { medicineId: 'med-5', price: 21, inStock: true },
@@ -205,6 +218,7 @@ export const MOCK_PHARMACIES: Pharmacy[] = [
     address: '32 Al Hegaz St, Heliopolis', addressAr: '٣٢ شارع الحجاز، مصر الجديدة',
     phone: '01112345678', workingHours: '24 Hours', workingHoursAr: '٢٤ ساعة',
     isOpen: true, rating: 4.9, reviewCount: 451, isVerified: true, subscriptionActive: true,
+    logoUrl: '/assets/images/pharmacies/al-shifa-pharmacy.jpeg',
     medicineEntries: [
       { medicineId: 'med-1', price: 12, inStock: true },
       { medicineId: 'med-3', price: 54, inStock: true },
@@ -220,6 +234,7 @@ export const MOCK_PHARMACIES: Pharmacy[] = [
     address: '7 Omar Lotfy St, Sidi Gaber', addressAr: '٧ شارع عمر لطفي، سيدي جابر',
     phone: '01223456789', workingHours: '9AM – 11PM', workingHoursAr: '٩ ص – ١١ م',
     isOpen: true, rating: 4.5, reviewCount: 178, isVerified: true, subscriptionActive: true,
+    logoUrl: '/assets/images/pharmacies/al-salamah-pharmacy.jpeg',
     medicineEntries: [
       { medicineId: 'med-2', price: 34, inStock: true },
       { medicineId: 'med-5', price: 22, inStock: true },
@@ -246,6 +261,7 @@ export const MOCK_PHARMACIES: Pharmacy[] = [
     address: '56 Road 9, Maadi', addressAr: '٥٦ طريق ٩، المعادي',
     phone: '01445678901', workingHours: '8AM – 10PM', workingHoursAr: '٨ ص – ١٠ م',
     isOpen: true, rating: 4.6, reviewCount: 315, isVerified: true, subscriptionActive: true,
+    logoUrl: '/assets/images/pharmacies/al-baraka-pharmacy.jpeg',
     medicineEntries: [
       { medicineId: 'med-2', price: 36, inStock: true },
       { medicineId: 'med-3', price: 56, inStock: false },
@@ -261,6 +277,7 @@ export const MOCK_PHARMACIES: Pharmacy[] = [
     address: '14 Hassan Sabry St, Zamalek', addressAr: '١٤ شارع حسن صبري، الزمالك',
     phone: '01556789012', workingHours: '24 Hours', workingHoursAr: '٢٤ ساعة',
     isOpen: true, rating: 4.8, reviewCount: 520, isVerified: true, subscriptionActive: true,
+    logoUrl: '/assets/images/pharmacies/al-amana-pharmacy.jpeg',
     medicineEntries: [
       { medicineId: 'med-1', price: 13, inStock: true },
       { medicineId: 'med-2', price: 37, inStock: true },
@@ -277,6 +294,7 @@ export const MOCK_PHARMACIES: Pharmacy[] = [
     address: '3 Fawzy Muaz St, Smouha', addressAr: '٣ شارع فوزي معاز، سموحة',
     phone: '01667890123', workingHours: '9AM – 12AM', workingHoursAr: '٩ ص – ١٢ م',
     isOpen: true, rating: 4.4, reviewCount: 143, isVerified: true, subscriptionActive: true,
+    logoUrl: '/assets/images/pharmacies/al-rahma-pharmacy.jpeg',
     medicineEntries: [
       { medicineId: 'med-6', price: 64, inStock: true },
       { medicineId: 'med-7', price: 18, inStock: true },

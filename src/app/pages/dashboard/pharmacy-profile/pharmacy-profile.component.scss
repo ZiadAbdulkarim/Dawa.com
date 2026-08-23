@@ -3,10 +3,9 @@
 }
 
 .profile-card {
-  padding: 2rem;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: var(--space-xl);
 }
 
 .profile-header {
@@ -14,15 +13,15 @@
   align-items: center;
   gap: 1.5rem;
   padding-bottom: 2rem;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-default);
 }
 
 .profile-icon {
   width: 80px;
   height: 80px;
   border-radius: var(--radius-full);
-  background: var(--primary-light);
-  color: var(--primary);
+  background: rgba(12,115,184,0.12);
+  color: var(--dawa-primary);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -93,7 +92,7 @@
   align-items: center;
   gap: 1rem;
   padding-top: 1.5rem;
-  border-top: 1px solid var(--border-color);
+  border-top: 1px solid var(--border-default);
   
   .hint {
     font-size: 0.875rem;

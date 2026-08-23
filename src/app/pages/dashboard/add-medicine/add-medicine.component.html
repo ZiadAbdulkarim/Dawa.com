@@ -73,8 +73,8 @@
       <!-- Existing Medicine Flow -->
       @if (addMode() === 'existing' && selectedMedicine()) {
         <div class="selected-med-card">
-          <div class="med-icon" [style.background]="selectedMedicine()?.imageGradient || 'var(--primary)'">
-            <span class="material-icons-round">{{ selectedMedicine()?.imageIcon || 'medication' }}</span>
+          <div class="med-icon" [style.background]="selectedMedicine()?.imageUrl ? 'var(--bg-surface)' : (selectedMedicine()?.imageGradient || 'var(--primary)')">
+            <app-medicine-image [medicine]="selectedMedicine()!" />
           </div>
           <div>
             <h3>{{ lang.isArabic ? selectedMedicine()?.nameAr : selectedMedicine()?.nameEn }}</h3>
@@ -87,11 +87,11 @@
           <div class="form-row">
             <div class="form-group">
               <label>{{ t('السعر (ج.م)', 'Price (EGP)') }}</label>
-              <input type="number" formControlName="price" class="input-wrap" [placeholder]="t('أدخل السعر', 'Enter price')" />
+              <input type="number" formControlName="price" class="input-wrap" [class.error]="stockForm.get('price')?.invalid && stockForm.get('price')?.touched" [placeholder]="t('أدخل السعر', 'Enter price')" />
             </div>
             <div class="form-group">
               <label>{{ t('الكمية', 'Quantity') }}</label>
-              <input type="number" formControlName="quantity" class="input-wrap" [placeholder]="t('أدخل الكمية', 'Enter quantity')" />
+              <input type="number" formControlName="quantity" class="input-wrap" [class.error]="stockForm.get('quantity')?.invalid && stockForm.get('quantity')?.touched" [placeholder]="t('أدخل الكمية', 'Enter quantity')" />
             </div>
           </div>
           <button type="submit" class="btn btn-primary mt-4" [disabled]="stockForm.invalid">
@@ -109,17 +109,17 @@
           <div class="form-row">
             <div class="form-group">
               <label>{{ t('الاسم (عربي)', 'Name (Arabic)') }}</label>
-              <input type="text" formControlName="nameAr" class="input-wrap" />
+              <input type="text" formControlName="nameAr" class="input-wrap" [class.error]="newMedicineForm.get('nameAr')?.invalid && newMedicineForm.get('nameAr')?.touched" />
             </div>
             <div class="form-group">
               <label>{{ t('الاسم (إنجليزي)', 'Name (English)') }}</label>
-              <input type="text" formControlName="nameEn" class="input-wrap" dir="ltr" />
+              <input type="text" formControlName="nameEn" class="input-wrap" [class.error]="newMedicineForm.get('nameEn')?.invalid && newMedicineForm.get('nameEn')?.touched" dir="ltr" />
             </div>
           </div>
 
           <div class="form-group">
             <label>{{ t('التصنيف', 'Category') }}</label>
-            <select formControlName="category" class="input-wrap">
+            <select formControlName="category" class="input-wrap" [class.error]="newMedicineForm.get('category')?.invalid && newMedicineForm.get('category')?.touched">
               <option value="" disabled>{{ t('اختر التصنيف', 'Select category') }}</option>
               @for (cat of categories; track cat.id) {
                 <option [value]="cat.id">{{ lang.isArabic ? cat.nameAr : cat.nameEn }}</option>
@@ -129,17 +129,17 @@
 
           <div class="form-group">
             <label>{{ t('الوصف', 'Description') }}</label>
-            <textarea formControlName="description" class="input-wrap" rows="3"></textarea>
+            <textarea formControlName="description" class="input-wrap" [class.error]="newMedicineForm.get('description')?.invalid && newMedicineForm.get('description')?.touched" rows="3"></textarea>
           </div>
 
           <div class="form-row">
             <div class="form-group">
               <label>{{ t('دواعي الاستعمال', 'Uses (comma separated)') }}</label>
-              <textarea formControlName="uses" class="input-wrap" rows="2"></textarea>
+              <textarea formControlName="uses" class="input-wrap" [class.error]="newMedicineForm.get('uses')?.invalid && newMedicineForm.get('uses')?.touched" rows="2"></textarea>
             </div>
             <div class="form-group">
               <label>{{ t('الآثار الجانبية', 'Side Effects (comma separated)') }}</label>
-              <textarea formControlName="sideEffects" class="input-wrap" rows="2"></textarea>
+              <textarea formControlName="sideEffects" class="input-wrap" [class.error]="newMedicineForm.get('sideEffects')?.invalid && newMedicineForm.get('sideEffects')?.touched" rows="2"></textarea>
             </div>
           </div>
 
@@ -159,11 +159,11 @@
           <div class="form-row" [formGroup]="stockForm">
             <div class="form-group">
               <label>{{ t('السعر (ج.م)', 'Price (EGP)') }}</label>
-              <input type="number" formControlName="price" class="input-wrap" />
+              <input type="number" formControlName="price" class="input-wrap" [class.error]="stockForm.get('price')?.invalid && stockForm.get('price')?.touched" />
             </div>
             <div class="form-group">
               <label>{{ t('الكمية', 'Quantity') }}</label>
-              <input type="number" formControlName="quantity" class="input-wrap" />
+              <input type="number" formControlName="quantity" class="input-wrap" [class.error]="stockForm.get('quantity')?.invalid && stockForm.get('quantity')?.touched" />
             </div>
           </div>
 

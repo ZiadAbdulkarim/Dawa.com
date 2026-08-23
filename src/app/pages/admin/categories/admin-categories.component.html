@@ -39,19 +39,21 @@
       </tbody>
     </table>
   </div>
+</div>
 
-  <!-- Add/Edit Modal Overlay -->
-  @if (showModal()) {
-    <div class="modal-overlay animate-fade-in" (click)="closeModal()">
-      <div class="modal-content animate-slide-up" (click)="$event.stopPropagation()">
-        <div class="modal-header">
-          <h3>{{ editingId() ? t('تعديل التصنيف', 'Edit Category') : t('إضافة تصنيف جديد', 'Add New Category') }}</h3>
-          <button class="btn btn-ghost btn-icon" (click)="closeModal()">
-            <span class="material-icons-round">close</span>
-          </button>
-        </div>
-        
-        <form [formGroup]="categoryForm" (ngSubmit)="saveCategory()" class="modal-body">
+<!-- Add/Edit Modal Overlay -->
+@if (showModal()) {
+  <div class="modal-overlay animate-fade-in" (click)="closeModal()" role="dialog" aria-modal="true">
+    <div class="modal-content animate-slide-up" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>{{ editingId() ? t('تعديل التصنيف', 'Edit Category') : t('إضافة تصنيف جديد', 'Add New Category') }}</h3>
+        <button type="button" class="btn btn-ghost btn-icon" (click)="closeModal()" [title]="t('إغلاق', 'Close')">
+          <span class="material-icons-round">close</span>
+        </button>
+      </div>
+      
+      <form [formGroup]="categoryForm" (ngSubmit)="saveCategory()" class="modal-form">
+        <div class="modal-body">
           <div class="form-group">
             <label>{{ t('اسم التصنيف (عربي)', 'Category Name (Arabic)') }}</label>
             <input type="text" formControlName="nameAr" class="input-wrap"/>
@@ -60,15 +62,15 @@
             <label>{{ t('اسم التصنيف (إنجليزي)', 'Category Name (English)') }}</label>
             <input type="text" formControlName="nameEn" class="input-wrap" dir="ltr"/>
           </div>
+        </div>
 
-          <div class="modal-actions mt-4">
-            <button type="button" class="btn btn-outline" (click)="closeModal()">{{ t('إلغاء', 'Cancel') }}</button>
-            <button type="submit" class="btn btn-primary" [disabled]="categoryForm.invalid">
-              {{ t('حفظ التصنيف', 'Save Category') }}
-            </button>
-          </div>
-        </form>
-      </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-outline" (click)="closeModal()">{{ t('إلغاء', 'Cancel') }}</button>
+          <button type="submit" class="btn btn-primary" [disabled]="categoryForm.invalid">
+            {{ t('حفظ التصنيف', 'Save Category') }}
+          </button>
+        </div>
+      </form>
     </div>
-  }
-</div>
+  </div>
+}
