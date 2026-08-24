@@ -12,10 +12,9 @@
         </div>
         <span class="logo-sub">{{ t('إبحث عن دوائك', 'Find Your Medicine') }}</span>
       </div>
-
     </a>
 
-    <!-- Search Bar (desktop) -->
+    <!-- Search Bar (desktop, non-home pages only) -->
     @if (!isHomePage) {
     <div class="navbar-search" (clickOutside)="closeSuggestions()">
       <div class="search-wrapper">
@@ -29,7 +28,6 @@
         </button>
       </div>
 
-      <!-- Autocomplete suggestions -->
       @if (showSuggestions() && suggestions().length) {
       <div class="suggestions-dropdown animate-fade-in-scale" role="listbox">
         @for (med of suggestions(); track med.id) {
@@ -37,8 +35,7 @@
           <span class="material-icons-round suggestion-icon">medication</span>
           <div class="suggestion-text">
             <span class="suggestion-name">{{ lang.isArabic ? med.nameAr : med.nameEn }}</span>
-            <span class="suggestion-sub">{{ lang.isArabic ? med.genericNameAr : med.genericNameEn }} · {{ med.strength
-              }}</span>
+            <span class="suggestion-sub">{{ lang.isArabic ? med.genericNameAr : med.genericNameEn }} · {{ med.strength }}</span>
           </div>
           <span class="suggestion-count">
             <span class="material-icons-round">local_pharmacy</span>
@@ -47,26 +44,21 @@
         </div>
         }
       </div>
-      }
-    </div>
+      </div>
     }
 
-    <!-- Actions (desktop) -->
+    <!-- Desktop actions: intentionally minimal on the homepage -->
     <div class="navbar-actions">
-
-      <!-- Language Toggle -->
       <button class="btn btn-ghost btn-icon-circle lang-btn" id="lang-toggle-btn" (click)="lang.toggle()"
         [title]="t('English', 'عربي')">
-        <span class="lang-label">{{ lang.isArabic ? 'EN' : 'ع' }}</span>
+        <span class="lang-label">{{ lang.isArabic ? 'EN' : 'AR' }}</span>
       </button>
 
-      <!-- Theme Toggle -->
       <button class="btn btn-ghost btn-icon-circle theme-btn" id="theme-toggle-btn" (click)="theme.toggle()"
         [title]="t('الوضع الليلي', 'Dark Mode')">
         <span class="material-icons-round">{{ theme.isDark ? 'light_mode' : 'dark_mode' }}</span>
       </button>
 
-      <!-- Auth -->
       @if (auth.isLoggedIn) {
       <div class="user-menu">
         <button class="btn btn-ghost user-btn" id="user-menu-btn">
@@ -96,8 +88,7 @@
         </div>
       </div>
       } @else {
-      <a routerLink="/auth/login" class="btn btn-primary btn-sm" id="nav-login-btn">
-        <span class="material-icons-round">login</span>
+      <a routerLink="/auth/login" class="pharmacist-login-link" id="nav-login-btn">
         {{ t('دخول الصيدلي', 'Pharmacist Login') }}
       </a>
       }
@@ -110,10 +101,9 @@
     </div>
   </div>
 
-  <!-- Mobile menu -->
+  <!-- Mobile menu: kept unchanged -->
   @if (mobileMenuOpen()) {
   <div class="mobile-menu animate-fade-in">
-    <!-- Mobile search -->
     @if (!isHomePage) {
     <div class="mobile-search">
       <span class="material-icons-round">search</span>
@@ -122,7 +112,6 @@
     </div>
     }
 
-    <!-- Mobile nav links -->
     <nav class="mobile-nav">
       <a routerLink="/" class="mobile-nav-item" (click)="closeMobileMenu()" id="mobile-nav-home">
         <span class="material-icons-round">home</span>
@@ -146,7 +135,6 @@
       }
     </nav>
 
-    <!-- Mobile toggles -->
     <div class="mobile-toggles">
       <button class="toggle-chip" (click)="lang.toggle()" id="mobile-lang-btn">
         <span class="material-icons-round">translate</span>
