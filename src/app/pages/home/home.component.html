@@ -11,7 +11,6 @@
     </h1>
     <p class="hero-sub">{{ t('أكثر من ١٢٠٠ دواء متاح في صيدليات موثوقة في مصر', 'Over 1,200 medicines available at trusted pharmacies across Egypt') }}</p>
 
-    <!-- Main Search Bar -->
     <div class="main-search-wrap">
       <div class="main-search-box" [class.has-suggestions]="showSuggestions()">
         <div class="main-search-inner">
@@ -31,7 +30,6 @@
           </button>
         </div>
 
-        <!-- Suggestions -->
         @if (showSuggestions() && suggestions().length) {
           <div class="search-suggestions animate-fade-in-scale">
             @for (med of suggestions(); track med.id) {
@@ -62,7 +60,6 @@
         }
       </div>
 
-      <!-- Quick hints -->
       <div class="search-hints">
         <span>{{ t('جرِّب:', 'Try:') }}</span>
         @for (h of quickHints; track h.q) {
@@ -70,95 +67,15 @@
         }
       </div>
     </div>
-
-    <!-- Quick stats -->
-    <div class="hero-stats-row">
-      <div class="hero-stat">
-        <strong>{{ stats.totalMedicines }}+</strong>
-        <span>{{ t('دواء', 'Medicines') }}</span>
-      </div>
-      <div class="hero-stat-sep"></div>
-      <div class="hero-stat">
-        <strong>{{ stats.activePharmacies }}</strong>
-        <span>{{ t('صيدلية موثوقة', 'Verified Pharmacies') }}</span>
-      </div>
-      <div class="hero-stat-sep"></div>
-      <div class="hero-stat">
-        <strong>{{ stats.cities }}</strong>
-        <span>{{ t('مدن', 'Cities') }}</span>
-      </div>
-    </div>
   </div>
 </div>
 
-<!-- ===== MAIN LAYOUT: SIDEBAR + CONTENT ===== -->
-<div class="home-body">
+<!-- ===== REFINED DESKTOP CONTENT ORDER ===== -->
+<div class="home-content-refined">
 
-  <!-- SIDEBAR -->
-  <aside class="home-sidebar">
-
-    <!-- Categories -->
-    <div class="sidebar-card">
-      <div class="sidebar-card-header">
-        <span class="material-icons-round">category</span>
-        {{ t('تصنيفات الأدوية', 'Medicine Categories') }}
-      </div>
-      <ul class="sidebar-list">
-        @for (cat of categories(); track cat.id) {
-          <li>
-            <a class="sidebar-list-item" [routerLink]="['/search']" [queryParams]="{category: cat.id}" [id]="'home-sidebar-cat-' + cat.id">
-              <span class="sidebar-cat-icon" [style.background]="cat.color + '18'" [style.color]="cat.color">
-                <span class="material-icons-round">{{ cat.icon }}</span>
-              </span>
-              <span class="sidebar-cat-name">{{ t(cat.nameAr, cat.nameEn) }}</span>
-              <span class="sidebar-count">{{ cat.medicineCount }}</span>
-            </a>
-          </li>
-        }
-      </ul>
-      <a routerLink="/search" class="sidebar-see-all" id="home-sidebar-all-cats">
-        {{ t('عرض الكل', 'View All') }} <span class="material-icons-round">arrow_forward</span>
-      </a>
-    </div>
-
-    <!-- Active Pharmacies -->
-    <div class="sidebar-card">
-      <div class="sidebar-card-header">
-        <span class="material-icons-round">local_pharmacy</span>
-        {{ t('الصيدليات المتاحة', 'Available Pharmacies') }}
-        <span class="sidebar-badge">{{ activePharmacies().length }}</span>
-      </div>
-      <ul class="sidebar-list">
-        @for (ph of activePharmacies(); track ph.id) {
-          <li>
-            <a class="sidebar-ph-item" [routerLink]="['/pharmacy', ph.id]" [id]="'home-sidebar-ph-' + ph.id">
-              <div class="sidebar-ph-logo" [class.has-image]="!!ph.logoUrl">
-                @if (ph.logoUrl) {
-                  <img [src]="ph.logoUrl" [alt]="lang.isArabic ? ph.nameAr : ph.nameEn" class="pharmacy-photo" loading="lazy" />
-                } @else {
-                  <span class="material-icons-round">local_pharmacy</span>
-                }
-              </div>
-              <div class="sidebar-ph-info">
-                <span class="sidebar-ph-name">{{ lang.isArabic ? ph.nameAr : ph.nameEn }}</span>
-                <span class="sidebar-ph-area">{{ lang.isArabic ? ph.areaAr : ph.area }}, {{ lang.isArabic ? ph.cityAr : ph.city }}</span>
-              </div>
-              <div class="sidebar-ph-status" [class.open]="ph.isOpen">
-                <span class="status-dot"></span>
-              </div>
-            </a>
-          </li>
-        }
-      </ul>
-    </div>
-
-  </aside>
-
-  <!-- MAIN CONTENT -->
-  <main class="home-main">
-
-    <!-- How it works -->
-    <section class="home-section how-section">
+  <!-- How it works / Statistics / Available Pharmacies -->
+  <div class="home-overview-grid">
+    <section class="home-section how-section refined-how-section">
       <div class="section-header">
         <h2 class="section-title">{{ t('كيف يعمل دواء.كوم؟', 'How Does Dawa.com Work?') }}</h2>
       </div>
@@ -175,68 +92,136 @@
       </div>
     </section>
 
-    <!-- Popular Medicines -->
-    <section class="home-section">
-      <div class="section-header">
-        <h2 class="section-title">{{ t('الأدوية الأكثر بحثاً', 'Most Searched Medicines') }}</h2>
-        <a routerLink="/search" class="section-link" id="home-all-medicines">
-          {{ t('عرض الكل', 'View All') }}
-          <span class="material-icons-round">arrow_forward</span>
-        </a>
+    <section class="refined-stats-card" aria-label="Platform statistics">
+      <div class="refined-card-heading">
+        <span class="material-icons-round">insights</span>
+        <span>{{ t('أرقام دواء.كوم', 'Dawa.com at a glance') }}</span>
       </div>
-
-      <div class="medicines-grid">
-        @for (med of popularMedicines(); track med.id; let i = $index) {
-          <a class="medicine-card dawa-card animate-fade-in" [class]="'stagger-' + (i + 1)"
-             [routerLink]="['/medicine', med.id]" [id]="'home-med-' + med.id">
-
-            <!-- Card image -->
-            <div class="med-img" [style.background]="med.imageUrl ? 'var(--bg-surface)' : med.imageGradient">
-              <app-medicine-image [medicine]="med" />
-              @if (med.requiresPrescription) {
-                <span class="rx-chip">Rx</span>
-              }
-            </div>
-
-            <div class="med-body">
-              <div class="med-cat-tag">{{ t(
-                med.categoryId === 'cat-1' ? 'مسكنات ألم' : med.categoryId === 'cat-2' ? 'مضاد حيوي' :
-                med.categoryId === 'cat-3' ? 'قلب وأوعية' : med.categoryId === 'cat-4' ? 'سكري' :
-                med.categoryId === 'cat-5' ? 'هضمي' : med.categoryId === 'cat-6' ? 'تنفسي' :
-                med.categoryId === 'cat-7' ? 'جلدية' : 'فيتامينات',
-                med.category
-              ) }}</div>
-              <h3 class="med-name">{{ lang.isArabic ? med.nameAr : med.nameEn }}</h3>
-              <p class="med-generic">{{ lang.isArabic ? med.genericNameAr : med.genericNameEn }}</p>
-              <p class="med-desc">{{ (lang.isArabic ? med.descriptionAr : med.descriptionEn) | slice:0:80 }}...</p>
-
-              <div class="med-footer">
-                <div class="med-price-row">
-                  @if (getPriceRange(med)) {
-                    <span class="price-badge">
-                      <span class="material-icons-round">payments</span>
-                      {{ getPriceRange(med) }}
-                    </span>
-                  }
-                  <span class="ph-badge">
-                    <span class="material-icons-round">local_pharmacy</span>
-                    {{ data.getPharmaciesForMedicine(med.id).length }}
-                  </span>
-                </div>
-                <span class="view-arrow material-icons-round">arrow_forward</span>
-              </div>
-            </div>
-          </a>
-        }
+      <div class="refined-stat-list">
+        <div class="refined-stat-item">
+          <strong>{{ stats.totalMedicines }}+</strong>
+          <span>{{ t('دواء', 'Medicines') }}</span>
+        </div>
+        <div class="refined-stat-item">
+          <strong>{{ stats.activePharmacies }}</strong>
+          <span>{{ t('صيدلية موثوقة', 'Verified Pharmacies') }}</span>
+        </div>
+        <div class="refined-stat-item">
+          <strong>{{ stats.cities }}</strong>
+          <span>{{ t('مدن', 'Cities') }}</span>
+        </div>
       </div>
     </section>
 
-  </main>
+    <section class="refined-pharmacies-card">
+      <div class="refined-card-heading">
+        <span class="material-icons-round">local_pharmacy</span>
+        <span>{{ t('الصيدليات المتاحة', 'Available Pharmacies') }}</span>
+        <span class="refined-card-count">{{ activePharmacies().length }}</span>
+      </div>
+      <ul class="refined-pharmacy-list">
+        @for (ph of activePharmacies(); track ph.id) {
+          <li>
+            <a class="refined-pharmacy-row" [routerLink]="['/pharmacy', ph.id]" [id]="'home-ph-' + ph.id">
+              <div class="sidebar-ph-logo" [class.has-image]="!!ph.logoUrl">
+                @if (ph.logoUrl) {
+                  <img [src]="ph.logoUrl" [alt]="lang.isArabic ? ph.nameAr : ph.nameEn" class="pharmacy-photo" loading="lazy" />
+                } @else {
+                  <span class="material-icons-round">local_pharmacy</span>
+                }
+              </div>
+              <div class="sidebar-ph-info">
+                <span class="sidebar-ph-name">{{ lang.isArabic ? ph.nameAr : ph.nameEn }}</span>
+                <span class="sidebar-ph-area">{{ lang.isArabic ? ph.areaAr : ph.area }}, {{ lang.isArabic ? ph.cityAr : ph.city }}</span>
+              </div>
+              <span class="refined-open-status" [class.open]="ph.isOpen">{{ ph.isOpen ? t('مفتوح', 'Open') : t('مغلق', 'Closed') }}</span>
+            </a>
+          </li>
+        }
+      </ul>
+    </section>
+  </div>
+
+  <!-- Browse by Category -->
+  <section class="refined-category-section home-section">
+    <div class="section-header">
+      <h2 class="section-title">{{ t('تصفح حسب التصنيف', 'Browse by Category') }}</h2>
+      <a routerLink="/search" class="section-link" id="home-all-categories">
+        {{ t('عرض الكل', 'View All') }}
+        <span class="material-icons-round">arrow_forward</span>
+      </a>
+    </div>
+    <div class="refined-category-row">
+      @for (cat of categories(); track cat.id) {
+        <a class="refined-category-item" [routerLink]="['/search']" [queryParams]="{category: cat.id}" [id]="'home-cat-' + cat.id">
+          <span class="sidebar-cat-icon" [style.background]="cat.color + '18'" [style.color]="cat.color">
+            <span class="material-icons-round">{{ cat.icon }}</span>
+          </span>
+          <span class="refined-category-name">{{ t(cat.nameAr, cat.nameEn) }}</span>
+          <span class="refined-category-count">{{ cat.medicineCount }}</span>
+        </a>
+      }
+    </div>
+  </section>
+
+  <!-- Most Searched Medicines -->
+  <section class="home-section">
+    <div class="section-header">
+      <h2 class="section-title">{{ t('الأدوية الأكثر بحثاً', 'Most Searched Medicines') }}</h2>
+      <a routerLink="/search" class="section-link" id="home-all-medicines">
+        {{ t('عرض الكل', 'View All') }}
+        <span class="material-icons-round">arrow_forward</span>
+      </a>
+    </div>
+
+    <div class="medicines-grid">
+      @for (med of popularMedicines(); track med.id; let i = $index) {
+        <a class="medicine-card dawa-card animate-fade-in" [class]="'stagger-' + (i + 1)"
+           [routerLink]="['/medicine', med.id]" [id]="'home-med-' + med.id">
+          <div class="med-img" [style.background]="med.imageUrl ? 'var(--bg-surface)' : med.imageGradient">
+            <app-medicine-image [medicine]="med" />
+            @if (med.requiresPrescription) {
+              <span class="rx-chip">Rx</span>
+            }
+          </div>
+
+          <div class="med-body">
+            <div class="med-cat-tag">{{ t(
+              med.categoryId === 'cat-1' ? 'مسكنات ألم' : med.categoryId === 'cat-2' ? 'مضاد حيوي' :
+              med.categoryId === 'cat-3' ? 'قلب وأوعية' : med.categoryId === 'cat-4' ? 'سكري' :
+              med.categoryId === 'cat-5' ? 'هضمي' : med.categoryId === 'cat-6' ? 'تنفسي' :
+              med.categoryId === 'cat-7' ? 'جلدية' : 'فيتامينات',
+              med.category
+            ) }}</div>
+            <h3 class="med-name">{{ lang.isArabic ? med.nameAr : med.nameEn }}</h3>
+            <p class="med-generic">{{ lang.isArabic ? med.genericNameAr : med.genericNameEn }}</p>
+            <p class="med-desc">{{ (lang.isArabic ? med.descriptionAr : med.descriptionEn) | slice:0:80 }}...</p>
+
+            <div class="med-footer">
+              <div class="med-price-row">
+                @if (getPriceRange(med)) {
+                  <span class="price-badge">
+                    <span class="material-icons-round">payments</span>
+                    {{ getPriceRange(med) }}
+                  </span>
+                }
+                <span class="ph-badge">
+                  <span class="material-icons-round">local_pharmacy</span>
+                  {{ data.getPharmaciesForMedicine(med.id).length }}
+                </span>
+              </div>
+              <span class="view-arrow material-icons-round" aria-hidden="true">arrow_forward</span>
+            </div>
+          </div>
+        </a>
+      }
+    </div>
+  </section>
 </div>
 
 <!-- FOOTER -->
 <footer class="site-footer">
-  <div class="container footer-inner">
+  <div class="container footer-inner refined-footer-inner">
     <div class="footer-brand">
       <div class="footer-logo">
         <span class="material-icons-round">local_pharmacy</span>

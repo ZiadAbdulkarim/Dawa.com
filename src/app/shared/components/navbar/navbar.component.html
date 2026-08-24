@@ -1,35 +1,22 @@
 <nav class="navbar" [class.scrolled]="isScrolled()">
   <div class="navbar-inner">
-
-    <!-- Logo -->
     <a class="navbar-logo" routerLink="/" (click)="closeMobileMenu()">
-      <div class="logo-icon">
-        <span class="material-icons-round">local_pharmacy</span>
-      </div>
+      <div class="logo-icon"><span class="material-icons-round">local_pharmacy</span></div>
       <div class="logo-text">
-        <div class="logo-title">
-          <span class="logo-main">Dawa</span> <span class="logo-dot"> .com</span>
-        </div>
+        <div class="logo-title"><span class="logo-main">Dawa</span> <span class="logo-dot"> .com</span></div>
         <span class="logo-sub">{{ t('إبحث عن دوائك', 'Find Your Medicine') }}</span>
       </div>
-
     </a>
 
-    <!-- Search Bar (desktop) -->
     @if (!isHomePage) {
     <div class="navbar-search" (clickOutside)="closeSuggestions()">
       <div class="search-wrapper">
         <span class="material-icons-round search-icon">search</span>
         <input id="navbar-search-input" type="text" class="search-input" [(ngModel)]="searchQuery"
           (input)="onSearchInput()" (keyup.enter)="onSearch()" (blur)="closeSuggestions()"
-          [placeholder]="t('إبحث عن الدواء أو المادة الفعالة...', 'Look for the medicine or active ingredient...')"
-          autocomplete="off" />
-        <button class="search-btn btn btn-primary btn-sm" (click)="onSearch()" id="navbar-search-btn">
-          {{ t('بحث', 'Search') }}
-        </button>
+          [placeholder]="t('إبحث عن الدواء أو المادة الفعالة...', 'Look for the medicine or active ingredient...')" autocomplete="off" />
+        <button class="search-btn btn btn-primary btn-sm" (click)="onSearch()" id="navbar-search-btn">{{ t('بحث', 'Search') }}</button>
       </div>
-
-      <!-- Autocomplete suggestions -->
       @if (showSuggestions() && suggestions().length) {
       <div class="suggestions-dropdown animate-fade-in-scale" role="listbox">
         @for (med of suggestions(); track med.id) {
@@ -37,13 +24,9 @@
           <span class="material-icons-round suggestion-icon">medication</span>
           <div class="suggestion-text">
             <span class="suggestion-name">{{ lang.isArabic ? med.nameAr : med.nameEn }}</span>
-            <span class="suggestion-sub">{{ lang.isArabic ? med.genericNameAr : med.genericNameEn }} · {{ med.strength
-              }}</span>
+            <span class="suggestion-sub">{{ lang.isArabic ? med.genericNameAr : med.genericNameEn }} · {{ med.strength }}</span>
           </div>
-          <span class="suggestion-count">
-            <span class="material-icons-round">local_pharmacy</span>
-            {{ med.availableCount }}
-          </span>
+          <span class="suggestion-count"><span class="material-icons-round">local_pharmacy</span>{{ med.availableCount }}</span>
         </div>
         }
       </div>
@@ -51,111 +34,63 @@
     </div>
     }
 
-    <!-- Actions (desktop) -->
     <div class="navbar-actions">
-
-      <!-- Language Toggle -->
-      <button class="btn btn-ghost btn-icon-circle lang-btn" id="lang-toggle-btn" (click)="lang.toggle()"
-        [title]="t('English', 'عربي')">
-        <span class="lang-label">{{ lang.isArabic ? 'EN' : 'ع' }}</span>
+      <button class="btn btn-ghost btn-icon-circle lang-btn" id="lang-toggle-btn" (click)="lang.toggle()" [title]="t('English', 'عربي')">
+        <span class="lang-label">{{ lang.isArabic ? 'EN' : 'AR' }}</span>
       </button>
 
-      <!-- Theme Toggle -->
-      <button class="btn btn-ghost btn-icon-circle theme-btn" id="theme-toggle-btn" (click)="theme.toggle()"
-        [title]="t('الوضع الليلي', 'Dark Mode')">
+      <button class="btn btn-ghost btn-icon-circle theme-btn" id="theme-toggle-btn" (click)="theme.toggle()" [title]="t('الوضع الليلي', 'Dark Mode')">
         <span class="material-icons-round">{{ theme.isDark ? 'light_mode' : 'dark_mode' }}</span>
       </button>
 
-      <!-- Auth -->
       @if (auth.isLoggedIn) {
       <div class="user-menu">
         <button class="btn btn-ghost user-btn" id="user-menu-btn">
-          <div class="user-avatar">
-            {{ (auth.currentUser()?.nameAr ?? 'U')[0] }}
-          </div>
+          <div class="user-avatar">{{ (auth.currentUser()?.nameAr ?? 'U')[0] }}</div>
           <span class="user-name">{{ lang.isArabic ? auth.currentUser()?.nameAr : auth.currentUser()?.nameEn }}</span>
           <span class="material-icons-round">expand_more</span>
         </button>
         <div class="user-dropdown">
           @if (auth.isPharmacist) {
-          <a class="dropdown-item" routerLink="/dashboard" id="nav-dashboard-link">
-            <span class="material-icons-round">dashboard</span>
-            {{ t('لوحة التحكم', 'Dashboard') }}
-          </a>
+          <a class="dropdown-item" routerLink="/dashboard" id="nav-dashboard-link"><span class="material-icons-round">dashboard</span>{{ t('لوحة التحكم', 'Dashboard') }}</a>
           }
           @if (auth.isAdmin) {
-          <a class="dropdown-item" routerLink="/admin" id="nav-admin-link">
-            <span class="material-icons-round">admin_panel_settings</span>
-            {{ t('الإدارة', 'Admin') }}
-          </a>
+          <a class="dropdown-item" routerLink="/admin" id="nav-admin-link"><span class="material-icons-round">admin_panel_settings</span>{{ t('الإدارة', 'Admin') }}</a>
           }
-          <button class="dropdown-item danger" (click)="logout()" id="nav-logout-btn">
-            <span class="material-icons-round">logout</span>
-            {{ t('تسجيل الخروج', 'Logout') }}
-          </button>
+          <button class="dropdown-item danger" (click)="logout()" id="nav-logout-btn"><span class="material-icons-round">logout</span>{{ t('تسجيل الخروج', 'Logout') }}</button>
         </div>
       </div>
       } @else {
-      <a routerLink="/auth/login" class="btn btn-primary btn-sm" id="nav-login-btn">
-        <span class="material-icons-round">login</span>
-        {{ t('دخول الصيدلي', 'Pharmacist Login') }}
-      </a>
+      <a routerLink="/auth/login" class="btn btn-primary btn-sm pharmacist-login-btn" id="nav-login-btn">{{ t('دخول الصيدلي', 'Pharmacist Login') }}</a>
       }
 
-      <!-- Mobile hamburger -->
-      <button class="btn btn-ghost btn-icon-circle mobile-menu-btn" id="mobile-menu-btn" (click)="toggleMobileMenu()"
-        [attr.aria-expanded]="mobileMenuOpen()">
+      <button class="btn btn-ghost btn-icon-circle mobile-menu-btn" id="mobile-menu-btn" (click)="toggleMobileMenu()" [attr.aria-expanded]="mobileMenuOpen()">
         <span class="material-icons-round">{{ mobileMenuOpen() ? 'close' : 'menu' }}</span>
       </button>
     </div>
   </div>
 
-  <!-- Mobile menu -->
   @if (mobileMenuOpen()) {
   <div class="mobile-menu animate-fade-in">
-    <!-- Mobile search -->
     @if (!isHomePage) {
     <div class="mobile-search">
       <span class="material-icons-round">search</span>
-      <input id="mobile-search-input" type="text" [(ngModel)]="searchQuery" (input)="onSearchInput()"
-        (keyup.enter)="onSearch(); closeMobileMenu()" [placeholder]="t('ابحث عن دواء...', 'Search medicine...')" />
+      <input id="mobile-search-input" type="text" [(ngModel)]="searchQuery" (input)="onSearchInput()" (keyup.enter)="onSearch(); closeMobileMenu()" [placeholder]="t('ابحث عن دواء...', 'Search medicine...')" />
     </div>
     }
-
-    <!-- Mobile nav links -->
     <nav class="mobile-nav">
-      <a routerLink="/" class="mobile-nav-item" (click)="closeMobileMenu()" id="mobile-nav-home">
-        <span class="material-icons-round">home</span>
-        {{ t('الرئيسية', 'Home') }}
-      </a>
-      <a routerLink="/search" class="mobile-nav-item" (click)="closeMobileMenu()" id="mobile-nav-search">
-        <span class="material-icons-round">search</span>
-        {{ t('تصفح الأدوية', 'Browse Medicines') }}
-      </a>
+      <a routerLink="/" class="mobile-nav-item" (click)="closeMobileMenu()" id="mobile-nav-home"><span class="material-icons-round">home</span>{{ t('الرئيسية', 'Home') }}</a>
+      <a routerLink="/search" class="mobile-nav-item" (click)="closeMobileMenu()" id="mobile-nav-search"><span class="material-icons-round">search</span>{{ t('تصفح الأدوية', 'Browse Medicines') }}</a>
       @if (!auth.isLoggedIn) {
-      <a routerLink="/auth/login" class="mobile-nav-item primary" (click)="closeMobileMenu()" id="mobile-nav-login">
-        <span class="material-icons-round">login</span>
-        {{ t('دخول الصيدلي', 'Pharmacist Login') }}
-      </a>
+      <a routerLink="/auth/login" class="mobile-nav-item primary" (click)="closeMobileMenu()" id="mobile-nav-login"><span class="material-icons-round">login</span>{{ t('دخول الصيدلي', 'Pharmacist Login') }}</a>
       }
       @if (auth.isLoggedIn) {
-      <button class="mobile-nav-item danger" (click)="logout(); closeMobileMenu()" id="mobile-nav-logout">
-        <span class="material-icons-round">logout</span>
-        {{ t('تسجيل الخروج', 'Logout') }}
-      </button>
+      <button class="mobile-nav-item danger" (click)="logout(); closeMobileMenu()" id="mobile-nav-logout"><span class="material-icons-round">logout</span>{{ t('تسجيل الخروج', 'Logout') }}</button>
       }
     </nav>
-
-    <!-- Mobile toggles -->
     <div class="mobile-toggles">
-      <button class="toggle-chip" (click)="lang.toggle()" id="mobile-lang-btn">
-        <span class="material-icons-round">translate</span>
-        {{ lang.isArabic ? 'English' : 'عربي' }}
-      </button>
-      <button class="toggle-chip" (click)="theme.toggle()" id="mobile-theme-btn">
-        <span class="material-icons-round">{{ theme.isDark ? 'light_mode' : 'dark_mode' }}</span>
-        {{ theme.isDark ? t('وضع النهار', 'Light Mode') : t('الوضع الليلي', 'Dark Mode') }}
-      </button>
+      <button class="toggle-chip" (click)="lang.toggle()" id="mobile-lang-btn"><span class="material-icons-round">translate</span>{{ lang.isArabic ? 'English' : 'عربي' }}</button>
+      <button class="toggle-chip" (click)="theme.toggle()" id="mobile-theme-btn"><span class="material-icons-round">{{ theme.isDark ? 'light_mode' : 'dark_mode' }}</span>{{ theme.isDark ? t('وضع النهار', 'Light Mode') : t('الوضع الليلي', 'Dark Mode') }}</button>
     </div>
   </div>
   }

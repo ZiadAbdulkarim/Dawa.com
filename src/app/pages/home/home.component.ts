@@ -39,11 +39,10 @@ export class HomeComponent implements OnInit {
   ];
 
   howSteps = [
-    { n: 1, icon: 'search', titleAr: 'ابحث عن دوائك', titleEn: 'Search Your Medicine', descAr: 'اكتب اسم الدواء أو المادة الفعالة', descEn: 'Type the medicine or active ingredient' },
-    { n: 2, icon: 'local_pharmacy', titleAr: 'شاهد الصيدليات', titleEn: 'See Pharmacies', descAr: 'اعرف الصيدليات التي تمتلكه والسعر', descEn: 'Find which pharmacies have it and the price' },
-    { n: 3, icon: 'directions_walk', titleAr: 'توجّه للصيدلية', titleEn: 'Go to Pharmacy', descAr: 'اذهب مباشرةً لأقرب صيدلية ووفّر وقتك', descEn: 'Head directly and save your time' },
+    { n: 1, icon: 'search', titleAr: 'ابحث عن دوائك', titleEn: 'Search', descAr: 'اكتب اسم الدواء أو المادة الفعالة', descEn: 'Search by name or ingredient' },
+    { n: 2, icon: 'local_pharmacy', titleAr: 'اعثر عليه', titleEn: 'Find', descAr: 'شاهد الصيدليات والسعر والتوافر', descEn: 'See pharmacies, price and availability' },
+    { n: 3, icon: 'directions_walk', titleAr: 'اذهب واحصل عليه', titleEn: 'Go & Get', descAr: 'توجّه للصيدلية واحصل على دوائك', descEn: 'Visit the pharmacy and get your medicine' },
   ];
-
 
   ngOnInit(): void {
     this.popularMedicines.set(this.data.getMedicines().slice(0, 6));
