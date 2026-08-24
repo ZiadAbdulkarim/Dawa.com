@@ -58,12 +58,11 @@
 
 .main-search-wrap { width: 100%; max-width: 680px; display: flex; flex-direction: column; gap: var(--space-sm); }
 .main-search-box { position: relative; filter: drop-shadow(0 8px 32px rgba(0,0,0,0.25)); }
-.main-search-inner {
-  display: flex; align-items: center; background: #fff; border-radius: var(--radius-xl); overflow: hidden; padding: 0 0 0 5px; gap: 0;
-  [dir="rtl"] & { padding: 0 5px 0 0; }
-  input { flex: 1; border: none; outline: none; font-family: inherit; font-size: var(--font-size-base); color: var(--text-primary); background: transparent; min-width: 0; padding: 17px 7px; &::placeholder { color: var(--text-muted); } }
-  .search-action-btn { flex-shrink: 0; border-radius: var(--radius-xl) !important; padding-top: 12px; padding-bottom: 12px; height: 100%; margin: 4px; }
-}
+.main-search-inner { display: flex; align-items: center; background: #fff; border-radius: var(--radius-xl); overflow: hidden; padding: 0 0 0 5px; gap: 0; [dir="rtl"] & { padding: 0 5px 0 0; } }
+.main-search-inner input { flex: 1; border: none; outline: none; font-family: inherit; font-size: var(--font-size-base); color: var(--text-primary); background: transparent; min-width: 0; padding: 17px 7px; &::placeholder { color: var(--text-muted); } }
+.main-search-inner .search-action-btn { flex-shrink: 0; border-radius: var(--radius-xl) !important; padding-top: 12px; padding-bottom: 12px; height: 100%; margin: 4px; }
+
+:host-context([data-theme="dark"]) .main-search-inner { background: var(--input-bg); input { color: var(--text-primary); &::placeholder { color: var(--text-muted); } } }
 
 .search-suggestions { position: absolute; top: calc(100% + 8px); inset-inline-start: 0; inset-inline-end: 0; background: var(--bg-elevated); border: 1px solid var(--border-default); border-radius: var(--radius-lg); box-shadow: var(--shadow-xl); overflow: hidden; z-index: var(--z-dropdown); }
 .suggestion-row { display: flex; align-items: center; gap: var(--space-sm); padding: 10px var(--space-md); background: none; border: none; width: 100%; text-align: inherit; cursor: pointer; font-family: inherit; border-bottom: 1px solid var(--border-muted); transition: background var(--transition-fast); &:hover { background: var(--bg-hover); } &:last-of-type { border-bottom: none; } }
@@ -72,49 +71,73 @@
 .suggestion-row .sug-meta { display: flex; align-items: center; gap: var(--space-xs); flex-shrink: 0; }
 .sug-pharmacies { display: flex; align-items: center; gap: 3px; font-size: var(--font-size-xs); color: var(--dawa-accent); font-weight: 600; .material-icons-round { font-size: 13px; } }
 .rx-badge { font-size: 10px; padding: 2px 6px; }
-.see-all-link { display: flex; align-items: center; justify-content: center; gap: 4px; padding: 10px; font-size: var(--font-size-sm); font-weight: 600; color: var(--dawa-primary); text-decoration: none; background: rgba(12,115,184,0.12); transition: background var(--transition-fast); .material-icons-round { font-size: 16px; } &:hover { background: rgba(12,115,184,0.22); } }
+.see-all-link { display: flex; align-items: center; justify-content: center; gap: 4px; padding: 10px; font-size: var(--font-size-sm); font-weight: 600; color: var(--dawa-primary); text-decoration: none; background: rgba(12,115,184,0.12); transition: background var(--transition-fast); .material-icons-round { font-size: 16px; } [dir="rtl"] & .material-icons-round { transform: scaleX(-1); } &:hover { background: rgba(12,115,184,0.22); } }
 .search-hints { display: flex; align-items: center; gap: var(--space-xs); flex-wrap: wrap; justify-content: center; font-size: var(--font-size-xs); color: rgba(255,255,255,0.7); }
-.hint-pill { padding: 4px 14px; background: rgba(255,255,255,0.14); border: 1px solid rgba(255,255,255,0.3); border-radius: var(--radius-full); color: #fff; font-family: inherit; font-size: var(--font-size-xs); cursor: pointer; transition: all var(--transition-fast); &:hover { background: rgba(255,255,255,0.25); transform: translateY(-1px); } }
+.hint-pill { padding: 4px 14px; background: rgba(255,255,255,0.14); border: 1px solid rgba(255,255,255,0.3); border-radius: var(--radius-full); color: #fff; font-family: inherit; font-size: var(--font-size-xs); cursor: pointer; transition: all var(--transition-fast); &:hover { background: rgba(255,255,255,0.25); } }
 
-// ===== REFINED DESKTOP INFORMATION HIERARCHY =====
-.home-content-refined {
-  max-width: var(--container-max);
-  margin: 0 auto;
-  padding: var(--space-xl) var(--space-lg) var(--space-2xl);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2xl);
-}
+.hero-stats-row, .hero-stat, .hero-stat-sep { display: none; }
 
-.home-overview-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1.7fr) minmax(190px, .7fr) minmax(270px, .95fr);
-  gap: var(--space-lg);
-  align-items: stretch;
-}
+// ===== EXISTING BODY / CARD STYLES KEPT =====
+.home-body { display: flex; max-width: var(--container-max); margin: 0 auto; padding: var(--space-xl) var(--space-lg); gap: var(--space-xl); align-items: flex-start; }
+.home-sidebar { width: 280px; min-width: 280px; display: flex; flex-direction: column; gap: var(--space-lg); position: sticky; top: calc(var(--navbar-height) + var(--space-lg)); }
+.sidebar-card { background: var(--bg-surface); border: 1px solid var(--border-default); border-radius: var(--radius-lg); box-shadow: var(--card-shadow); overflow: hidden; }
+.sidebar-card-header { display: flex; align-items: center; gap: var(--space-xs); padding: var(--space-md) var(--space-lg); background: var(--bg-muted); border-bottom: 1px solid var(--border-muted); font-size: var(--font-size-sm); font-weight: 700; color: var(--text-primary); .material-icons-round { font-size: 18px; color: var(--dawa-primary); } }
+.sidebar-badge { margin-inline-start: auto; background: var(--dawa-primary); color: #fff; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: var(--radius-full); }
+.sidebar-list { list-style: none; padding: var(--space-xs) 0; }
+.sidebar-list-item { display: flex; align-items: center; gap: var(--space-sm); padding: 8px var(--space-lg); text-decoration: none; transition: background var(--transition-fast); &:hover { background: var(--bg-hover); } }
+.sidebar-list-item .sidebar-cat-icon { width: 30px; height: 30px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; flex-shrink: 0; .material-icons-round { font-size: 15px; } }
+.sidebar-list-item .sidebar-cat-name { flex: 1; font-size: var(--font-size-sm); color: var(--text-secondary); font-weight: 500; }
+.sidebar-list-item .sidebar-count { font-size: var(--font-size-xs); font-weight: 700; color: var(--text-muted); background: var(--bg-muted); padding: 2px 8px; border-radius: var(--radius-full); }
+.sidebar-see-all { display: flex; align-items: center; justify-content: center; gap: 4px; padding: var(--space-sm); font-size: var(--font-size-xs); font-weight: 600; color: var(--dawa-primary); text-decoration: none; border-top: 1px solid var(--border-muted); transition: background var(--transition-fast); &:hover { background: rgba(12,115,184,0.05); } .material-icons-round { font-size: 14px; } [dir="rtl"] & .material-icons-round { transform: scaleX(-1); } }
+.sidebar-ph-item { display: flex; align-items: center; gap: var(--space-sm); padding: 10px var(--space-lg); text-decoration: none; transition: background var(--transition-fast); &:hover { background: var(--bg-hover); } }
+.sidebar-ph-logo { width: 34px; height: 34px; background: var(--dawa-gradient-primary); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; .material-icons-round { font-size: 16px; color: #fff; } &.has-image { background: var(--bg-surface); border: 1px solid var(--border-muted); } }
+.pharmacy-photo { width: 100%; height: 100%; object-fit: cover; display: block; }
+.sidebar-ph-info { flex: 1; min-width: 0; .sidebar-ph-name { display: block; font-size: var(--font-size-xs); font-weight: 700; color: var(--text-primary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } .sidebar-ph-area { display: block; font-size: 11px; color: var(--text-muted); } }
+.sidebar-ph-status { width: 8px; height: 8px; border-radius: 50%; background: var(--dawa-danger); flex-shrink: 0; .status-dot { display: none; } &.open { background: var(--dawa-success); animation: pulse 2s ease-in-out infinite; } }
 
-.refined-how-section,
-.refined-stats-card,
-.refined-pharmacies-card {
-  min-width: 0;
-  background: var(--bg-surface);
-  border: 1px solid var(--border-default);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--card-shadow);
-  overflow: hidden;
-}
+.home-main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: var(--space-2xl); }
+.home-section { display: flex; flex-direction: column; gap: var(--space-lg); }
+.medicines-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-lg); }
+.medicine-card { display: flex; flex-direction: column; text-decoration: none; overflow: hidden; border-radius: var(--radius-lg); }
+.med-img { height: 140px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; .material-icons-round { font-size: 52px; color: rgba(255,255,255,0.9); } .rx-chip { position: absolute; top: 10px; inset-inline-end: 10px; background: rgba(245,158,11,0.9); color: #fff; font-size: 10px; font-weight: 800; padding: 3px 8px; border-radius: var(--radius-full); } }
+.med-body { padding: var(--space-md) var(--space-lg) var(--space-lg); display: flex; flex-direction: column; gap: 6px; flex: 1; }
+.med-cat-tag { font-size: 11px; font-weight: 700; color: var(--dawa-primary); text-transform: uppercase; letter-spacing: 0.06em; }
+.med-name { font-size: var(--font-size-lg); font-weight: 700; color: var(--text-primary); margin: 0; line-height: 1.25; }
+.med-generic { font-size: var(--font-size-xs); color: var(--text-muted); margin: 0; }
+.med-desc { font-size: var(--font-size-xs); color: var(--text-secondary); margin: 0; line-height: 1.6; flex: 1; }
+.med-footer { display: flex; align-items: center; justify-content: space-between; padding-top: var(--space-sm); border-top: 1px solid var(--border-muted); margin-top: var(--space-sm); }
+.med-price-row { display: flex; align-items: center; gap: var(--space-xs); }
+.price-badge { display: inline-flex; align-items: center; gap: 3px; font-size: var(--font-size-xs); font-weight: 700; color: var(--dawa-success); .material-icons-round { font-size: 13px; } }
+.ph-badge { display: inline-flex; align-items: center; gap: 3px; font-size: var(--font-size-xs); color: var(--text-muted); .material-icons-round { font-size: 13px; color: var(--dawa-accent); } }
+.view-arrow { font-size: 18px; color: var(--dawa-primary); transition: transform var(--transition-fast); [dir="rtl"] & { transform: scaleX(-1); } }
+.medicine-card:hover .view-arrow { transform: translateX(4px); }
+[dir="rtl"] .medicine-card:hover .view-arrow { transform: scaleX(-1) translateX(-4px); }
 
+.how-section { background: var(--bg-muted); border-radius: var(--radius-xl); padding: var(--space-xl); }
+.steps-row { display: flex; align-items: center; gap: var(--space-md); flex-wrap: wrap; }
+.step-card { flex: 1; display: flex; flex-direction: column; align-items: center; text-align: center; gap: var(--space-sm); padding: var(--space-lg); background: var(--bg-surface); border-radius: var(--radius-lg); border: 1px solid var(--border-default); width: 100%; .step-num { width: 32px; height: 32px; background: var(--dawa-gradient-primary); color: #fff; border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: var(--font-size-base); } .step-icon { width: 56px; height: 56px; background: rgba(12,115,184,0.10); border-radius: var(--radius-lg); display: flex; align-items: center; justify-content: center; .material-icons-round { font-size: 28px; color: var(--dawa-primary); } } h4 { font-size: var(--font-size-base); margin: 0; } p { font-size: var(--font-size-xs); color: var(--text-secondary); margin: 0; line-height: 1.5; } }
+.step-arrow { font-size: 24px; color: var(--text-muted); flex-shrink: 0; [dir="rtl"] & { transform: scaleX(-1); } }
+
+.site-footer { background: var(--bg-surface); border-top: 1px solid var(--border-default); padding-top: var(--space-3xl); }
+.footer-inner { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: var(--space-3xl); }
+.footer-brand { display: flex; flex-direction: column; gap: var(--space-md); p { font-size: var(--font-size-sm); color: var(--text-muted); } }
+.footer-logo { display: flex; align-items: center; gap: var(--space-sm); font-size: 22px; font-weight: 800; color: var(--text-primary); .material-icons-round { font-size: 28px; color: var(--dawa-primary); } span span { color: var(--dawa-accent); } }
+.footer-links { display: flex; flex-direction: column; gap: var(--space-sm); h4 { font-size: var(--font-size-xs); font-weight: 700; color: var(--text-primary); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: var(--space-xs); } a { font-size: var(--font-size-sm); color: var(--text-secondary); text-decoration: none; transition: color var(--transition-fast); &:hover { color: var(--dawa-primary); } } }
+.footer-bottom { margin-top: var(--space-2xl); padding: var(--space-lg) var(--space-xl); border-top: 1px solid var(--border-muted); text-align: center; p { font-size: var(--font-size-xs); color: var(--text-muted); margin: 0; } }
+
+// ===== REFINED DESKTOP LAYER =====
+.home-content-refined { max-width: var(--container-max); margin: 0 auto; padding: var(--space-xl) var(--space-lg) var(--space-2xl); display: flex; flex-direction: column; gap: var(--space-2xl); }
+.home-overview-grid { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(190px, .7fr) minmax(270px, .95fr); gap: var(--space-lg); align-items: stretch; }
+.refined-how-section, .refined-stats-card, .refined-pharmacies-card { min-width: 0; background: var(--bg-surface); border: 1px solid var(--border-default); border-radius: var(--radius-lg); box-shadow: var(--card-shadow); overflow: hidden; }
 .refined-how-section { padding: var(--space-lg); }
 .refined-how-section .section-header { margin-bottom: 2px; }
 .refined-how-section .steps-row { min-height: 190px; align-items: center; }
-
 .refined-stats-card { padding: var(--space-lg); display: flex; flex-direction: column; justify-content: center; }
 .refined-card-heading { display: flex; align-items: center; gap: var(--space-xs); color: var(--text-primary); font-size: var(--font-size-sm); font-weight: 700; margin-bottom: var(--space-md); .material-icons-round { color: var(--dawa-primary); font-size: 18px; } }
 .refined-stat-list { display: grid; gap: var(--space-md); }
 .refined-stat-item { display: flex; flex-direction: column; padding-bottom: var(--space-md); border-bottom: 1px solid var(--border-muted); &:last-child { padding-bottom: 0; border-bottom: 0; } }
 .refined-stat-item strong { font-size: clamp(1.55rem, 2.2vw, 2rem); line-height: 1.05; font-weight: 800; color: var(--dawa-primary-dark); }
 .refined-stat-item span { margin-top: 4px; font-size: var(--font-size-xs); color: var(--text-muted); }
-
 .refined-pharmacies-card { padding: var(--space-lg) 0 0; }
 .refined-pharmacies-card .refined-card-heading { padding: 0 var(--space-lg); }
 .refined-card-count { margin-inline-start: auto; min-width: 24px; height: 24px; display: inline-flex; align-items: center; justify-content: center; border-radius: var(--radius-full); background: var(--dawa-primary); color: #fff; font-size: 10px; }
@@ -125,8 +148,6 @@
 .refined-open-status { flex-shrink: 0; font-size: 11px; font-weight: 700; color: var(--text-muted); }
 .refined-open-status.open { color: var(--dawa-success); position: relative; padding-inline-start: 10px; }
 .refined-open-status.open::before { content: ''; position: absolute; inset-inline-start: 0; top: 50%; width: 5px; height: 5px; border-radius: 50%; background: currentColor; transform: translateY(-50%); animation: refined-status-pulse 2.2s ease-in-out infinite; }
-
-// ===== BROWSE BY CATEGORY =====
 .refined-category-section { gap: var(--space-md); }
 .refined-category-row { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: var(--space-sm); }
 .refined-category-item { min-width: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: var(--space-md) var(--space-sm); background: var(--bg-surface); border: 1px solid var(--border-default); border-radius: var(--radius-lg); box-shadow: var(--card-shadow); text-decoration: none; transition: transform var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast); &:hover { transform: translateY(-3px); border-color: rgba(12,115,184,.2); box-shadow: var(--shadow-md); background: var(--bg-elevated); } }
@@ -134,34 +155,18 @@
 .refined-category-item .sidebar-cat-icon .material-icons-round { font-size: 21px; }
 .refined-category-name { font-size: 11px; font-weight: 700; color: var(--text-primary); text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
 .refined-category-count { font-size: 10px; color: var(--text-muted); }
-
-// ===== MEDICINE CARD MICRO-INTERACTIONS =====
 .medicine-card { transition: transform 220ms cubic-bezier(.2,.7,.2,1), box-shadow 220ms ease; }
 .medicine-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
 .medicine-card .med-img app-medicine-image { transition: transform 300ms cubic-bezier(.2,.7,.2,1); }
 .medicine-card:hover .med-img app-medicine-image { transform: scale(1.035); }
-.view-arrow { transition: transform 220ms ease, background 220ms ease, color 220ms ease; }
 .medicine-card:hover .view-arrow { transform: translateX(3px); }
 
-// ===== SECTION MOTION =====
-.home-overview-grid > *,
-.refined-category-section,
-.home-section:not(.refined-how-section),
-.refined-pharmacies-card { animation: refined-section-in 520ms cubic-bezier(.2,.7,.2,1) both; }
-.home-overview-grid > :nth-child(2) { animation-delay: 70ms; }
-.home-overview-grid > :nth-child(3) { animation-delay: 120ms; }
-
-@keyframes refined-section-in { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes refined-status-pulse { 0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(34,197,94,.22); } 50% { opacity: .72; box-shadow: 0 0 0 4px rgba(34,197,94,0); } }
 
-// ===== FOOTER DISTRIBUTION =====
-.refined-footer-inner { grid-template-columns: minmax(260px, 1.5fr) repeat(2, minmax(180px, 1fr)); }
-
-// Keep the refinement desktop-focused. Existing responsive/mobile rules remain the source of truth below desktop.
+// Desktop-only refinement; mobile layout is intentionally left for the next pass.
 @media (max-width: 1180px) and (min-width: 769px) {
   .home-overview-grid { grid-template-columns: minmax(0, 1.45fr) minmax(180px, .65fr); }
   .refined-pharmacies-card { grid-column: 1 / -1; }
   .refined-pharmacy-list { display: grid; grid-template-columns: repeat(2, 1fr); }
-  .refined-pharmacy-row { border-inline-end: 1px solid var(--border-muted); }
   .refined-category-row { grid-template-columns: repeat(4, 1fr); }
 }
