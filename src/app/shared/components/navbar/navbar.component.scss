@@ -69,14 +69,14 @@
   .logo-main {
     font-size: 18px;
     font-weight: 800;
-    color: var(--dawa-primary);
+    color: var(--dawa-primary-dark);
     letter-spacing: -0.5px;
   }
 
   .logo-dot {
     font-size: 18px;
     font-weight: 800;
-    color: var(--dawa-accent);
+    color: #0ea5e9;
   }
 
   .logo-sub {
@@ -222,6 +222,38 @@
   gap: var(--space-sm);
   margin-inline-start: auto;
   flex-shrink: 0;
+}
+
+.nav-divider {
+  display: inline-block;
+  width: 1px;
+  height: 18px;
+  background-color: var(--border-default);
+  margin: 0 4px;
+}
+
+#nav-login-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  font-size: 13px;
+  padding: 8px 18px;
+  border-radius: var(--radius-full);
+  background: transparent;
+  color: var(--dawa-primary);
+  border: 1px solid var(--border-default);
+  box-shadow: none;
+  transition: all var(--transition-fast);
+
+  .material-icons-round {
+    font-size: 18px;
+  }
+  
+  &:hover {
+    border-color: var(--dawa-primary);
+    background: rgba(12, 115, 184, 0.05);
+  }
 }
 
 .lang-btn .lang-label {

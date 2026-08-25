@@ -57,8 +57,10 @@
       <!-- Language Toggle -->
       <button class="btn btn-ghost btn-icon-circle lang-btn" id="lang-toggle-btn" (click)="lang.toggle()"
         [title]="t('English', 'عربي')">
-        <span class="lang-label">{{ lang.isArabic ? 'EN' : 'ع' }}</span>
+        <span class="lang-label">{{ lang.isArabic ? 'EN' : 'AR' }}</span>
       </button>
+
+      <span class="nav-divider" aria-hidden="true"></span>
 
       <!-- Theme Toggle -->
       <button class="btn btn-ghost btn-icon-circle theme-btn" id="theme-toggle-btn" (click)="theme.toggle()"
