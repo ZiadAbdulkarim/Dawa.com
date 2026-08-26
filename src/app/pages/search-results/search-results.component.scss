@@ -15,11 +15,15 @@
   min-width: 280px;
   border-inline-end: 1px solid var(--border-default);
   background: var(--bg-surface);
-  overflow-y: auto;
-  max-height: calc(100vh - var(--navbar-height));
+  // No overflow-y:auto — let content flow naturally, no scrollbars
   position: sticky;
   top: var(--navbar-height);
   align-self: flex-start;
+  max-height: calc(100vh - var(--navbar-height));
+  overflow-y: auto;
+  overflow-x: hidden; // Prevent horizontal scrollbar from padding/border
+  scrollbar-width: thin;
+  scrollbar-color: var(--dawa-primary) transparent;
 
   @media (max-width: 1024px) {
     width: 100%;
@@ -44,6 +48,9 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-lg);
+  overflow: hidden; // Prevent dawa-card-subtle border from causing inner scroll
+  box-sizing: border-box;
+  width: 100%;
 }
 
 .filter-header {
@@ -89,7 +96,7 @@
   font-family: inherit; font-size: var(--font-size-sm); color: var(--text-secondary);
   transition: all var(--transition-fast);
 
-  .filter-cat-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .filter-cat-icon { font-size: 18px; flex-shrink: 0; line-height: 1; } // colored per cat.color via style binding
   .material-icons-round { font-size: 16px; color: var(--text-muted); }
   .filter-count { margin-inline-start: auto; font-size: 11px; color: var(--text-muted); background: var(--bg-muted); padding: 2px 8px; border-radius: var(--radius-full); }
 
@@ -105,30 +112,59 @@
 
 .avail-options { display: flex; gap: var(--space-xs); flex-wrap: wrap; }
 .avail-chip {
-  padding: 6px 14px; background: var(--bg-muted);
+  // Default: full pill — works for short labels ("All" / "الكل")
+  padding: 5px 12px;
+  background: var(--bg-muted);
   border: 1.5px solid var(--border-default);
   border-radius: var(--radius-full);
   font-family: inherit; font-size: var(--font-size-xs); font-weight: 600;
   color: var(--text-secondary); cursor: pointer;
+  white-space: nowrap;
   transition: all var(--transition-fast);
   &:hover { border-color: var(--dawa-primary); color: var(--dawa-primary); }
   &.active { background: var(--dawa-primary); color: #fff; border-color: var(--dawa-primary); }
+
+  // Rounded rectangle for multi-character labels (OTC = 3 chars)
+  &.chip-wide {
+    border-radius: var(--radius-md); // 8px — clearly rectangular corners
+    padding: 5px 16px;               // more horizontal room for the text
+  }
 }
 
 .price-inputs {
   display: flex; align-items: center; gap: var(--space-sm);
-  .price-sep { color: var(--text-muted); flex-shrink: 0; }
+  .price-sep { color: var(--text-muted); flex-shrink: 0; font-size: var(--font-size-sm); }
 }
-.price-input {
-  flex: 1; min-width: 0;
-  padding: 8px var(--space-sm);
+// Price number inputs styled to match Dawa.com form system
+// Uses .input-wrap from global _forms.scss for base look;
+// overrides below ensure number spinners remain visible and fit the sidebar.
+.price-num-input {
+  flex: 1;
+  min-width: 0;
+  width: 100%; // Let flex shrink handle width — no fixed min-width forcing overflow
+  padding: 7px 6px;
   background: var(--input-bg);
   border: 1.5px solid var(--input-border);
   border-radius: var(--radius-md);
-  font-family: inherit; font-size: var(--font-size-sm); color: var(--text-primary);
+  font-family: inherit;
+  font-size: var(--font-size-sm);
+  color: var(--text-primary);
   outline: none;
-  &:focus { border-color: var(--input-focus); box-shadow: 0 0 0 3px rgba(12,115,184,0.12); }
-  &::-webkit-inner-spin-button, &::-webkit-outer-spin-button { opacity: 0.5; }
+  box-sizing: border-box;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+
+  &::placeholder { color: var(--text-muted); }
+  &:hover:not(:focus) { border-color: var(--dawa-primary-light); }
+  &:focus {
+    border-color: var(--input-focus);
+    box-shadow: 0 0 0 3px rgba(12,115,184,0.12);
+  }
+  // Keep spinner controls styled subtly, not hidden
+  &::-webkit-inner-spin-button,
+  &::-webkit-outer-spin-button {
+    opacity: 0.6;
+    height: auto;
+  }
 }
 
 // ===== RESULTS AREA =====
@@ -164,73 +200,82 @@
 }
 
 // ===== GRID =====
-.medicines-grid {
+.medicines-grid-layout {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: var(--space-lg);
-  @media (max-width: 1200px) { grid-template-columns: repeat(2, 1fr); }
-  @media (max-width: 600px)  { grid-template-columns: 1fr; }
+  gap: var(--space-md);
+  @media (max-width: 1024px) { grid-template-columns: repeat(2, 1fr); }
+  @media (max-width: 640px) { grid-template-columns: 1fr; }
 }
 
-.med-card {
-  display: flex; flex-direction: column;
-  border-radius: var(--radius-lg);
-  overflow: hidden;
+.medicine-grid-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  padding: var(--space-md);
   text-decoration: none;
+  border-radius: var(--radius-lg);
   background: var(--bg-surface);
-  border: 1px solid var(--border-default);
-  box-shadow: var(--card-shadow);
-  transition: transform var(--transition-base), box-shadow var(--transition-base), border-color var(--transition-base);
+  border: 1px solid var(--border-muted);
+  transition: all var(--transition-fast);
+
   &:hover {
-    transform: translateY(-3px);
-    box-shadow: var(--shadow-lg);
     border-color: var(--dawa-primary);
+    box-shadow: var(--card-shadow-hover);
+    transform: translateY(-2px);
   }
 }
 
-.med-card-img {
-  height: 150px;
+.med-img-box {
+  width: 100%;
+  height: 110px;
+  border-radius: var(--radius-sm);
   display: flex; align-items: center; justify-content: center;
   position: relative;
-  overflow: hidden;
-  .material-icons-round { font-size: 56px; color: rgba(255,255,255,0.88); }
-  .img-badges { position: absolute; top: 10px; inset-inline-start: 10px; display: flex; flex-direction: column; gap: 4px; }
-}
-.img-badge {
-  font-size: 10px; font-weight: 800; padding: 3px 8px; border-radius: var(--radius-full);
-  backdrop-filter: blur(4px);
-  &.rx   { background: rgba(245,158,11,0.88); color: #fff; }
-  &.otc  { background: rgba(16,185,129,0.88); color: #fff; }
-  &.form { background: rgba(0,0,0,0.3); color: #fff; text-transform: capitalize; }
+  background: var(--bg-base);
+  flex-shrink: 0;
+  overflow: visible;
+  margin-bottom: var(--space-sm);
+
+  .rx-chip {
+    position: absolute; top: -6px; inset-inline-start: -6px;
+    width: 28px; height: 28px;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--dawa-danger); color: #fff; font-size: 10px; font-weight: 800;
+    line-height: 1; border-radius: 50%; border: 2px solid #fff;
+    box-shadow: var(--shadow-sm); z-index: 2;
+  }
 }
 
-.med-card-body {
-  padding: var(--space-md) var(--space-md) var(--space-sm);
-  display: flex; flex-direction: column; gap: 5px; flex: 1;
+.med-info-box {
+  display: flex; flex-direction: column; gap: 4px;
+  .med-cat-tag { font-size: 10px; font-weight: 700; color: var(--dawa-primary-light); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 2px; }
+  .med-name { font-size: 18px; font-weight: 800; color: var(--text-primary); margin: 0; line-height: 1.3; }
+  .med-generic { font-size: 13px; color: var(--text-secondary); margin: 0 0 2px 0; }
+  .med-desc { font-size: 12px; color: var(--text-muted); margin: 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 }
-.cat-label { font-size: 10px; font-weight: 700; color: var(--dawa-primary); text-transform: uppercase; letter-spacing: 0.07em; }
-.med-title { font-size: var(--font-size-base); font-weight: 700; color: var(--text-primary); margin: 0; line-height: 1.3; }
-.med-generic-name { font-size: 11px; color: var(--text-muted); margin: 0; }
-.med-desc-text { font-size: var(--font-size-xs); color: var(--text-secondary); margin: 0; line-height: 1.6; }
 
-.med-card-footer {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: var(--space-sm) var(--space-md);
-  border-top: 1px solid var(--border-muted);
-  background: var(--bg-muted);
-  gap: var(--space-sm);
+.med-price-box {
+  display: flex; flex-direction: column; gap: 12px; margin-top: auto; padding-top: var(--space-sm);
+  .med-price-val { font-size: 20px; font-weight: 800; color: var(--dawa-success); }
+  .med-meta-actions { display: flex; align-items: center; justify-content: space-between; width: 100%; gap: var(--space-md); }
+  .med-ph-count { font-size: 10px; color: var(--text-muted); strong { color: var(--text-secondary); font-weight: 700; } }
+  .med-arrow {
+    width: 28px; height: 28px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid rgba(12, 115, 184, 0.25); background: transparent;
+    transition: all var(--transition-fast); flex-shrink: 0;
+    .material-icons-round { font-size: 16px; color: var(--dawa-primary); transition: transform var(--transition-fast); }
+    :host-context([dir="rtl"]) & .material-icons-round { transform: scaleX(-1); }
+  }
 }
-.med-price {
-  display: flex; align-items: center; gap: 3px;
-  color: var(--dawa-success); font-size: var(--font-size-sm);
-  .material-icons-round { font-size: 14px; }
-  strong { font-weight: 800; font-size: var(--font-size-base); }
-  span:not(.material-icons-round) { font-size: var(--font-size-xs); color: var(--text-muted); }
+
+.medicine-grid-card:hover .med-price-box .med-arrow {
+  background: rgba(12, 115, 184, 0.08); border-color: rgba(12, 115, 184, 0.4);
+  .material-icons-round { transform: translateX(3px); }
 }
-.med-ph-count {
-  display: flex; align-items: center; gap: 3px;
-  font-size: var(--font-size-xs); color: var(--text-secondary); font-weight: 600;
-  .material-icons-round { font-size: 14px; color: var(--dawa-accent); }
+:host-context([dir="rtl"]) .medicine-grid-card:hover .med-price-box .med-arrow .material-icons-round {
+  transform: scaleX(-1) translateX(3px);
 }
 
 // Skeleton

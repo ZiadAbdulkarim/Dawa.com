@@ -4,7 +4,8 @@
 
 // LIGHT THEME (default)
 [data-theme="light"] {
-  --bg-base:       #F0F5FB;
+  --bg-base:       #F8FAFC;
+  --bg-subtle:     #F0F5FB;
   --bg-surface:    #FFFFFF;
   --bg-elevated:   #FFFFFF;
   --bg-muted:      #E8EEF6;
@@ -41,6 +42,7 @@
 // DARK THEME
 [data-theme="dark"] {
   --bg-base:       #0A1628;
+  --bg-subtle:     #162640;
   --bg-surface:    #0F1F36;
   --bg-elevated:   #162640;
   --bg-muted:      #1A2D47;
@@ -48,9 +50,9 @@
   --bg-sidebar:    #0F1F36;
   --bg-navbar:     rgba(10, 22, 40, 0.92);
 
-  --text-primary:   #E8F0FA;
-  --text-secondary: #8AAAC8;
-  --text-muted:     #5A7A9A;
+  --text-primary:   #F8FAFC;
+  --text-secondary: #A4C2E4;
+  --text-muted:     #7393B3;
   --text-on-primary:#FFFFFF;
   --text-on-accent: #FFFFFF;
 
@@ -60,10 +62,10 @@
 
   --input-bg:       #162640;
   --input-border:   #1E3350;
-  --input-focus:    #3B9DE0;
+  --input-focus:    #34D9FF;
 
   --badge-bg:       #0C2A45;
-  --badge-text:     #3B9DE0;
+  --badge-text:     #34D9FF;
 
   --code-bg:        #0A1628;
 
@@ -72,4 +74,12 @@
   --navbar-shadow:  0 1px 3px rgba(0,0,0,0.2);
   --card-shadow:    0 1px 3px rgba(0,0,0,0.3);
   --card-shadow-hover: 0 4px 12px rgba(0,0,0,0.4);
+
+  // Override brand colors for better dark mode visibility
+  --dawa-primary:       #3B9DE0;
+  --dawa-primary-light: #64BAF6;
+  --dawa-primary-dark:  #1A659E;
+  --dawa-accent:        #10B981;
+  --dawa-accent-light:  #34D399;
+  --dawa-accent-dark:   #059669;
 }

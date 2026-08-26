@@ -19,7 +19,7 @@
   }
 
   // RTL: flip the background image using a pseudo element
-  [dir="rtl"] & {
+  :host-context([dir="rtl"]) & {
     background-image: none;
     background-color: var(--dawa-primary-dark);
 
@@ -89,7 +89,7 @@
 
   .line-two {
     display: block;
-    color: #34d9ff;
+    color: var(--dawa-cyan);
   }
 }
 
@@ -134,47 +134,68 @@
   z-index: 100;
 }
 
+@property --search-border-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
 .main-search-box {
   position: relative;
-  background: #fff;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
   border-radius: var(--radius-lg);
   box-shadow: 0 8px 32px rgba(0,0,0,0.18);
   padding: 8px;
-  transition: box-shadow 0.25s ease;
+  transition: all 0.3s ease;
+  z-index: 1;
 
-  // Fix 3: Subtle shimmer border animation on focus
-  &::after {
+  &::before {
     content: '';
     position: absolute;
-    inset: -2px;
-    border-radius: calc(var(--radius-lg) + 2px);
+    inset: -1px;
+    border-radius: calc(var(--radius-lg) + 1px);
+    padding: 1.5px;
     background: conic-gradient(
-      from 0deg,
-      transparent 0%,
-      rgba(12, 115, 184, 0.35) 10%,
-      rgba(52, 217, 255, 0.25) 20%,
-      transparent 30%,
-      transparent 100%
+      from var(--search-border-angle),
+      transparent 60%,
+      rgba(52, 217, 255, 0.2) 80%,
+      rgba(12, 115, 184, 0.8) 95%,
+      rgba(52, 217, 255, 1) 100%
     );
-    opacity: 0;
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
     z-index: -1;
+    opacity: 0;
     transition: opacity 0.4s ease;
-    animation: none;
+  }
+
+  &:hover {
+    box-shadow: 0 12px 36px rgba(0,0,0,0.15);
   }
 
   &:focus-within {
-    box-shadow: 0 8px 32px rgba(0,0,0,0.18), 0 0 0 3px rgba(12, 115, 184, 0.12);
+    box-shadow: 0 16px 48px rgba(12, 115, 184, 0.15);
+    border-color: transparent;
 
-    &::after {
+    &::before {
       opacity: 1;
-      animation: searchShimmer 3s linear infinite;
+      animation: searchBorderTrace 2.5s linear infinite;
     }
   }
 }
 
-@keyframes searchShimmer {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
+@keyframes searchBorderTrace {
+  0% { --search-border-angle: 0deg; }
+  100% { --search-border-angle: 360deg; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .main-search-box::before { animation: none !important; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -253,12 +274,12 @@
     font-size: 16px;
     transition: transform var(--transition-fast);
   }
-  [dir="rtl"] & .material-icons-round { transform: scaleX(-1); }
+  :host-context([dir="rtl"]) & .material-icons-round { transform: scaleX(-1); }
   &:hover {
     background: rgba(12,115,184,0.16);
     .material-icons-round { transform: translateX(3px); }
   }
-  [dir="rtl"] &:hover .material-icons-round { transform: scaleX(-1) translateX(3px); }
+  :host-context([dir="rtl"]) &:hover .material-icons-round { transform: scaleX(-1) translateX(3px); }
 }
 
 // ── Search hints (Polished & Soft Chips) ───────────────────
@@ -291,7 +312,7 @@
 // ===== PAGE LEVEL =====
 :host {
   display: block;
-  background-color: #f8fafc;
+  background-color: var(--bg-base);
 }
 
 // ===== MAIN LAYOUT =====
@@ -330,8 +351,8 @@
 }
 
 .home-side-col {
-  width: 320px;
-  min-width: 320px;
+  width: 340px;
+  min-width: 340px;
   display: flex;
   flex-direction: column;
   gap: var(--space-lg);
@@ -383,7 +404,7 @@
 
 // ===== HOW IT WORKS =====
 .how-section-frame {
-  background: #f0f5fb;
+  background: var(--bg-subtle);
   border: 1px solid var(--border-default);
   border-radius: var(--radius-lg);
   padding: var(--space-xl) var(--space-lg);
@@ -395,12 +416,13 @@
 
 .steps-row {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  align-items: flex-start;
+  justify-content: space-around;
+  gap: var(--space-lg);
 
   @media (max-width: 640px) {
     flex-direction: column;
-    gap: var(--space-xl);
+    gap: var(--space-2xl);
     align-items: center;
   }
 }
@@ -450,82 +472,11 @@
   }
 }
 
-// Fix 2: Redesigned elegant curved arrow connecting steps
-.step-arrow-line {
-  flex: 1;
-  min-width: 48px;
-  max-width: 96px;
-  height: 28px;
-  position: relative;
-  top: -20px;
-  margin: 0 var(--space-sm);
 
-  // Smooth upward-curving arc using elliptical border
-  &::before {
-    content: '';
-    display: block;
-    width: 100%;
-    height: 100%;
-    border: 2px solid transparent;
-    border-top-color: rgba(12, 115, 184, 0.35);
-    border-radius: 50% 50% 0 0 / 100% 100% 0 0;
-  }
-
-  // Clean solid arrowhead triangle
-  &::after {
-    content: '';
-    position: absolute;
-    inset-inline-end: -2px;
-    top: -4px;
-    width: 0;
-    height: 0;
-    border-top: 5px solid transparent;
-    border-bottom: 5px solid transparent;
-    border-inline-start: 8px solid rgba(12, 115, 184, 0.45);
-    filter: none;
-  }
-
-  // Fix 4: Subtle flowing animation on arrows
-  &::before {
-    transition: border-color 0.3s ease;
-  }
-  &:hover::before {
-    border-top-color: rgba(12, 115, 184, 0.6);
-  }
-
-  @media (max-width: 640px) {
-    width: 2px;
-    height: 28px;
-    max-width: 2px;
-    min-width: 2px;
-    top: 0;
-    margin: var(--space-xs) 0;
-
-    &::before {
-      width: 2px;
-      height: 100%;
-      border: none;
-      border-radius: 0;
-      background: rgba(12, 115, 184, 0.25);
-    }
-
-    &::after {
-      top: auto;
-      bottom: -5px;
-      inset-inline-end: auto;
-      inset-inline-start: -3px;
-      border-inline-start: none;
-      border-top: 7px solid rgba(12, 115, 184, 0.4);
-      border-left: 4px solid transparent;
-      border-right: 4px solid transparent;
-      border-bottom: none;
-    }
-  }
-}
 
 // ===== STATS SIDEBAR =====
 .stats-card {
-  background: #f0f5fb;
+  background: var(--bg-subtle);
   border: 1px solid var(--border-default);
   border-radius: var(--radius-lg);
   padding: var(--space-xl) var(--space-lg);
@@ -559,7 +510,7 @@
 
 // ===== SHARED MAIN FRAME (Categories + Medicines) =====
 .shared-main-frame {
-  background: #f0f5fb;
+  background: var(--bg-subtle);
   border: 1px solid var(--border-default);
   border-radius: var(--radius-lg);
   padding: var(--space-xl);
@@ -586,7 +537,7 @@
   display: flex;
   align-items: flex-start;
   flex-wrap: nowrap;
-  gap: var(--space-md);
+  gap: var(--space-sm);
   overflow-x: hidden; // Prevent scrolling — all items must fit
   padding: 4px 2px;
   scrollbar-width: none;
@@ -601,16 +552,16 @@
   text-decoration: none;
   flex: 1;
   min-width: 0;
-  padding: 4px 2px;
+  padding: 2px;
   border-radius: var(--radius-md);
   transition: all var(--transition-fast);
   background: transparent;
 
   .cat-icon {
-    width: 38px; height: 38px;
+    width: 32px; height: 32px;
     display: flex; align-items: center; justify-content: center;
     transition: transform var(--transition-fast);
-    .material-icons-round { font-size: 26px; }
+    .material-icons-round { font-size: 22px; }
   }
 
   .cat-name {
@@ -636,7 +587,7 @@
   .material-icons-round {
     font-size: 20px;
     color: var(--text-secondary);
-    [dir="rtl"] & { transform: scaleX(-1); }
+    :host-context([dir="rtl"]) & { transform: scaleX(-1); }
   }
   .cat-icon {
     background: transparent;
@@ -664,11 +615,11 @@
 .medicine-grid-card {
   display: flex;
   flex-direction: column;
-  gap: var(--space-md);
-  padding: var(--space-lg);
+  gap: var(--space-sm);
+  padding: var(--space-md);
   text-decoration: none;
   border-radius: var(--radius-lg);
-  background: #ffffff;
+  background: var(--bg-surface);
   border: 1px solid var(--border-muted);
   transition: all var(--transition-fast);
 
@@ -681,23 +632,25 @@
 
 .med-img-box {
   width: 100%;
-  height: 130px;
+  height: 110px;
   border-radius: var(--radius-sm);
   display: flex; align-items: center; justify-content: center;
   position: relative;
-  background: #f8fafc;
+  background: var(--bg-base);
   flex-shrink: 0;
   overflow: visible;
   margin-bottom: var(--space-sm);
 
   .rx-chip {
-    position: absolute; top: -8px; inset-inline-start: -8px;
-    width: 24px; height: 24px;
+    position: absolute; top: -6px; inset-inline-start: -6px;
+    width: 28px; height: 28px;
     display: flex; align-items: center; justify-content: center;
-    background: #ef4444; color: #fff; font-size: 9px; font-weight: 800;
+    background: var(--dawa-danger); color: #fff; font-size: 10px; font-weight: 800;
+    line-height: 1;
     border-radius: 50%;
     border: 2px solid #fff;
     box-shadow: var(--shadow-sm);
+    z-index: 2;
   }
 }
 
@@ -720,7 +673,7 @@
   flex-direction: column;
   gap: 12px;
   margin-top: auto;
-  padding-top: var(--space-md);
+  padding-top: var(--space-sm);
   
   .med-price-val {
     font-size: 20px;
@@ -756,7 +709,7 @@
       transition: transform var(--transition-fast);
     }
     // Fix 6: RTL arrow direction
-    [dir="rtl"] & .material-icons-round { transform: scaleX(-1); }
+    :host-context([dir="rtl"]) & .material-icons-round { transform: scaleX(-1); }
   }
 }
 
@@ -768,7 +721,7 @@
     transform: translateX(3px);
   }
 }
-[dir="rtl"] .medicine-grid-card:hover .med-price-box .med-arrow {
+:host-context([dir="rtl"]) .medicine-grid-card:hover .med-price-box .med-arrow {
   .material-icons-round {
     transform: scaleX(-1) translateX(3px);
   }
@@ -778,14 +731,14 @@
   .medicine-grid-card:hover .med-price-box .med-arrow .material-icons-round {
     transform: none !important;
   }
-  [dir="rtl"] .medicine-grid-card:hover .med-price-box .med-arrow .material-icons-round {
+  :host-context([dir="rtl"]) .medicine-grid-card:hover .med-price-box .med-arrow .material-icons-round {
     transform: scaleX(-1) !important;
   }
 }
 
 // ===== PHARMACIES SIDEBAR =====
 .pharmacies-card {
-  background: #f0f5fb;
+  background: var(--bg-subtle);
   border: 1px solid var(--border-default);
   border-radius: var(--radius-lg);
   box-shadow: var(--card-shadow);
@@ -874,12 +827,12 @@
       transition: transform var(--transition-fast);
     }
     // Fix 6: RTL arrow direction
-    [dir="rtl"] & .material-icons-round { transform: scaleX(-1); }
+    :host-context([dir="rtl"]) & .material-icons-round { transform: scaleX(-1); }
     &:hover {
       background: rgba(8,90,145,0.12);
       .material-icons-round { transform: translateX(3px); }
     }
-    [dir="rtl"] &:hover .material-icons-round { transform: scaleX(-1) translateX(3px); }
+    :host-context([dir="rtl"]) &:hover .material-icons-round { transform: scaleX(-1) translateX(3px); }
   }
 }
 
@@ -940,7 +893,7 @@
   }
 
   // RTL: mirror the background image
-  [dir="rtl"] & {
+  :host-context([dir="rtl"]) & {
     background-image: none;
     &::after {
       content: '';
@@ -993,8 +946,8 @@
   font-weight: 800;
   color: var(--dawa-primary-dark);
 
-  .material-icons-round { font-size: 28px; color: #0ea5e9; }
-  span span { color: #0ea5e9; }
+  .material-icons-round { font-size: 28px; color: var(--dawa-info); }
+  span span { color: var(--dawa-info); }
 }
 
 .footer-socials {
@@ -1049,16 +1002,23 @@
   .main-search-box {
     background: var(--bg-elevated);
     box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-    border: 1px solid var(--border-default);
+    border-color: rgba(255,255,255,0.08);
 
-    &::after {
+    &:hover {
+      box-shadow: 0 12px 36px rgba(0,0,0,0.5);
+    }
+    &:focus-within {
+      box-shadow: 0 16px 48px rgba(0,0,0,0.6);
+      border-color: transparent;
+    }
+
+    &::before {
       background: conic-gradient(
-        from 0deg,
-        transparent 0%,
-        rgba(59, 157, 224, 0.3) 10%,
-        rgba(52, 217, 255, 0.2) 20%,
-        transparent 30%,
-        transparent 100%
+        from var(--search-border-angle),
+        transparent 60%,
+        rgba(59, 157, 224, 0.4) 80%,
+        rgba(52, 217, 255, 0.8) 95%,
+        rgba(52, 217, 255, 1) 100%
       );
     }
   }
@@ -1106,11 +1066,7 @@
     .step-num { background: var(--dawa-primary); }
   }
 
-  // Step arrows in dark mode
-  .step-arrow-line {
-    &::before { border-top-color: rgba(59, 157, 224, 0.25); }
-    &::after { border-inline-start-color: rgba(59, 157, 224, 0.35); }
-  }
+
 
   // Category pills
   .category-pill {
@@ -1140,7 +1096,7 @@
   .frame-divider { background-color: var(--border-default); }
 
   // Price color in dark mode
-  .med-price-box .med-price-val { color: #34d399; }
+  .med-price-box .med-price-val { color: var(--dawa-accent-light); }
 
   // Sidebar footer
   .sidebar-card-footer { border-top-color: var(--border-default); }

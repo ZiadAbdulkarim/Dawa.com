@@ -2,7 +2,7 @@
   display: flex;
   gap: var(--space-xl);
   padding-top: calc(var(--navbar-height) + var(--space-xl));
-  padding-bottom: var(--space-2xl);
+  padding-bottom: var(--space-3xl);
   align-items: flex-start;
   min-height: calc(100vh - var(--navbar-height));
 
@@ -16,8 +16,11 @@
 
 .admin-sidebar {
   width: var(--sidebar-width);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  box-shadow: var(--card-shadow);
   border-radius: var(--radius-lg);
-  padding: var(--space-lg);
+  padding: var(--space-xl);
   flex-shrink: 0;
   position: sticky;
   top: calc(var(--navbar-height) + var(--space-xl));
@@ -32,14 +35,18 @@
 .sidebar-header {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  margin-bottom: 2rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid var(--border-default);
+  gap: var(--space-sm);
+  margin-bottom: var(--space-lg);
+  padding-bottom: var(--space-md);
+  border-bottom: 1px solid var(--border-muted);
+
+  .material-icons-round {
+    color: var(--dawa-primary);
+  }
 
   h3 {
-    font-size: 1.25rem;
-    font-weight: 700;
+    font-size: var(--font-size-xl);
+    font-weight: 800;
     margin: 0;
     color: var(--text-primary);
   }
@@ -48,34 +55,34 @@
 .sidebar-nav {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 4px;
 }
 
 .nav-section-title {
-  font-size: 0.75rem;
+  font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 1px;
-  font-weight: 700;
-  color: var(--text-secondary);
-  margin-top: 1.5rem;
-  margin-bottom: 0.5rem;
-  padding-inline-start: 1rem;
-  opacity: 0.7;
+  font-weight: 800;
+  color: var(--text-muted);
+  margin-top: var(--space-lg);
+  margin-bottom: var(--space-xs);
+  padding-inline-start: 14px;
 }
 
 .nav-item {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 0.75rem 1rem;
+  gap: var(--space-sm);
+  padding: 10px 14px;
   border-radius: var(--radius-md);
   color: var(--text-secondary);
   text-decoration: none;
-  font-weight: 500;
-  transition: all 0.2s ease;
+  font-weight: 600;
+  font-size: var(--font-size-sm);
+  transition: all var(--transition-fast);
 
-  span {
-    font-size: 1.25rem;
+  .material-icons-round {
+    font-size: 20px;
   }
 
   &.active {
@@ -92,4 +99,12 @@
 .admin-content {
   flex-grow: 1;
   min-width: 0; 
+}
+
+// ===== DARK MODE =====
+:host-context([data-theme="dark"]) {
+  .admin-sidebar {
+    background: var(--bg-elevated);
+    border-color: var(--border-default);
+  }
 }

@@ -108,7 +108,6 @@
               <h4>{{ t(step.titleAr, step.titleEn) }}</h4>
               <p>{{ t(step.descAr, step.descEn) }}</p>
             </div>
-            @if (step.n < 3) { <div class="step-arrow-line"></div> }
           }
         </div>
       </section>
@@ -143,9 +142,6 @@
         <section class="frame-medicines-section">
           <div class="section-header">
             <h2 class="section-title">{{ t('الأدوية الأكثر بحثاً', 'Most Searched Medicines') }}</h2>
-            <a routerLink="/search" class="section-link" id="home-all-medicines">
-              {{ t('عرض الكل', 'View all') }}
-            </a>
           </div>
 
           <div class="medicines-grid-layout">
@@ -188,6 +184,13 @@
                 </div>
               </a>
             }
+          </div>
+
+          <div class="sidebar-card-footer" style="margin-top: var(--space-md);">
+            <a routerLink="/search" class="btn-view-all">
+              {{ t('عرض كل الأدوية', 'View all medicines') }}
+              <span class="material-icons-round">arrow_forward</span>
+            </a>
           </div>
         </section>
 

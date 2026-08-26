@@ -116,4 +116,14 @@
   transition: transform var(--transition-fast);
 }
 
-[dir="rtl"] .btn-primary .material-icons-round { transform: scaleX(-1); }
+:host-context([dir="rtl"]) .btn-primary .material-icons-round { transform: scaleX(-1); }
+
+.medicine-card:hover .btn-primary .material-icons-round,
+.btn-primary:hover .material-icons-round {
+  transform: translateX(3px);
+}
+
+:host-context([dir="rtl"]) .medicine-card:hover .btn-primary .material-icons-round,
+:host-context([dir="rtl"]) .btn-primary:hover .material-icons-round {
+  transform: scaleX(-1) translateX(3px);
+}

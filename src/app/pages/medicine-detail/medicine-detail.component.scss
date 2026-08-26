@@ -1,3 +1,6 @@
+// ===== HOST =====
+:host { display: block; background-color: var(--bg-base); }
+
 .med-detail-page {
   min-height: 100vh;
   padding-top: var(--navbar-height);
@@ -10,14 +13,15 @@
   font-size: var(--font-size-sm); color: var(--text-muted);
   a { color: var(--dawa-primary); text-decoration: none; &:hover { text-decoration: underline; } }
   .material-icons-round { font-size: 16px; }
-  [dir="rtl"] & .material-icons-round { transform: scaleX(-1); }
+  :host-context([dir="rtl"]) & .material-icons-round { transform: scaleX(-1); }
 }
 
 // ===== MEDICINE HERO =====
 .med-hero {
-  background: var(--bg-muted);
+  background: var(--bg-subtle);
   border-bottom: 1px solid var(--border-default);
   padding: var(--space-xl) 0;
+  box-shadow: var(--card-shadow);
 }
 
 .med-hero-inner {
@@ -71,11 +75,11 @@
 }
 .cat-chip      { background: rgba(12,115,184,0.10); color: var(--dawa-primary); }
 .form-chip     { background: var(--bg-surface); border: 1px solid var(--border-default); color: var(--text-secondary); }
-.strength-chip { background: rgba(0,184,153,0.10); color: var(--dawa-accent); }
+.strength-chip { background: rgba(5,150,105,0.10); color: var(--dawa-accent); }
 
-.med-hero-name { font-size: clamp(1.8rem, 3vw, 2.5rem); font-weight: 800; margin: 0; line-height: 1.2; }
+.med-hero-name    { font-size: clamp(1.8rem, 3vw, 2.5rem); font-weight: 800; margin: 0; line-height: 1.2; color: var(--text-primary); }
 .med-hero-generic { font-size: var(--font-size-base); color: var(--text-muted); margin: 0; }
-.med-hero-desc { font-size: var(--font-size-sm); color: var(--text-secondary); margin: 0; line-height: 1.7; max-width: 600px; }
+.med-hero-desc    { font-size: var(--font-size-sm); color: var(--text-secondary); margin: 0; line-height: 1.7; max-width: 600px; }
 
 .med-avail-bar {
   display: flex; gap: var(--space-lg); flex-wrap: wrap;
@@ -83,6 +87,7 @@
   background: var(--bg-surface);
   border: 1px solid var(--border-default);
   border-radius: var(--radius-lg);
+  box-shadow: var(--card-shadow);
   width: fit-content;
 }
 .avail-stat {
@@ -108,18 +113,32 @@
   border-radius: var(--radius-lg);
   box-shadow: var(--card-shadow);
   overflow: hidden;
+  transition: box-shadow var(--transition-base);
+  &:hover { box-shadow: var(--card-shadow-hover); }
 }
 
 .info-card-header {
   display: flex; align-items: center; gap: var(--space-sm);
   padding: var(--space-md) var(--space-xl);
-  background: var(--bg-muted);
   border-bottom: 1px solid var(--border-muted);
   font-size: var(--font-size-base); font-weight: 700; color: var(--text-primary);
-  .material-icons-round { font-size: 20px; color: var(--dawa-primary); }
+  position: relative;
 
-  &.uses .material-icons-round { color: var(--dawa-success); }
+  &::before {
+    content: '';
+    position: absolute;
+    inset-inline-start: 0;
+    top: 0; bottom: 0;
+    width: 4px;
+    background: var(--dawa-gradient-primary);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  }
+
+  .material-icons-round { font-size: 20px; color: var(--dawa-primary); }
+  &.uses         .material-icons-round { color: var(--dawa-success); }
+  &.uses::before { background: var(--dawa-success); }
   &.side-effects .material-icons-round { color: var(--dawa-warning); }
+  &.side-effects::before { background: var(--dawa-warning); }
 }
 
 .info-card-body { padding: var(--space-xl); }
@@ -146,8 +165,8 @@
 
 // ===== PHARMACIES SECTION =====
 .pharmacies-section {
-  background: var(--bg-muted);
-  border-top: 3px solid var(--dawa-primary);
+  background: var(--bg-subtle);
+  border-top: 1px solid var(--border-default);
   padding: var(--space-2xl) 0 var(--space-3xl);
 }
 
@@ -164,7 +183,18 @@
     display: flex; align-items: center; justify-content: center;
     .material-icons-round { font-size: 26px; color: #fff; }
   }
-  h2 { font-size: var(--font-size-2xl); margin: 0; }
+  h2 {
+    font-size: var(--font-size-2xl); margin: 0;
+    position: relative; padding-bottom: 8px;
+    &::after {
+      content: '';
+      position: absolute; bottom: 0;
+      inset-inline-start: 0;
+      width: 32px; height: 3px;
+      background: var(--dawa-primary);
+      border-radius: var(--radius-full);
+    }
+  }
   p  { font-size: var(--font-size-sm); color: var(--text-muted); margin: 4px 0 0; }
 }
 .subscription-note {
@@ -186,13 +216,17 @@
 
 .pharmacy-card {
   background: var(--bg-surface);
-  border: 1px solid var(--border-default);
+  border: 1px solid var(--border-muted);
   border-radius: var(--radius-lg);
   box-shadow: var(--card-shadow);
   overflow: hidden;
   display: flex; flex-direction: column;
-  transition: box-shadow var(--transition-base), transform var(--transition-base);
-  &:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); }
+  transition: box-shadow var(--transition-base), transform var(--transition-base), border-color var(--transition-base);
+  &:hover {
+    box-shadow: var(--card-shadow-hover);
+    transform: translateY(-2px);
+    border-color: var(--dawa-primary);
+  }
 }
 
 .ph-card-header {
@@ -206,19 +240,13 @@
   border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; flex-shrink: 0;
   overflow: hidden;
   .material-icons-round { font-size: 22px; color: #fff; }
-
   &.has-image {
     background: var(--bg-surface);
     border: 1px solid var(--border-muted);
   }
 }
 
-.pharmacy-photo {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
+.pharmacy-photo { width: 100%; height: 100%; object-fit: cover; display: block; }
 .ph-title-wrap { flex: 1; min-width: 0; }
 .ph-name-row {
   display: flex; align-items: center; gap: var(--space-xs);
@@ -236,13 +264,13 @@
 .ph-price-pill {
   flex-shrink: 0;
   display: flex; align-items: center; gap: 3px;
-  padding: 8px 14px; border-radius: var(--radius-full);
-  background: rgba(16,185,129,0.12); border: 1.5px solid rgba(16,185,129,0.3);
+  padding: 8px 14px; border-radius: var(--radius-lg);
+  background: rgba(5,150,105,0.10); border: 1.5px solid rgba(5,150,105,0.3);
   color: var(--dawa-success);
   .price-val { font-size: var(--font-size-xl); font-weight: 800; }
   .price-cur { font-size: var(--font-size-xs); font-weight: 600; }
   &.unavailable {
-    background: rgba(229,57,53,0.08); border-color: rgba(229,57,53,0.25);
+    background: rgba(220,38,38,0.08); border-color: rgba(220,38,38,0.25);
     color: var(--dawa-danger); font-size: var(--font-size-xs); font-weight: 700;
     .material-icons-round { font-size: 16px; }
   }
@@ -252,6 +280,7 @@
   padding: var(--space-md) var(--space-lg);
   display: flex; flex-direction: column; gap: var(--space-sm);
   border-bottom: 1px solid var(--border-muted);
+  flex: 1;
 }
 .ph-detail-row {
   display: flex; align-items: flex-start; gap: var(--space-sm);
@@ -264,7 +293,7 @@
 .ph-card-rating {
   display: flex; align-items: center; justify-content: space-between;
   padding: var(--space-md) var(--space-lg);
-  background: var(--bg-muted);
+  background: var(--bg-subtle);
 }
 .stars-row {
   display: flex; align-items: center; gap: 2px;
@@ -275,12 +304,17 @@
 .ph-view-btn {
   display: inline-flex; align-items: center; gap: 4px;
   padding: 7px 16px; background: var(--dawa-primary);
-  color: #fff; border-radius: var(--radius-full);
+  color: #fff; border-radius: var(--radius-md);
   font-size: var(--font-size-xs); font-weight: 700; text-decoration: none;
-  transition: background var(--transition-fast), transform var(--transition-fast);
+  transition: background var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
+  box-shadow: var(--shadow-primary);
   .material-icons-round { font-size: 15px; }
-  [dir="rtl"] & .material-icons-round { transform: scaleX(-1); }
-  &:hover { background: var(--dawa-primary-dark); transform: translateY(-1px); }
+  :host-context([dir="rtl"]) & .material-icons-round { transform: scaleX(-1); }
+  &:hover {
+    background: var(--dawa-primary-light);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+  }
 }
 
 .no-pharmacies {
@@ -295,4 +329,17 @@
   padding-top: var(--space-3xl);
   display: flex; flex-direction: column; align-items: center; gap: var(--space-lg); text-align: center;
   .material-icons-round { font-size: 64px; color: var(--text-muted); }
+}
+
+// ===== DARK MODE =====
+:host-context([data-theme="dark"]) {
+  .med-hero { background: var(--bg-surface); }
+  .info-card { background: var(--bg-elevated); border-color: var(--border-default); }
+  .pharmacies-section { background: var(--bg-surface); border-top-color: var(--border-default); }
+  .pharmacy-card {
+    background: var(--bg-elevated); border-color: var(--border-default);
+    &:hover { border-color: var(--border-hover); }
+  }
+  .ph-card-rating { background: var(--bg-muted); }
+  .med-avail-bar { background: var(--bg-elevated); border-color: var(--border-default); }
 }

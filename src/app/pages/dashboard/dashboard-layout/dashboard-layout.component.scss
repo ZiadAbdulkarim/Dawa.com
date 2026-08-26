@@ -2,7 +2,7 @@
   display: flex;
   gap: var(--space-xl);
   padding-top: calc(var(--navbar-height) + var(--space-xl));
-  padding-bottom: var(--space-2xl);
+  padding-bottom: var(--space-3xl);
   align-items: flex-start;
   min-height: calc(100vh - var(--navbar-height));
 
@@ -16,8 +16,11 @@
 
 .dashboard-sidebar {
   width: var(--sidebar-width);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  box-shadow: var(--card-shadow);
   border-radius: var(--radius-lg);
-  padding: var(--space-lg);
+  padding: var(--space-xl);
   flex-shrink: 0;
   position: sticky;
   top: calc(var(--navbar-height) + var(--space-xl));
@@ -29,32 +32,43 @@
   }
 }
 
-.sidebar-header h3 {
-  font-size: 1.25rem;
-  font-weight: 700;
-  margin-bottom: 1.5rem;
-  color: var(--text-primary);
+.sidebar-header {
+  margin-bottom: var(--space-lg);
+  padding-bottom: var(--space-md);
+  border-bottom: 1px solid var(--border-muted);
+  
+  h3 {
+    font-size: var(--font-size-xl);
+    font-weight: 800;
+    margin: 0;
+    color: var(--text-primary);
+  }
 }
 
 .sidebar-nav {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 4px;
 }
 
 .nav-item {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 0.75rem 1rem;
+  gap: var(--space-sm);
+  padding: 10px 14px;
   border-radius: var(--radius-md);
   color: var(--text-secondary);
   text-decoration: none;
-  font-weight: 500;
-  transition: all 0.2s ease;
+  font-weight: 600;
+  font-size: var(--font-size-sm);
+  transition: all var(--transition-fast);
 
-  span {
-    font-size: 1.25rem;
+  .material-icons-round {
+    font-size: 20px;
+  }
+  
+  :host-context([dir="rtl"]) & .material-icons-round {
+    // Only flip directional icons if needed, but dashboard/admin mostly uses neutral icons.
   }
 
   &.active {
@@ -79,16 +93,24 @@
 .error-icon {
   margin-inline-start: auto;
   color: var(--dawa-danger);
-  font-size: 1.25rem;
+  font-size: 18px !important;
 }
 
 .sidebar-divider {
   height: 1px;
   background: var(--border-default);
-  margin-block: 1rem;
+  margin-block: var(--space-md);
 }
 
 .dashboard-content {
   flex-grow: 1;
   min-width: 0; /* Prevents overflow */
+}
+
+// ===== DARK MODE =====
+:host-context([data-theme="dark"]) {
+  .dashboard-sidebar {
+    background: var(--bg-elevated);
+    border-color: var(--border-default);
+  }
 }
