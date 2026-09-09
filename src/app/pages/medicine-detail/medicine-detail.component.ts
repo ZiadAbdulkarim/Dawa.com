@@ -23,8 +23,6 @@ export class MedicineDetailComponent implements OnInit {
   medicine = signal<Medicine | null>(null);
   pharmacies = signal<Pharmacy[]>([]);
 
-  // 🔥 تحسين: نخزن أقل سعر بدل ما نحسبه كل مرة
-  minPrice = signal<string>('–');
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
@@ -35,44 +33,14 @@ export class MedicineDetailComponent implements OnInit {
 
         const pharmacies = this.data.getPharmaciesForMedicine(med.id);
         this.pharmacies.set(pharmacies);
-
-        // ✅ حساب أقل سعر مرة واحدة
-        this.calculateMinPrice(med.id, pharmacies);
       }
     });
   }
 
-  // 🔥 دالة داخلية للحساب مرة واحدة
-  private calculateMinPrice(medicineId: string, pharmacies: Pharmacy[]): void {
-    const inStockPrices = pharmacies
-      .filter(p => this.data.isMedicineInStock(p.id, medicineId))
-      .map(p => this.data.getMedicinePrice(p.id, medicineId))
-      .filter((p): p is number => p !== null);
-
-    if (inStockPrices.length) {
-      this.minPrice.set(String(Math.min(...inStockPrices)));
-      return;
-    }
-
-    const allPrices = pharmacies
-      .map(p => this.data.getMedicinePrice(p.id, medicineId))
-      .filter((p): p is number => p !== null);
-
-    if (!allPrices.length) {
-      this.minPrice.set('–');
-      return;
-    }
-
-    this.minPrice.set(String(Math.min(...allPrices)));
-  }
-
-  // 👇 خليها موجودة لو template بيستخدمها
-  getMinPrice(): string {
-    return this.minPrice();
-  }
-
-  getPrice(pharmacyId: string, medicineId: string): number | null {
-    return this.data.getMedicinePrice(pharmacyId, medicineId);
+  /** Returns the standardized medicine price formatted for display. */
+  formatPrice(med: Medicine): string {
+    if (!med.basePrice) return '';
+    return `${med.basePrice} ${this.t('ج.م', 'EGP')}`;
   }
 
   isInStock(pharmacyId: string, medicineId: string): boolean {

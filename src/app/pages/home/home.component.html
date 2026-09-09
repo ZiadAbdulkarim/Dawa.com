@@ -170,8 +170,8 @@
                 </div>
                 
                 <div class="med-price-box">
-                  @if (getPriceRange(med)) {
-                    <div class="med-price-val">{{ getPriceRange(med) }}</div>
+                  @if (formatPrice(med)) {
+                    <div class="med-price-val">{{ formatPrice(med) }}</div>
                   }
                   <div class="med-meta-actions">
                     <div class="med-ph-count">
@@ -287,10 +287,10 @@
       </div>
     </div>
     <div class="feature-item">
-      <span class="material-icons-round feature-icon">local_offer</span>
+      <span class="material-icons-round feature-icon">price_check</span>
       <div class="feature-text">
-        <strong>{{ t('أفضل الأسعار', 'Best Prices') }}</strong>
-        <span>{{ t('قارن الأسعار ووفر المال', 'Compare prices and save time & money.') }}</span>
+        <strong>{{ t('أسعار موحدة', 'Fixed Prices') }}</strong>
+        <span>{{ t('أسعار موحدة معتمدة في جميع الصيدليات', 'Standardized official prices across all pharmacies.') }}</span>
       </div>
     </div>
     <div class="feature-item">

@@ -40,7 +40,7 @@ export class HomeComponent implements OnInit {
 
   howSteps = [
     { n: 1, icon: 'search', titleAr: 'ابحث عن دوائك', titleEn: 'Search Your Medicine', descAr: 'اكتب اسم الدواء أو المادة الفعالة', descEn: 'Type the medicine or active ingredient' },
-    { n: 2, icon: 'local_pharmacy', titleAr: 'شاهد الصيدليات', titleEn: 'See Pharmacies', descAr: 'اعرف الصيدليات التي تمتلكه والسعر', descEn: 'Find which pharmacies have it and the price' },
+    { n: 2, icon: 'local_pharmacy', titleAr: 'شاهد الصيدليات', titleEn: 'See Pharmacies', descAr: 'اعرف الصيدليات التي يتوفر بها الدواء', descEn: 'Find pharmacies where the medicine is available' },
     { n: 3, icon: 'directions_walk', titleAr: 'توجّه للصيدلية', titleEn: 'Go to Pharmacy', descAr: 'اذهب مباشرةً لأقرب صيدلية ووفّر وقتك', descEn: 'Head directly and save your time' },
   ];
 
@@ -76,16 +76,10 @@ export class HomeComponent implements OnInit {
     setTimeout(() => this.showSuggestions.set(false), 200);
   }
 
-  getPriceRange(med: Medicine): string {
-    const pharmacies = this.data.getPharmaciesForMedicine(med.id);
-    if (!pharmacies.length) return '';
-    const prices = pharmacies
-      .map(p => this.data.getMedicinePrice(p.id, med.id))
-      .filter((p): p is number => p !== null);
-    if (!prices.length) return '';
-    const min = Math.min(...prices);
-    const max = Math.max(...prices);
-    return min === max ? `${min} ${this.t('ج.م', 'EGP')}` : `${min}–${max} ${this.t('ج.م', 'EGP')}`;
+  /** Returns the standardized medicine price formatted for display. */
+  formatPrice(med: Medicine): string {
+    if (!med.basePrice) return '';
+    return `${med.basePrice} ${this.t('ج.م', 'EGP')}`;
   }
 
   t(ar: string, en: string): string { return this.lang.t(ar, en); }

@@ -17,13 +17,13 @@
       <tbody>
         @for (user of pharmacists(); track user.id) {
           <tr>
-            <td>
+            <td [attr.data-label]="t('المستخدم', 'User')">
               <div class="fw-bold">{{ lang.isArabic ? user.nameAr : user.nameEn }}</div>
               <div class="text-sm text-muted" dir="ltr">{{ user.email }}</div>
             </td>
-            <td dir="ltr">{{ datePipe.transform(user.createdAt, 'mediumDate') }}</td>
-            <td dir="ltr">{{ user.subscriptionExpiry ? datePipe.transform(user.subscriptionExpiry, 'mediumDate') : '-' }}</td>
-            <td>
+            <td dir="ltr" [attr.data-label]="t('تاريخ البدء', 'Start Date')">{{ datePipe.transform(user.createdAt, 'mediumDate') }}</td>
+            <td dir="ltr" [attr.data-label]="t('تاريخ الانتهاء', 'End Date')">{{ user.subscriptionExpiry ? datePipe.transform(user.subscriptionExpiry, 'mediumDate') : '-' }}</td>
+            <td [attr.data-label]="t('حالة الاشتراك', 'Status')">
               @if (user.subscriptionStatus === 'active') {
                 <span class="badge badge-success">{{ t('نشط', 'Active') }}</span>
               } @else if (user.subscriptionStatus === 'expired') {
@@ -32,7 +32,7 @@
                 <span class="badge badge-warning">{{ user.subscriptionStatus || t('غير محدد', 'Not set') }}</span>
               }
             </td>
-            <td>
+            <td [attr.data-label]="t('الإجراءات', 'Actions')">
               <div class="table-actions">
                 @if (user.subscriptionStatus !== 'active') {
                   <button class="btn btn-ghost btn-icon" (click)="activate(user)" [title]="t('تفعيل', 'Activate')">

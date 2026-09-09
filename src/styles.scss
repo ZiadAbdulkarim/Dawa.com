@@ -82,6 +82,7 @@ a {
   max-width: var(--container-max);
   margin: 0 auto;
   padding: 0 var(--space-lg);
+  box-sizing: border-box;
 
   @media (max-width: 640px) { padding: 0 var(--space-md); }
 }

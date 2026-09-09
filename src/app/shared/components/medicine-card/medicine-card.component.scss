@@ -12,6 +12,7 @@
   align-items: flex-start;
   justify-content: space-between;
   gap: var(--space-sm);
+  min-width: 0;
 }
 
 .medicine-icon {
@@ -54,7 +55,7 @@
 
 .card-badges { display: flex; gap: var(--space-xs); flex-wrap: wrap; }
 
-.card-body { flex: 1; display: flex; flex-direction: column; gap: var(--space-xs); }
+.card-body { flex: 1; display: flex; flex-direction: column; gap: var(--space-xs); min-width: 0; }
 
 .medicine-name {
   font-size: var(--font-size-lg);
@@ -98,6 +99,7 @@
   padding-top: var(--space-md);
   border-top: 1px solid var(--border-muted);
   gap: var(--space-sm);
+  flex-wrap: wrap;
 }
 
 .pharmacy-count {

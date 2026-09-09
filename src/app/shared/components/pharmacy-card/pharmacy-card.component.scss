@@ -10,6 +10,40 @@
   display: flex;
   gap: var(--space-sm);
   align-items: flex-start;
+
+  @media (max-width: 480px) {
+    flex-wrap: wrap;
+  }
+}
+
+.pharmacy-details {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  padding: var(--space-sm) var(--space-md);
+  background: var(--bg-muted);
+  border-radius: var(--radius-md);
+}
+
+.detail-row {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-sm);
+  font-size: var(--font-size-xs);
+  color: var(--text-secondary);
+  word-break: break-word;
+
+  .material-icons-round { font-size: 15px; color: var(--text-muted); flex-shrink: 0; margin-top: 2px; }
+}
+
+.pharmacy-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--border-muted);
+  gap: var(--space-sm);
+  flex-wrap: wrap;
 }
 
 .pharmacy-logo {
@@ -40,12 +74,13 @@
   display: block;
 }
 
-.pharmacy-info { flex: 1; min-width: 0; }
+.pharmacy-info { flex: 1; min-width: 0; display: flex; flex-direction: column; }
 
 .pharmacy-name-row {
   display: flex;
   align-items: center;
   gap: var(--space-xs);
+  min-width: 0;
 }
 
 .pharmacy-name {
@@ -53,9 +88,8 @@
   font-weight: 700;
   color: var(--text-primary);
   margin: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  line-height: 1.3;
+  word-break: break-word;
 }
 
 .verified-badge {

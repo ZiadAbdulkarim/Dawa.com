@@ -52,10 +52,10 @@
               <span class="material-icons-round">local_pharmacy</span>
               <span><strong>{{ pharmacies().length }}</strong> {{ t('صيدلية تملكه', 'pharmacies have this') }}</span>
             </div>
-            @if (pharmacies().length > 0) {
+            @if (medicine()!.basePrice) {
               <div class="avail-stat accent">
-                <span class="material-icons-round">payments</span>
-                <span>{{ t('من', 'From') }} <strong>{{ getMinPrice() }} {{ t('ج.م', 'EGP') }}</strong></span>
+                <span class="material-icons-round">price_check</span>
+                <span>{{ t('السعر', 'Price') }}: <strong>{{ formatPrice(medicine()!) }}</strong></span>
               </div>
             }
           </div>
@@ -178,11 +178,11 @@
                   </div>
                 </div>
 
-                <!-- Price pill -->
-                <div class="ph-price-pill" [class.unavailable]="!isInStock(ph.id, medicine()!.id)">
+                <!-- Stock availability badge -->
+                <div class="ph-stock-badge" [class.unavailable]="!isInStock(ph.id, medicine()!.id)">
                   @if (isInStock(ph.id, medicine()!.id)) {
-                    <span class="price-val">{{ getPrice(ph.id, medicine()!.id) }}</span>
-                    <span class="price-cur">{{ t('ج.م', 'EGP') }}</span>
+                    <span class="material-icons-round">check_circle</span>
+                    {{ t('متوفر', 'In Stock') }}
                   } @else {
                     <span class="material-icons-round">remove_shopping_cart</span>
                     {{ t('نفد', 'Out of Stock') }}

@@ -89,6 +89,7 @@
   border-radius: var(--radius-lg);
   box-shadow: var(--card-shadow);
   width: fit-content;
+  max-width: 100%;
 }
 .avail-stat {
   display: flex; align-items: center; gap: var(--space-sm);
@@ -203,7 +204,8 @@
   background: rgba(12,115,184,0.08);
   border: 1px solid rgba(12,115,184,0.20);
   border-radius: var(--radius-md);
-  font-size: var(--font-size-xs); color: var(--text-secondary); max-width: 380px;
+  font-size: var(--font-size-xs); color: var(--text-secondary); max-width: 100%;
+  @media (min-width: 641px) { max-width: 380px; }
   .material-icons-round { font-size: 16px; color: var(--dawa-primary); flex-shrink: 0; }
 }
 
@@ -249,8 +251,9 @@
 .pharmacy-photo { width: 100%; height: 100%; object-fit: cover; display: block; }
 .ph-title-wrap { flex: 1; min-width: 0; }
 .ph-name-row {
-  display: flex; align-items: center; gap: var(--space-xs);
-  h3 { font-size: var(--font-size-base); font-weight: 700; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  display: flex; align-items: center; gap: var(--space-xs); min-width: 0; flex-wrap: wrap;
+  h3 { font-size: var(--font-size-base); font-weight: 700; margin: 0; line-height: 1.3; word-break: break-word; min-width: 0; }
+  .ph-verified { flex-shrink: 0; }
   .ph-verified .material-icons-round { font-size: 16px; color: var(--dawa-primary); }
 }
 .ph-open-badge {
@@ -284,14 +287,14 @@
 }
 .ph-detail-row {
   display: flex; align-items: flex-start; gap: var(--space-sm);
-  font-size: var(--font-size-sm); color: var(--text-secondary);
+  font-size: var(--font-size-sm); color: var(--text-secondary); word-break: break-word;
   .material-icons-round { font-size: 16px; color: var(--text-muted); flex-shrink: 0; margin-top: 2px; }
   .ph-phone { color: var(--dawa-primary); text-decoration: none; font-weight: 600;
     &:hover { text-decoration: underline; } }
 }
 
 .ph-card-rating {
-  display: flex; align-items: center; justify-content: space-between;
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--space-sm);
   padding: var(--space-md) var(--space-lg);
   background: var(--bg-subtle);
 }

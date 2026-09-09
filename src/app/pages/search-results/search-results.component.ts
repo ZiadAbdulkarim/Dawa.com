@@ -160,14 +160,10 @@ export class SearchResultsComponent implements OnInit {
     this.applyFiltersAndSort();
   }
 
-  getPriceRange(med: Medicine): string {
-    const pharmacies = this.data.getPharmaciesForMedicine(med.id);
-    if (!pharmacies.length) return '';
-    const prices = pharmacies.map(p => this.data.getMedicinePrice(p.id, med.id)).filter((p): p is number => p !== null);
-    if (!prices.length) return '';
-    const min = Math.min(...prices);
-    const max = Math.max(...prices);
-    return min === max ? `${min}` : `${min}–${max}`;
+  /** Returns the standardized medicine price formatted for display. */
+  formatPrice(med: Medicine): string {
+    if (!med.basePrice) return '';
+    return `${med.basePrice} ${this.t('ج.م', 'EGP')}`;
   }
 
   getPharmacyCount(med: Medicine): number {

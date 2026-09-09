@@ -17,22 +17,22 @@
       <tbody>
         @for (ph of pharmacies(); track ph.id) {
           <tr>
-            <td>
+            <td [attr.data-label]="t('الصيدلية', 'Pharmacy')">
               <div class="ph-cell">
                 <span class="material-icons-round primary">storefront</span>
                 <span class="fw-bold">{{ lang.isArabic ? ph.nameAr : ph.nameEn }}</span>
               </div>
             </td>
-            <td>{{ lang.isArabic ? ph.cityAr : ph.city }}</td>
-            <td dir="ltr">{{ ph.phone }}</td>
-            <td>
+            <td [attr.data-label]="t('المدينة', 'City')">{{ lang.isArabic ? ph.cityAr : ph.city }}</td>
+            <td dir="ltr" [attr.data-label]="t('الهاتف', 'Phone')">{{ ph.phone }}</td>
+            <td [attr.data-label]="t('حالة الاشتراك', 'Subscription Status')">
               @if (ph.subscriptionActive) {
                 <span class="badge badge-success">{{ t('نشط', 'Active') }}</span>
               } @else {
                 <span class="badge badge-warning">{{ t('منتهي', 'Expired') }}</span>
               }
             </td>
-            <td>
+            <td [attr.data-label]="t('الإجراءات', 'Actions')">
               <div class="table-actions">
                 <button class="btn btn-ghost btn-icon" (click)="viewDetails(ph)" [title]="t('عرض التفاصيل', 'View Details')">
                   <span class="material-icons-round text-primary">visibility</span>

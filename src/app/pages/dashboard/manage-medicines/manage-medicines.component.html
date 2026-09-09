@@ -28,7 +28,7 @@
         }
         @for (item of medicinesData(); track item.medicine.id) {
           <tr class="animate-fade-in">
-            <td>
+            <td [attr.data-label]="t('الدواء', 'Medicine')">
               <div class="med-cell">
                 <div class="med-icon-small" [style.background]="item.medicine.imageUrl ? 'var(--bg-surface)' : item.medicine.imageGradient">
                   <app-medicine-image [medicine]="item.medicine" />
@@ -39,17 +39,17 @@
                 </div>
               </div>
             </td>
-            <td>
+            <td [attr.data-label]="t('السعر', 'Price')">
               <strong>{{ item.price }} {{ t('ج.م', 'EGP') }}</strong>
             </td>
-            <td>
+            <td [attr.data-label]="t('الكمية (في المخزون)', 'Quantity (In Stock)')">
               @if (item.inStock) {
                 <span class="badge badge-success">{{ t('متوفر', 'In Stock') }}</span>
               } @else {
                 <span class="badge badge-danger">{{ t('نفذت الكمية', 'Out of Stock') }}</span>
               }
             </td>
-            <td>
+            <td [attr.data-label]="t('الإجراءات', 'Actions')">
               <div class="table-actions">
                 <button class="btn btn-ghost btn-icon" [title]="t('تعديل', 'Edit')" (click)="openEditModal(item)">
                   <span class="material-icons-round">edit</span>

@@ -160,8 +160,8 @@
 
             <!-- Card footer -->
             <div class="med-price-box">
-              @if (getPriceRange(med)) {
-                <span class="med-price-val">{{ getPriceRange(med) }} <span style="font-size:12px;">{{ t('ج.م', 'EGP') }}</span></span>
+              @if (formatPrice(med)) {
+                <span class="med-price-val">{{ formatPrice(med) }}</span>
               } @else {
                 <span class="med-price-val text-muted" style="font-size:14px;">{{ t('غير متاح', 'N/A') }}</span>
               }

@@ -19,12 +19,12 @@
       <tbody>
         @for (cat of categories(); track cat.id) {
           <tr>
-            <td><strong>{{ cat.id }}</strong></td>
-            <td>
+            <td [attr.data-label]="t('الرقم التعريفي', 'ID')"><strong>{{ cat.id }}</strong></td>
+            <td [attr.data-label]="t('اسم التصنيف', 'Category Name')">
               <div class="fw-bold">{{ lang.isArabic ? cat.nameAr : cat.nameEn }}</div>
               <div class="text-sm text-muted" dir="ltr">{{ lang.isArabic ? cat.nameEn : cat.nameAr }}</div>
             </td>
-            <td>
+            <td [attr.data-label]="t('الإجراءات', 'Actions')">
               <div class="table-actions">
                 <button class="btn btn-ghost btn-icon" (click)="openModal(cat)" [title]="t('تعديل', 'Edit')">
                   <span class="material-icons-round">edit</span>

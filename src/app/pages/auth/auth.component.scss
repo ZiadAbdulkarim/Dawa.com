@@ -167,14 +167,15 @@
 .hint { font-size: var(--font-size-xs); color: var(--text-muted); }
 
 .demo-accounts-hint {
-  display: flex; align-items: center; gap: 6px;
+  display: flex; align-items: flex-start; gap: 6px; flex-wrap: wrap;
   font-size: 11px; color: var(--text-secondary);
   background: var(--bg-muted);
   border: 1px dashed var(--border-default);
   padding: 6px 10px; border-radius: var(--radius-md);
   margin-top: 4px;
-  .material-icons-round { font-size: 14px; color: var(--dawa-primary); flex-shrink: 0; }
-  code { font-family: monospace; background: var(--bg-surface); padding: 1px 4px; border-radius: 4px; color: var(--dawa-primary); }
+  word-break: break-word;
+  .material-icons-round { font-size: 14px; color: var(--dawa-primary); flex-shrink: 0; margin-top: 2px; }
+  code { font-family: monospace; background: var(--bg-surface); padding: 1px 4px; border-radius: 4px; color: var(--dawa-primary); word-break: break-all; }
 }
 
 .form-check {

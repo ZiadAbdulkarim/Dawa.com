@@ -59,7 +59,7 @@
     display: flex;
     flex-direction: column;
     line-height: 1.1;
-    width: 150px;
+    max-width: 150px;
 
     @media (max-width: 480px) {
       display: none;
@@ -253,6 +253,13 @@
   &:hover {
     border-color: var(--dawa-primary);
     background: rgba(12, 115, 184, 0.05);
+  }
+
+  @media (max-width: 640px) {
+    padding: 8px;
+    .btn-text {
+      display: none;
+    }
   }
 }
 

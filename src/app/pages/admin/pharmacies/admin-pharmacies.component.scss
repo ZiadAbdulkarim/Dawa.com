@@ -47,3 +47,52 @@
   .text-warning { color: var(--dawa-warning); }
   .text-danger { color: var(--dawa-danger); }
 }
+
+@media (max-width: 768px) {
+  .admin-table-wrap {
+    border: none;
+    background: transparent;
+  }
+  .admin-table {
+    min-width: 0;
+    
+    thead {
+      display: none;
+    }
+    
+    tbody tr {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 1rem;
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-md);
+      background: var(--bg-surface);
+      
+      td {
+        border-bottom: 1px solid var(--border-default);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.75rem 1rem;
+        text-align: end;
+        
+        &::before {
+          content: attr(data-label);
+          font-weight: 600;
+          color: var(--text-secondary);
+          margin-inline-end: 1rem;
+          text-align: start;
+        }
+        
+        &:last-child {
+          border-bottom: none;
+          justify-content: center;
+          background: var(--bg-hover);
+          &::before {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+}
