@@ -64,29 +64,29 @@
           <tbody>
             @for (ph of pharmacies(); track ph.id) {
               <tr>
-                <td>
+                <td [attr.data-label]="t('الصيدلية', 'Pharmacy')">
                   <div class="ph-cell">
                     <span class="material-icons-round">local_pharmacy</span>
                     {{ lang.isArabic ? ph.nameAr : ph.nameEn }}
                   </div>
                 </td>
-                <td>{{ lang.isArabic ? ph.cityAr : ph.city }}</td>
-                <td dir="ltr">{{ ph.phone }}</td>
-                <td>
+                <td [attr.data-label]="t('المدينة', 'City')">{{ lang.isArabic ? ph.cityAr : ph.city }}</td>
+                <td dir="ltr" [attr.data-label]="t('الهاتف', 'Phone')">{{ ph.phone }}</td>
+                <td [attr.data-label]="t('الحالة', 'Status')">
                   @if (ph.isOpen) {
                     <span class="badge badge-success">{{ t('مفتوح', 'Open') }}</span>
                   } @else {
                     <span class="badge badge-danger">{{ t('مغلق', 'Closed') }}</span>
                   }
                 </td>
-                <td>
+                <td [attr.data-label]="t('موثقة', 'Verified')">
                   @if (ph.isVerified) {
                     <span class="badge badge-primary">{{ t('موثق', 'Verified') }}</span>
                   } @else {
                     <span class="badge">{{ t('غير موثق', 'Unverified') }}</span>
                   }
                 </td>
-                <td>
+                <td [attr.data-label]="t('الإجراءات', 'Actions')">
                   <div class="table-actions">
                     <button class="btn btn-ghost btn-icon" [id]="'admin-verify-' + ph.id">
                       <span class="material-icons-round">verified</span>
@@ -125,28 +125,28 @@
           <tbody>
             @for (user of mockUsers; track user.id) {
               <tr>
-                <td>{{ lang.isArabic ? user.nameAr : user.nameEn }}</td>
-                <td dir="ltr">{{ user.email }}</td>
-                <td>
+                <td [attr.data-label]="t('المستخدم', 'User')">{{ lang.isArabic ? user.nameAr : user.nameEn }}</td>
+                <td dir="ltr" [attr.data-label]="t('البريد', 'Email')">{{ user.email }}</td>
+                <td [attr.data-label]="t('الدور', 'Role')">
                   <span class="badge" [class.badge-primary]="user.role==='pharmacist'" [class.badge-accent]="user.role==='admin'">
                     {{ user.role === 'admin' ? t('مسؤول', 'Admin') : t('صيدلي', 'Pharmacist') }}
                   </span>
                 </td>
-                <td>
+                <td [attr.data-label]="t('الاشتراك', 'Subscription')">
                   @if (user.subscriptionStatus) {
                     <span class="badge" [class.badge-success]="user.subscriptionStatus==='active'" [class.badge-warning]="user.subscriptionStatus==='trial'">
                       {{ user.subscriptionStatus }}
                     </span>
                   } @else { <span class="text-muted">–</span> }
                 </td>
-                <td>
+                <td [attr.data-label]="t('الحالة', 'Status')">
                   @if (user.isApproved) {
                     <span class="badge badge-success">{{ t('معتمد', 'Approved') }}</span>
                   } @else {
                     <span class="badge badge-warning">{{ t('قيد المراجعة', 'Pending') }}</span>
                   }
                 </td>
-                <td>
+                <td [attr.data-label]="t('الإجراءات', 'Actions')">
                   <div class="table-actions">
                     <button class="btn btn-ghost btn-icon" [id]="'admin-approve-' + user.id">
                       <span class="material-icons-round">check_circle</span>

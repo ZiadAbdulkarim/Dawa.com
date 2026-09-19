@@ -1,0 +1,159 @@
+<div class="pharmacies-page container">
+
+  <!-- PAGE HEADER -->
+  <header class="page-header animate-fade-in">
+    <div class="header-title-wrap">
+      <h1 class="page-title">{{ t('الصيدليات المتاحة', 'Available Pharmacies') }}</h1>
+      <p class="page-subtitle">
+        {{ t('استكشف جميع الصيدليات الموثوقة المتاحة على منصة دواء.كوم لتلبية احتياجاتك الدوائية.', 'Explore all verified pharmacies available on Dawa.com to find your medications.') }}
+      </p>
+    </div>
+
+    <!-- SEARCH BAR -->
+    <div class="search-bar-wrap">
+      <div class="search-input-box">
+        <span class="material-icons-round search-ico">search</span>
+        <input
+          type="text"
+          [ngModel]="searchQuery()"
+          (ngModelChange)="searchQuery.set($event); onSearch()"
+          [placeholder]="t('إبحث عن اسم الصيدلية أو المنطقة...', 'Search by pharmacy name or area...')"
+        />
+        @if (searchQuery()) {
+          <button class="clear-btn" (click)="searchQuery.set(''); onSearch()">
+            <span class="material-icons-round">close</span>
+          </button>
+        }
+      </div>
+    </div>
+  </header>
+
+  <!-- FILTER CONTROLS BAR -->
+  <div class="filter-controls-bar dawa-card-subtle">
+    <!-- City Filter Chips -->
+    <div class="filter-group">
+      <span class="filter-label">{{ t('المدينة:', 'City:') }}</span>
+      <div class="chips-list">
+        <button
+          class="chip-item"
+          [class.active]="selectedCity() === ''"
+          (click)="onCityChange('')">
+          {{ t('الكل', 'All') }}
+        </button>
+        @for (c of cities(); track c.value) {
+          <button
+            class="chip-item"
+            [class.active]="selectedCity() === c.value"
+            (click)="onCityChange(c.value)">
+            {{ t(c.labelAr, c.labelEn) }}
+          </button>
+        }
+      </div>
+    </div>
+
+    <!-- Status Filter Chips -->
+    <div class="filter-group">
+      <span class="filter-label">{{ t('الحالة:', 'Status:') }}</span>
+      <div class="chips-list">
+        <button
+          class="chip-item"
+          [class.active]="selectedStatus() === 'all'"
+          (click)="onStatusChange('all')">
+          {{ t('الكل', 'All') }}
+        </button>
+        <button
+          class="chip-item"
+          [class.active]="selectedStatus() === 'open'"
+          (click)="onStatusChange('open')">
+          {{ t('مفتوح الآن', 'Open Now') }}
+        </button>
+        <button
+          class="chip-item"
+          [class.active]="selectedStatus() === 'closed'"
+          (click)="onStatusChange('closed')">
+          {{ t('مغلق', 'Closed') }}
+        </button>
+      </div>
+    </div>
+
+    <div class="results-meta">
+      <span class="results-count">
+        {{ filteredPharmacies().length }} {{ t('صيدلية متاحة', 'pharmacies found') }}
+      </span>
+      @if (searchQuery() || selectedCity() || selectedStatus() !== 'all') {
+        <button class="reset-link" (click)="resetFilters()">
+          <span class="material-icons-round">restart_alt</span>
+          {{ t('إعادة ضبط', 'Reset') }}
+        </button>
+      }
+    </div>
+  </div>
+
+  <!-- PHARMACIES GRID -->
+  @if (filteredPharmacies().length > 0) {
+    <div class="pharmacies-grid">
+      @for (ph of filteredPharmacies(); track ph.id) {
+        <a class="pharmacy-card dawa-card animate-fade-in" [routerLink]="['/pharmacy', ph.id]" [id]="'pharmacy-card-' + ph.id">
+          
+          <div class="ph-card-header">
+            <div class="ph-logo-wrap" [class.has-image]="!!ph.logoUrl">
+              @if (ph.logoUrl) {
+                <img [src]="ph.logoUrl" [alt]="lang.isArabic ? ph.nameAr : ph.nameEn" loading="lazy" />
+              } @else {
+                <span class="material-icons-round">local_pharmacy</span>
+              }
+            </div>
+
+            <div class="ph-header-info">
+              <h3 class="ph-name">{{ lang.isArabic ? ph.nameAr : ph.nameEn }}</h3>
+              <span class="ph-badge-status" [class.open]="ph.isOpen">
+                <span class="status-dot"></span>
+                {{ ph.isOpen ? t('مفتوح الآن', 'Open Now') : t('مغلق', 'Closed') }}
+              </span>
+            </div>
+          </div>
+
+          <div class="ph-card-body">
+            <div class="ph-detail-row">
+              <span class="material-icons-round ph-icon">location_on</span>
+              <span class="ph-detail-text">
+                {{ lang.isArabic ? ph.addressAr : ph.address }} — {{ lang.isArabic ? ph.areaAr : ph.area }}
+              </span>
+            </div>
+            
+            <div class="ph-detail-row">
+              <span class="material-icons-round ph-icon">phone</span>
+              <span class="ph-detail-text" dir="ltr">{{ ph.phone }}</span>
+            </div>
+
+            <div class="ph-detail-row">
+              <span class="material-icons-round ph-icon">schedule</span>
+              <span class="ph-detail-text">
+                {{ lang.isArabic ? ph.workingHoursAr : ph.workingHours }}
+              </span>
+            </div>
+          </div>
+
+          <div class="ph-card-footer">
+            <span class="view-btn">
+              {{ t('عرض الأدوية المتوفرة', 'View Available Medicines') }}
+              <span class="material-icons-round">arrow_forward</span>
+            </span>
+          </div>
+
+        </a>
+      }
+    </div>
+  } @else {
+    <!-- EMPTY STATE -->
+    <div class="empty-state dawa-card">
+      <span class="material-icons-round empty-icon">storefront</span>
+      <h3>{{ t('لم يتم العثور على صيدليات', 'No Pharmacies Found') }}</h3>
+      <p>{{ t('جرّب البحث باسم آخر أو تغيير فلاتر المدينة والحالة.', 'Try searching with a different term or change city/status filters.') }}</p>
+      <button class="btn btn-primary" (click)="resetFilters()">
+        {{ t('إعادة ضبط الفلاتر', 'Reset Filters') }}
+      </button>
+    </div>
+  }
+
+</div>

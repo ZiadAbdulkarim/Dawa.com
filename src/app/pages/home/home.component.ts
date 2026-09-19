@@ -1,4 +1,4 @@
-import { Component, inject, signal, OnInit } from '@angular/core';
+import { Component, inject, signal, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -17,7 +17,7 @@ import { MedicineImageComponent } from '../../shared/components/medicine-image/m
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
   lang = inject(LanguageService);
   data = inject(DataService);
   router = inject(Router);
@@ -30,6 +30,17 @@ export class HomeComponent implements OnInit {
   categories = signal<Category[]>([]);
   activePharmacies = signal<Pharmacy[]>([]);
   stats = this.data.getStats();
+
+  // Carousel state: active index (0 = How it Works, 1 = Platform Statistics)
+  carouselIndex = signal<number>(0);
+  private carouselTimer?: any;
+
+  // Mobile categories expanded state
+  categoriesExpanded = signal<boolean>(false);
+
+  toggleCategories(): void {
+    this.categoriesExpanded.update(v => !v);
+  }
 
   quickHints = [
     { q: 'باراسيتامول', label: 'باراسيتامول' },
@@ -44,11 +55,32 @@ export class HomeComponent implements OnInit {
     { n: 3, icon: 'directions_walk', titleAr: 'توجّه للصيدلية', titleEn: 'Go to Pharmacy', descAr: 'اذهب مباشرةً لأقرب صيدلية ووفّر وقتك', descEn: 'Head directly and save your time' },
   ];
 
-
   ngOnInit(): void {
     this.popularMedicines.set(this.data.getMedicines().slice(0, 6));
     this.categories.set(this.data.getCategories());
     this.activePharmacies.set(this.data.getActivePharmacies());
+
+    this.startCarouselLoop();
+  }
+
+  ngOnDestroy(): void {
+    if (this.carouselTimer) {
+      clearInterval(this.carouselTimer);
+    }
+  }
+
+  startCarouselLoop(): void {
+    this.carouselTimer = setInterval(() => {
+      this.carouselIndex.update(idx => (idx + 1) % 3);
+    }, 5500);
+  }
+
+  goToSlide(index: number): void {
+    this.carouselIndex.set(index);
+    if (this.carouselTimer) {
+      clearInterval(this.carouselTimer);
+      this.startCarouselLoop();
+    }
   }
 
   onSearchInput(): void {

@@ -54,6 +54,7 @@
     <!-- Actions (desktop) -->
     <div class="navbar-actions">
 
+
       <!-- Language Toggle -->
       <button class="btn btn-ghost btn-icon-circle lang-btn" id="lang-toggle-btn" (click)="lang.toggle()"
         [title]="t('English', 'عربي')">
@@ -134,6 +135,7 @@
         <span class="material-icons-round">search</span>
         {{ t('تصفح الأدوية', 'Browse Medicines') }}
       </a>
+
       @if (!auth.isLoggedIn) {
       <a routerLink="/auth/login" class="mobile-nav-item primary" (click)="closeMobileMenu()" id="mobile-nav-login">
         <span class="material-icons-round">login</span>

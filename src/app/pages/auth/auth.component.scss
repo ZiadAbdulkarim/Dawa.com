@@ -7,6 +7,12 @@
   position: relative;
   overflow: hidden;
   background: var(--bg-base);
+
+  // On mobile, push content below the fixed navbar so the logo is never hidden
+  @media (max-width: 768px) {
+    padding-top: calc(var(--navbar-height) + var(--space-md));
+    align-items: flex-start;
+  }
 }
 
 .auth-bg {

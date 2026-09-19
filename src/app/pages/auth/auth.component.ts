@@ -1,6 +1,6 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule, Router } from '@angular/router';
+import { RouterModule, Router, ActivatedRoute } from '@angular/router';
 import { FormsModule, ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { LanguageService } from '../../core/services/language.service';
 import { AuthService } from '../../core/services/auth.service';
@@ -12,10 +12,11 @@ import { AuthService } from '../../core/services/auth.service';
   templateUrl: './auth.component.html',
   styleUrls: ['./auth.component.scss'],
 })
-export class AuthComponent {
+export class AuthComponent implements OnInit {
   lang = inject(LanguageService);
   auth = inject(AuthService);
   router = inject(Router);
+  route = inject(ActivatedRoute);
   fb = inject(FormBuilder);
 
   activeTab = signal<'login' | 'register'>('login');
@@ -23,6 +24,14 @@ export class AuthComponent {
   isLoading = signal(false);
   errorMessage = signal('');
   successMessage = signal('');
+
+  ngOnInit(): void {
+    this.route.queryParams.subscribe(params => {
+      if (params['tab'] === 'register') {
+        this.activeTab.set('register');
+      }
+    });
+  }
 
   loginForm = this.fb.group({
     email: ['', [Validators.required, Validators.email]],

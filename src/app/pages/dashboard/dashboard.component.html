@@ -72,7 +72,7 @@
         <tbody>
           @for (med of medicines(); track med.id) {
             <tr class="animate-fade-in">
-              <td>
+              <td [attr.data-label]="t('الدواء', 'Medicine')">
                 <div class="med-cell">
                   <span class="material-icons-round">medication</span>
                   <div>
@@ -81,17 +81,17 @@
                   </div>
                 </div>
               </td>
-              <td><span class="badge badge-primary">{{ med.category }}</span></td>
-              <td>{{ med.form }}</td>
-              <td>{{ med.strength }}</td>
-              <td>
+              <td [attr.data-label]="t('التصنيف', 'Category')"><span class="badge badge-primary">{{ med.category }}</span></td>
+              <td [attr.data-label]="t('الشكل', 'Form')">{{ med.form }}</td>
+              <td [attr.data-label]="t('الجرعة', 'Strength')">{{ med.strength }}</td>
+              <td [attr.data-label]="t('الوصفة', 'Rx')">
                 @if (med.requiresPrescription) {
                   <span class="badge badge-warning">{{ t('نعم', 'Yes') }}</span>
                 } @else {
                   <span class="badge badge-success">{{ t('لا', 'No') }}</span>
                 }
               </td>
-              <td>
+              <td [attr.data-label]="t('الإجراءات', 'Actions')">
                 <div class="table-actions">
                   <button class="btn btn-ghost btn-icon" [id]="'edit-med-' + med.id" [title]="t('تعديل', 'Edit')">
                     <span class="material-icons-round">edit</span>

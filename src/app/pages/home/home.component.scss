@@ -38,11 +38,15 @@
   }
 
   @media (max-width: 768px) {
-    padding: calc(var(--navbar-height) + 16px) 0 16px;
+    padding: 0;
     min-height: unset;
-    aspect-ratio: 1983 / 793; // Exact ratio per requirements
+    aspect-ratio: 1800 / 793;
     display: flex;
     align-items: center;
+    // Override aspect-ratio on very small screens if it gets too short
+    @supports not (aspect-ratio: 1800/793) {
+      min-height: max(240px, 44vw);
+    }
   }
 }
 
@@ -60,9 +64,15 @@
 
   @media (max-width: 992px) {
     flex-direction: column;
-    text-align: center;
+    text-align: start;
     width: 100%;
     min-width: 0;
+  }
+
+  @media (max-width: 768px) {
+    padding: calc(var(--navbar-height) + 16px) var(--space-md) 20px;
+    gap: var(--space-sm);
+    justify-content: center;
   }
 }
 
@@ -74,10 +84,24 @@
   gap: var(--space-md);
 
   @media (max-width: 992px) {
-    align-items: center;
+    align-items: flex-start;
     max-width: 100%;
     width: 100%;
     min-width: 0;
+  }
+
+  :host-context([dir="rtl"]) & {
+    @media (max-width: 992px) {
+      align-items: flex-start;
+      text-align: right;
+    }
+  }
+
+  :host-context([dir="ltr"]) & {
+    @media (max-width: 992px) {
+      align-items: flex-start;
+      text-align: left;
+    }
   }
 }
 
@@ -345,12 +369,8 @@
   display: flex;
   gap: var(--space-xl);
   align-items: flex-start;
+  flex-direction: column; // carousel now takes full width; no side col
 
-  @media (max-width: 1024px) {
-    flex-direction: column;
-  }
-
-  // Fix 6: order sections on mobile
   @media (max-width: 1024px) {
     display: contents;
   }
@@ -422,26 +442,79 @@
   }
 }
 
-// ===== HOW IT WORKS =====
-.how-section-frame {
-  background: var(--bg-subtle);
-  border: 1px solid var(--border-default);
-  border-radius: var(--radius-lg);
-  padding: var(--space-xl) var(--space-lg);
-  box-shadow: var(--card-shadow);
+// ===== HORIZONTAL CAROUSEL WRAPPER (HOW IT WORKS & PLATFORM STATS) =====
+.info-carousel-wrapper {
+  width: 100%;
+  min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: var(--space-lg);
-  // Prevent step-cards from expanding this frame beyond viewport on mobile
-  min-width: 0;
-  overflow: hidden;
-  
-  @media (max-width: 1024px) {
-    order: -1; // Fix 6
-  }
+  gap: var(--space-xs);
 
-  @media (max-width: 768px) {
-    padding: var(--space-md);
+  @media (max-width: 1024px) {
+    order: -1;
+  }
+}
+
+.carousel-viewport {
+  width: 100%;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+}
+
+.carousel-track {
+  display: flex;
+  width: 100%;
+  transition: transform 0.65s cubic-bezier(0.25, 1, 0.5, 1);
+  will-change: transform;
+}
+
+.carousel-card-item {
+  flex: 0 0 100%;
+  width: 100%;
+  min-width: 100%;
+  box-sizing: border-box;
+
+  .card-inner-box {
+    background: var(--bg-subtle);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-lg);
+    padding: var(--space-xl) var(--space-lg);
+    box-shadow: var(--card-shadow);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    height: 100%;
+    box-sizing: border-box;
+
+    @media (max-width: 768px) {
+      padding: var(--space-md);
+      gap: var(--space-md);
+    }
+  }
+}
+
+.carousel-nav-indicators {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 4px;
+
+  .nav-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: var(--radius-full);
+    border: none;
+    background: var(--border-default);
+    cursor: pointer;
+    padding: 0;
+    transition: all 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+
+    &.active {
+      width: 24px;
+      background: var(--dawa-primary);
+      border-radius: 4px;
+    }
   }
 }
 
@@ -451,11 +524,10 @@
   justify-content: space-around;
   gap: var(--space-lg);
 
-  // At 768px, 4 x 200px cards = 800px minimum — too wide. Switch to 2-col grid.
   @media (max-width: 768px) and (min-width: 481px) {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--space-lg);
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-md);
     justify-items: center;
   }
 
@@ -477,10 +549,20 @@
   align-items: center;
   text-align: center;
   position: relative;
-  gap: var(--space-sm);
-  max-width: 200px;
+  gap: var(--space-xs);
+  max-width: 220px;
 
-  // On mobile stacked column, full width looks better
+  .step-num {
+    background: transparent !important;
+    color: var(--dawa-primary);
+    font-weight: 800;
+    font-size: var(--font-size-xs);
+    border: none;
+    box-shadow: none;
+    padding: 0;
+    margin-bottom: 2px;
+  }
+
   @media (max-width: 480px) {
     flex: 1;
     min-width: 0;
@@ -490,7 +572,9 @@
     gap: 2px;
 
     .step-num {
-      width: 16px; height: 16px; font-size: 9px; margin-bottom: 2px;
+      font-size: 10px;
+      margin-bottom: 2px;
+      background: transparent !important;
     }
     .step-icon {
       width: 32px; height: 32px; margin-bottom: 2px;
@@ -514,48 +598,178 @@
   }
 }
 
+// ===== TRUSTED PHARMACIES CAROUSEL CARD (Card 3) =====
+.trust-features-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-lg) var(--space-xl);
+  width: 100%;
 
-
-// ===== STATS SIDEBAR =====
-.stats-card {
-  background: var(--bg-subtle);
-  border: 1px solid var(--border-default);
-  border-radius: var(--radius-lg);
-  padding: var(--space-xl) var(--space-lg);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-lg);
-  box-shadow: var(--card-shadow);
-  
-  @media (max-width: 1024px) {
-    order: -2; // Fix 6
+  // On mobile: keep all 4 items in one horizontal row (icon + short text)
+  @media (max-width: 480px) {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    gap: 4px;
   }
 }
 
-.stat-item {
+.trust-feature-item {
   display: flex;
   align-items: center;
+  gap: clamp(6px, 2vw, var(--space-md));
+  min-width: 0;
+
+  .trust-icon-wrap {
+    width: clamp(28px, 4vw, 44px);
+    height: clamp(28px, 4vw, 44px);
+    border-radius: var(--radius-md);
+    background: rgba(8, 90, 145, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    .material-icons-round {
+      font-size: clamp(16px, 2.5vw, 22px);
+      color: var(--dawa-primary);
+    }
+  }
+
+  .trust-info {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    gap: 2px;
+
+    strong {
+      font-size: clamp(0.75rem, 1.8vw, var(--font-size-sm));
+      font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1.2;
+    }
+
+    span {
+      font-size: clamp(0.65rem, 1.3vw, var(--font-size-xs));
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+  }
+
+  // Mobile: icon-only column, hide text to keep card compact
+  @media (max-width: 480px) {
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    min-width: 0;
+
+    .trust-icon-wrap {
+      width: 32px;
+      height: 32px;
+      flex-shrink: 0;
+      .material-icons-round { font-size: 16px; }
+    }
+
+    .trust-info {
+      strong {
+        font-size: 9px;
+        text-align: center;
+        line-height: 1.15;
+        white-space: normal;
+        word-break: break-word;
+      }
+      span { display: none; } // hide subtitle on mobile to keep row compact
+    }
+  }
+}
+
+// ===== HORIZONTAL STATS LAYOUT (ALWAYS HORIZONTAL) =====
+.stats-horizontal-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
   gap: var(--space-md);
+}
+
+.stat-item {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(6px, 2vw, var(--space-md));
+  min-width: 0;
 
   .stat-icon-wrap {
-    width: 44px; height: 44px;
+    width: clamp(28px, 4vw, 44px);
+    height: clamp(28px, 4vw, 44px);
     border-radius: var(--radius-md);
-    background: rgba(8,90,145,0.08);
-    display: flex; align-items: center; justify-content: center;
+    background: rgba(8, 90, 145, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
     flex-shrink: 0;
-    .material-icons-round { font-size: 22px; color: var(--dawa-primary); }
+
+    .material-icons-round {
+      font-size: clamp(16px, 2.5vw, 22px);
+      color: var(--dawa-primary);
+    }
   }
 
   .stat-info {
     display: flex;
     flex-direction: column;
-    strong { font-size: var(--font-size-xl); font-weight: 800; color: var(--text-primary); line-height: 1.2; }
-    span { font-size: var(--font-size-xs); color: var(--text-secondary); }
+    min-width: 0;
+
+    strong {
+      font-size: clamp(0.95rem, 2.2vw, var(--font-size-xl));
+      font-weight: 800;
+      color: var(--text-primary);
+      line-height: 1.2;
+      white-space: nowrap;
+    }
+
+    span {
+      font-size: clamp(0.65rem, 1.4vw, var(--font-size-xs));
+      color: var(--text-secondary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+}
+
+// ===== TWO-COLUMN CONTENT ROW (Pharmacies beside Categories/Medicines) =====
+.home-content-row {
+  display: flex;
+  gap: var(--space-xl);
+  align-items: flex-start;
+
+  @media (max-width: 1024px) {
+    flex-direction: column;
+  }
+}
+
+// Available Pharmacies — separate aside
+.home-pharmacies-aside {
+  width: 320px;
+  min-width: 320px;
+  flex-shrink: 0;
+
+  // Mobile: full width, appears above shared frame
+  @media (max-width: 1024px) {
+    width: 100%;
+    min-width: unset;
+    order: -1; // pharmacies above categories+medicines on mobile
   }
 }
 
 // ===== SHARED MAIN FRAME (Categories + Medicines) =====
 .shared-main-frame {
+  flex: 1;
+  min-width: 0;
   background: var(--bg-subtle);
   border: 1px solid var(--border-default);
   border-radius: var(--radius-lg);
@@ -565,13 +779,8 @@
   flex-direction: column;
   gap: var(--space-xl);
   max-width: 100%;
-  min-width: 0;
   // CRITICAL: prevent category list's intrinsic width from expanding this frame
   overflow: hidden;
-  
-  @media (max-width: 1024px) {
-    order: 1; // Fix 6
-  }
 
   @media (max-width: 768px) {
     padding: var(--space-md);
@@ -590,18 +799,18 @@
 .categories-horizontal-list {
   display: flex;
   align-items: flex-start;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   gap: var(--space-sm);
-  overflow-x: auto;
-  // CRITICAL: contain this list's scroll to ITSELF — do not let intrinsic width escape
-  // The parent must have overflow: hidden for this to work correctly
+  overflow-x: hidden;
   padding: 4px 2px;
   width: 100%;
   max-width: 100%;
-  // Hide scrollbar but keep scroll functionality
-  scrollbar-width: none;
-  &::-webkit-scrollbar { display: none; }
-  -webkit-overflow-scrolling: touch;
+  transition: all 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+
+  @media (max-width: 768px) {
+    gap: 6px 4px;
+    justify-content: space-between;
+  }
 }
 
 .category-pill {
@@ -610,12 +819,18 @@
   align-items: center;
   gap: 4px;
   text-decoration: none;
-  flex: 1;
+  flex: 0 0 auto;
   min-width: 0;
   padding: 2px;
   border-radius: var(--radius-md);
   transition: all var(--transition-fast);
   background: transparent;
+  border: none;
+  cursor: pointer;
+
+  &.cat-hidden {
+    display: none !important;
+  }
 
   .cat-icon {
     width: 32px; height: 32px;
@@ -638,35 +853,52 @@
   &:hover .cat-icon {
     transform: translateY(-3px);
   }
+
+  // Desktop responsive pill sizing
+  @media (min-width: 769px) {
+    flex: 1;
+    max-width: 120px;
+  }
   
+  // Mobile responsive pill sizing
   @media (max-width: 768px) {
-    flex: 0 0 80px;
+    flex: 0 0 calc(20% - 4px);
+    max-width: calc(20% - 4px);
+    box-sizing: border-box;
+    padding: 2px 0;
+
+    .cat-icon {
+      width: 28px;
+      height: 28px;
+      .material-icons-round { font-size: 18px; }
+    }
+
     .cat-name {
-      font-size: 11px;
-      white-space: normal;
-      word-wrap: break-word;
-      line-height: 1.3;
-      text-overflow: unset;
-      overflow: visible;
+      font-size: 9.5px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      line-height: 1.2;
     }
   }
 }
 
-.view-all-cats {
-  flex-shrink: 0;
-  flex: 0 0 auto;
-  min-width: 36px;
-  .material-icons-round {
-    font-size: 20px;
-    color: var(--text-secondary);
-    :host-context([dir="rtl"]) & { transform: scaleX(-1); }
-  }
+.more-cats-btn {
   .cat-icon {
-    background: transparent;
-    border: none;
+    background: rgba(8, 90, 145, 0.08);
+    border-radius: var(--radius-full);
+    color: var(--dawa-primary);
   }
-  &:hover .cat-icon {
-    .material-icons-round { color: var(--dawa-primary); }
+
+  .expand-arrow {
+    font-size: 18px;
+    transition: transform 0.3s ease;
+  }
+
+  &:hover {
+    .cat-icon {
+      background: rgba(8, 90, 145, 0.16);
+    }
   }
 }
 
@@ -721,6 +953,18 @@
     width: 28px; height: 28px;
     display: flex; align-items: center; justify-content: center;
     background: var(--dawa-danger); color: #fff; font-size: 10px; font-weight: 800;
+    line-height: 1;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    box-shadow: var(--shadow-sm);
+    z-index: 2;
+  }
+
+  .otc-chip {
+    position: absolute; top: -6px; inset-inline-end: -6px;
+    width: 28px; height: 28px;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--dawa-accent); color: #fff; font-size: 9px; font-weight: 800;
     line-height: 1;
     border-radius: 50%;
     border: 2px solid #fff;
@@ -820,9 +1064,25 @@
   box-shadow: var(--card-shadow);
   display: flex;
   flex-direction: column;
-  
-  @media (max-width: 1024px) {
-    order: 0; // Fix 6
+}
+
+// Frame pharmacies section (inside shared-main-frame)
+.frame-pharmacies-section {
+  .sidebar-card-header {
+    padding: 0 0 var(--space-sm) 0;
+    border-bottom: none;
+    margin-bottom: var(--space-sm);
+  }
+
+  .pharmacies-list {
+    border: 1px solid var(--border-muted);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+
+  .sidebar-card-footer {
+    border-top: none;
+    padding: var(--space-sm) 0 0 0;
   }
 }
 
@@ -1006,7 +1266,51 @@
     gap: var(--space-xl);
     .footer-brand { grid-column: 1 / -1; }
   }
-  @media (max-width: 640px) { grid-template-columns: 1fr; }
+
+  @media (max-width: 640px) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-xs);
+    padding-bottom: var(--space-md);
+    
+    .footer-brand {
+      grid-column: 1 / -1;
+      gap: 6px;
+      margin-bottom: var(--space-xs);
+
+      p {
+        font-size: 11px;
+        line-height: 1.4;
+        max-width: 100%;
+      }
+    }
+
+    .col-company,
+    .col-patients,
+    .col-pharmacists {
+      grid-column: auto;
+      margin-top: 0;
+      padding-top: 0;
+      border-top: none;
+      min-width: 0;
+      gap: 4px;
+
+      h4 {
+        font-size: 12px;
+        margin-bottom: 2px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      a {
+        font-size: 11px;
+        line-height: 1.35;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+  }
 }
 
 .footer-brand {
@@ -1033,7 +1337,7 @@
 .footer-socials {
   display: flex;
   gap: var(--space-sm);
-  margin-top: var(--space-xs);
+  margin: var(--space-xs) 0 12px 0;
 
   .social-icon {
     width: 32px; height: 32px;
@@ -1108,11 +1412,7 @@
   }
 
   // Section frames — distinct from page bg with subtle border
-  .how-section-frame {
-    background: var(--bg-surface);
-    border-color: var(--border-default);
-  }
-  .stats-card {
+  .card-inner-box {
     background: var(--bg-surface);
     border-color: var(--border-default);
   }
@@ -1143,7 +1443,7 @@
   // Step cards
   .step-card {
     .step-icon { background: rgba(59, 157, 224, 0.1); }
-    .step-num { background: var(--dawa-primary); }
+    .step-num { background: transparent !important; color: var(--dawa-cyan); }
   }
 
 
@@ -1161,11 +1461,6 @@
   .sidebar-ph-item:hover { background: var(--bg-hover); }
   .sidebar-ph-logo { background: var(--bg-muted); }
 
-  // Features bar
-  .features-bar {
-    background: var(--bg-surface);
-    border-top-color: var(--border-default);
-  }
 
   // Footer blends smoothly from dark mode
   .site-footer {
@@ -1183,23 +1478,23 @@
   .sidebar-card-header { border-bottom-color: var(--border-default); }
 }
 
-// Fix 1: Mobile Typography Overrides (Further reduction for crowding)
+// Fix 1: Mobile Typography Overrides
 @media (max-width: 768px) {
-  .hero-title { font-size: clamp(1rem, 4vw, 1.5rem); }
+  .hero-title { font-size: clamp(1.4rem, 5vw, 2.2rem); }
   .section-title { font-size: 1.125rem; }
-  .hero-sub { font-size: 0.75rem; line-height: 1.3; margin-bottom: 4px; }
+  .hero-sub { font-size: 0.875rem; line-height: 1.5; margin-bottom: 4px; }
   .med-name { font-size: 0.875rem; }
   .med-price-val { font-size: 1rem; }
   .med-desc { font-size: 0.7rem; }
   .stat-item .stat-info strong { font-size: 1.25rem; }
   .stat-item .stat-info span { font-size: 0.7rem; }
   
-  // Shrink search and elements to fit within the fixed Hero aspect ratio
-  .main-search-inner { padding: 0 8px; gap: 6px; }
-  .main-search-inner .search-ico { font-size: 18px; }
-  .main-search-inner input { padding: 8px 0; font-size: 12px; }
-  .main-search-wrap { gap: 4px; margin-top: 8px; }
-  .search-hints { gap: 4px; margin-top: 2px; }
-  .hints-label { font-size: 10px; }
-  .hint-pill { font-size: 9px; padding: 2px 8px; }
+  // Search elements layout on mobile
+  .main-search-inner { padding: 0 10px; gap: 8px; }
+  .main-search-inner .search-ico { font-size: 20px; }
+  .main-search-inner input { padding: 10px 0; font-size: 13px; }
+  .main-search-wrap { gap: 6px; margin-top: 12px; }
+  .search-hints { gap: 6px; margin-top: 4px; }
+  .hints-label { font-size: 11px; }
+  .hint-pill { font-size: 10px; padding: 3px 10px; }
 }

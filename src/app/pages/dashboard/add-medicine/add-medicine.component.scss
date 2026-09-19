@@ -270,3 +270,41 @@
   gap: var(--space-md);
   justify-content: flex-end;
 }
+
+.form-row {
+  display: flex;
+  gap: var(--space-md);
+  
+  .form-group {
+    flex: 1;
+    min-width: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .add-container {
+    padding: var(--space-md);
+  }
+
+  .form-row {
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+  .selected-med-card {
+    flex-direction: row;
+    gap: 1rem;
+    padding: 1rem;
+  }
+
+  .file-upload-box {
+    padding: var(--space-md);
+  }
+
+  .form-actions {
+    flex-direction: column-reverse;
+    .btn {
+      width: 100%;
+    }
+  }
+}

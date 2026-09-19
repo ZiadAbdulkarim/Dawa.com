@@ -16,6 +16,10 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/medicine-detail/medicine-detail.component').then(m => m.MedicineDetailComponent),
   },
   {
+    path: 'pharmacies',
+    loadComponent: () => import('./pages/pharmacies-list/pharmacies-list.component').then(m => m.PharmaciesListComponent),
+  },
+  {
     path: 'pharmacy/:id',
     loadComponent: () => import('./pages/pharmacy-detail/pharmacy-detail.component').then(m => m.PharmacyDetailComponent),
   },

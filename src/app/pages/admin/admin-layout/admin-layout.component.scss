@@ -99,6 +99,10 @@
 .admin-content {
   flex-grow: 1;
   min-width: 0; 
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 }
 
 // ===== DARK MODE =====
