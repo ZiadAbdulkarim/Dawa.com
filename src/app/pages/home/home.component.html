@@ -95,7 +95,10 @@
 
       <!-- Horizontal Carousel: How Dawa.com Works · Platform Statistics · Trusted Pharmacies -->
       <section class="info-carousel-wrapper">
-        <div class="carousel-viewport">
+        <div class="carousel-viewport" 
+             (touchstart)="onTouchStart($event)" 
+             (touchmove)="onTouchMove($event)" 
+             (touchend)="onTouchEnd($event)">
           <div class="carousel-track" [style.transform]="lang.isArabic ? ('translateX(' + (carouselIndex() * 100) + '%)') : ('translateX(-' + (carouselIndex() * 100) + '%)')">
 
             <!-- CARD 1: How Dawa.com Works -->

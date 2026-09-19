@@ -145,14 +145,16 @@
       }
     </div>
   } @else {
-    <!-- EMPTY STATE -->
-    <div class="empty-state dawa-card">
-      <span class="material-icons-round empty-icon">storefront</span>
-      <h3>{{ t('لم يتم العثور على صيدليات', 'No Pharmacies Found') }}</h3>
-      <p>{{ t('جرّب البحث باسم آخر أو تغيير فلاتر المدينة والحالة.', 'Try searching with a different term or change city/status filters.') }}</p>
-      <button class="btn btn-primary" (click)="resetFilters()">
-        {{ t('إعادة ضبط الفلاتر', 'Reset Filters') }}
-      </button>
+    <!-- EMPTY STATE WRAPPER -->
+    <div class="empty-state-wrapper">
+      <div class="empty-state">
+        <span class="material-icons-round empty-icon">storefront</span>
+        <h3>{{ t('لم يتم العثور على صيدليات', 'No Pharmacies Found') }}</h3>
+        <p>{{ t('جرّب البحث باسم آخر أو تغيير فلاتر المدينة والحالة.', 'Try searching with a different term or change city/status filters.') }}</p>
+        <button class="btn btn-primary" (click)="resetFilters()">
+          {{ t('إعادة ضبط الفلاتر', 'Reset Filters') }}
+        </button>
+      </div>
     </div>
   }
 

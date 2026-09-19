@@ -83,6 +83,65 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
   }
 
+  // Touch swipe handling
+  private touchStartX = 0;
+  private touchStartY = 0;
+  private touchEndX = 0;
+  private touchEndY = 0;
+
+  onTouchStart(event: TouchEvent): void {
+    if (event.touches.length === 1) {
+      this.touchStartX = event.touches[0].clientX;
+      this.touchStartY = event.touches[0].clientY;
+      this.touchEndX = this.touchStartX;
+      this.touchEndY = this.touchStartY;
+    }
+  }
+
+  onTouchMove(event: TouchEvent): void {
+    if (event.touches.length === 1) {
+      this.touchEndX = event.touches[0].clientX;
+      this.touchEndY = event.touches[0].clientY;
+      const deltaX = Math.abs(this.touchEndX - this.touchStartX);
+      const deltaY = Math.abs(this.touchEndY - this.touchStartY);
+      if (deltaX > deltaY && deltaX > 10) {
+        if (event.cancelable) {
+          event.preventDefault();
+        }
+      }
+    }
+  }
+
+  onTouchEnd(event: TouchEvent): void {
+    const deltaX = this.touchEndX - this.touchStartX;
+    const deltaY = this.touchEndY - this.touchStartY;
+    const threshold = 40; // minimum drag distance in px
+
+    if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) >= threshold) {
+      const isArabic = this.lang.isArabic;
+      const totalSlides = 3;
+      const current = this.carouselIndex();
+
+      if (deltaX < 0) {
+        // Dragged left: physically moving finger left.
+        // In LTR, left drag moves to NEXT slide.
+        // In RTL (Arabic), left drag moves to PREVIOUS slide.
+        const next = isArabic
+          ? (current - 1 + totalSlides) % totalSlides
+          : (current + 1) % totalSlides;
+        this.goToSlide(next);
+      } else {
+        // Dragged right: physically moving finger right.
+        // In LTR, right drag moves to PREVIOUS slide.
+        // In RTL (Arabic), right drag moves to NEXT slide.
+        const prev = isArabic
+          ? (current + 1) % totalSlides
+          : (current - 1 + totalSlides) % totalSlides;
+        this.goToSlide(prev);
+      }
+    }
+  }
+
   onSearchInput(): void {
     if (this.searchQuery.length >= 2) {
       this.suggestions.set(this.data.searchMedicines(this.searchQuery).slice(0, 7));

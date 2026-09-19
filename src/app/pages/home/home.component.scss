@@ -39,14 +39,11 @@
 
   @media (max-width: 768px) {
     padding: 0;
-    min-height: unset;
-    aspect-ratio: 1800 / 793;
+    min-height: clamp(260px, 60vw, 360px);
     display: flex;
     align-items: center;
-    // Override aspect-ratio on very small screens if it gets too short
-    @supports not (aspect-ratio: 1800/793) {
-      min-height: max(240px, 44vw);
-    }
+    background-position: center center;
+    background-size: cover;
   }
 }
 
@@ -520,9 +517,10 @@
 
 .steps-row {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-around;
   gap: var(--space-lg);
+  flex-grow: 1;
 
   @media (max-width: 768px) and (min-width: 481px) {
     display: grid;
@@ -536,7 +534,7 @@
     flex-wrap: nowrap;
     overflow-x: hidden;
     gap: 4px;
-    align-items: stretch;
+    align-items: center;
     padding-bottom: 0;
     justify-content: space-between;
   }
@@ -561,6 +559,38 @@
     box-shadow: none;
     padding: 0;
     margin-bottom: 2px;
+  }
+
+  .step-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-md);
+    background: rgba(8, 90, 145, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-bottom: 4px;
+
+    .material-icons-round {
+      font-size: 22px;
+      color: var(--dawa-primary);
+    }
+  }
+
+  h4 {
+    font-size: var(--font-size-sm);
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+    line-height: 1.25;
+  }
+
+  p {
+    font-size: var(--font-size-xs);
+    color: var(--text-secondary);
+    margin: 0;
+    line-height: 1.35;
   }
 
   @media (max-width: 480px) {
@@ -602,8 +632,10 @@
 .trust-features-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: var(--space-lg) var(--space-xl);
+  gap: var(--space-md) var(--space-lg);
   width: 100%;
+  flex-grow: 1;
+  align-content: center;
 
   // On mobile: keep all 4 items in one horizontal row (icon + short text)
   @media (max-width: 480px) {
@@ -618,12 +650,12 @@
 .trust-feature-item {
   display: flex;
   align-items: center;
-  gap: clamp(6px, 2vw, var(--space-md));
+  gap: var(--space-md);
   min-width: 0;
 
   .trust-icon-wrap {
-    width: clamp(28px, 4vw, 44px);
-    height: clamp(28px, 4vw, 44px);
+    width: 44px;
+    height: 44px;
     border-radius: var(--radius-md);
     background: rgba(8, 90, 145, 0.08);
     display: flex;
@@ -632,7 +664,7 @@
     flex-shrink: 0;
 
     .material-icons-round {
-      font-size: clamp(16px, 2.5vw, 22px);
+      font-size: 22px;
       color: var(--dawa-primary);
     }
   }
@@ -644,16 +676,16 @@
     gap: 2px;
 
     strong {
-      font-size: clamp(0.75rem, 1.8vw, var(--font-size-sm));
+      font-size: var(--font-size-sm);
       font-weight: 700;
       color: var(--text-primary);
-      line-height: 1.2;
+      line-height: 1.25;
     }
 
     span {
-      font-size: clamp(0.65rem, 1.3vw, var(--font-size-xs));
+      font-size: var(--font-size-xs);
       color: var(--text-secondary);
-      line-height: 1.4;
+      line-height: 1.35;
     }
   }
 
@@ -692,6 +724,7 @@
   justify-content: space-around;
   width: 100%;
   gap: var(--space-md);
+  flex-grow: 1;
 }
 
 .stat-item {
@@ -699,12 +732,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: clamp(6px, 2vw, var(--space-md));
+  gap: var(--space-md);
   min-width: 0;
 
   .stat-icon-wrap {
-    width: clamp(28px, 4vw, 44px);
-    height: clamp(28px, 4vw, 44px);
+    width: 44px;
+    height: 44px;
     border-radius: var(--radius-md);
     background: rgba(8, 90, 145, 0.08);
     display: flex;
@@ -713,7 +746,7 @@
     flex-shrink: 0;
 
     .material-icons-round {
-      font-size: clamp(16px, 2.5vw, 22px);
+      font-size: 22px;
       color: var(--dawa-primary);
     }
   }
@@ -724,7 +757,7 @@
     min-width: 0;
 
     strong {
-      font-size: clamp(0.95rem, 2.2vw, var(--font-size-xl));
+      font-size: var(--font-size-lg);
       font-weight: 800;
       color: var(--text-primary);
       line-height: 1.2;
@@ -732,7 +765,7 @@
     }
 
     span {
-      font-size: clamp(0.65rem, 1.4vw, var(--font-size-xs));
+      font-size: var(--font-size-xs);
       color: var(--text-secondary);
       white-space: nowrap;
       overflow: hidden;
@@ -740,6 +773,7 @@
     }
   }
 }
+
 
 // ===== TWO-COLUMN CONTENT ROW (Pharmacies beside Categories/Medicines) =====
 .home-content-row {
@@ -1478,23 +1512,63 @@
   .sidebar-card-header { border-bottom-color: var(--border-default); }
 }
 
-// Fix 1: Mobile Typography Overrides
+// Fix 1: Mobile Hero Content & Typography Scaling
 @media (max-width: 768px) {
-  .hero-title { font-size: clamp(1.4rem, 5vw, 2.2rem); }
+  .hero-content {
+    padding: calc(var(--navbar-height) + 12px) var(--space-md) 16px;
+    gap: 10px;
+  }
+
+  .hero-text-area {
+    gap: 8px;
+  }
+
+  .hero-title {
+    font-size: clamp(1.25rem, 4.5vw, 1.75rem);
+    line-height: 1.2;
+  }
+
+  .hero-sub {
+    font-size: 0.78rem;
+    line-height: 1.45;
+    margin-bottom: 2px;
+  }
+
+  .main-search-wrap {
+    gap: 4px;
+    margin-top: 6px;
+  }
+
+  .main-search-box {
+    padding: 4px 6px;
+    border-radius: var(--radius-md);
+  }
+
+  .main-search-inner {
+    padding: 0 6px;
+    gap: 6px;
+    .search-ico { font-size: 18px; }
+    input { padding: 7px 0; font-size: 12px; }
+  }
+
+  .search-hints {
+    gap: 4px;
+    margin-top: 2px;
+  }
+
+  .hints-label {
+    font-size: 10px;
+  }
+
+  .hint-pill {
+    font-size: 9.5px;
+    padding: 2px 8px;
+  }
+
   .section-title { font-size: 1.125rem; }
-  .hero-sub { font-size: 0.875rem; line-height: 1.5; margin-bottom: 4px; }
   .med-name { font-size: 0.875rem; }
   .med-price-val { font-size: 1rem; }
   .med-desc { font-size: 0.7rem; }
   .stat-item .stat-info strong { font-size: 1.25rem; }
   .stat-item .stat-info span { font-size: 0.7rem; }
-  
-  // Search elements layout on mobile
-  .main-search-inner { padding: 0 10px; gap: 8px; }
-  .main-search-inner .search-ico { font-size: 20px; }
-  .main-search-inner input { padding: 10px 0; font-size: 13px; }
-  .main-search-wrap { gap: 6px; margin-top: 12px; }
-  .search-hints { gap: 6px; margin-top: 4px; }
-  .hints-label { font-size: 11px; }
-  .hint-pill { font-size: 10px; padding: 3px 10px; }
 }
