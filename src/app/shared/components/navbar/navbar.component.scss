@@ -35,54 +35,48 @@
 .navbar-logo {
   display: flex;
   align-items: center;
-  gap: var(--space-sm);
+  gap: 10px;
   text-decoration: none;
   flex-shrink: 0;
 
-  .logo-icon {
-    width: 40px;
-    height: 40px;
-    background: var(--dawa-gradient-primary);
-    border-radius: var(--radius-md);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: var(--shadow-primary);
+  .brand-logo-img {
+    height: 38px;
+    width: auto;
+    object-fit: contain;
 
-    .material-icons-round {
-      color: #fff;
-      font-size: 22px;
+    @media (max-width: 480px) {
+      height: 32px;
     }
   }
 
-  .logo-text {
+  .brand-text {
     display: flex;
     flex-direction: column;
     line-height: 1.1;
-    max-width: 150px;
 
-    @media (max-width: 480px) {
+    @media (max-width: 540px) {
       display: none;
     }
   }
 
-  .logo-main {
+  .brand-title {
     font-size: 18px;
     font-weight: 800;
-    color: var(--dawa-primary-dark);
-    letter-spacing: -0.5px;
+    letter-spacing: -0.3px;
   }
 
-  .logo-dot {
-    font-size: 18px;
-    font-weight: 800;
-    color: #0ea5e9;
+  .brand-dawa {
+    color: #1A73E8;
   }
 
-  .logo-sub {
+  .brand-com {
+    color: #12B686;
+  }
+
+  .brand-sub {
     font-size: 10px;
-    color: var(--text-muted);
-    font-weight: 400;
+    color: var(--text-muted, #64748b);
+    font-weight: 500;
   }
 }
 

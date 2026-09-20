@@ -102,7 +102,7 @@
           <div class="carousel-track" [style.transform]="lang.isArabic ? ('translateX(' + (carouselIndex() * 100) + '%)') : ('translateX(-' + (carouselIndex() * 100) + '%)')">
 
             <!-- CARD 1: How Dawa.com Works -->
-            <div class="carousel-card-item">
+            <div class="carousel-card-item how-it-works-card">
               <div class="card-inner-box">
                 <div class="section-header">
                   <h2 class="section-title">{{ t('كيف يعمل دواء.كوم', 'How Dawa.com Works') }}</h2>
@@ -110,9 +110,9 @@
                 <div class="steps-row">
                   @for (step of howSteps; track step.n) {
                     <div class="step-card">
-                      <div class="step-num">{{ step.n < 10 ? '0' + step.n : step.n }}</div>
+                      <div class="step-num">{{ step.n < 10 ? step.n : step.n }}</div>
                       <div class="step-icon">
-                        <span class="material-icons-round custom-icon-fallback">{{ step.icon }}</span>
+                        <img [src]="step.img" [alt]="t(step.titleAr, step.titleEn)" class="step-img" />
                       </div>
                       <h4>{{ t(step.titleAr, step.titleEn) }}</h4>
                       <p>{{ t(step.descAr, step.descEn) }}</p>
@@ -123,15 +123,15 @@
             </div>
 
             <!-- CARD 2: Platform Statistics -->
-            <div class="carousel-card-item">
+            <div class="carousel-card-item platform-stats-card">
               <div class="card-inner-box">
                 <div class="section-header">
                   <h2 class="section-title">{{ t('إحصائيات المنصة', 'Platform Statistics') }}</h2>
                 </div>
                 <div class="stats-horizontal-row">
                   <div class="stat-item">
-                    <div class="stat-icon-wrap">
-                      <span class="material-icons-round">medication</span>
+                    <div class="stat-img-wrap">
+                      <img src="/assets/images/platform-statistics/Medicines.png" [alt]="t('أدوية', 'Medicines')" class="stat-img" />
                     </div>
                     <div class="stat-info">
                       <strong>{{ stats.totalMedicines }}+</strong>
@@ -139,8 +139,8 @@
                     </div>
                   </div>
                   <div class="stat-item">
-                    <div class="stat-icon-wrap">
-                      <span class="material-icons-round">verified_user</span>
+                    <div class="stat-img-wrap">
+                      <img src="/assets/images/platform-statistics/Verified-Pharmacies.png" [alt]="t('صيدليات موثوقة', 'Verified Pharmacies')" class="stat-img" />
                     </div>
                     <div class="stat-info">
                       <strong>{{ stats.activePharmacies }}+</strong>
@@ -148,59 +148,12 @@
                     </div>
                   </div>
                   <div class="stat-item">
-                    <div class="stat-icon-wrap">
-                      <span class="material-icons-round">location_on</span>
+                    <div class="stat-img-wrap">
+                      <img src="/assets/images/platform-statistics/Cities-Covered.png" [alt]="t('مدن مغطاة', 'Cities Covered')" class="stat-img" />
                     </div>
                     <div class="stat-info">
-                      <strong>{{ stats.cities }}</strong>
+                      <strong>{{ stats.cities }}+</strong>
                       <span>{{ t('مدن مغطاة', 'Cities Covered') }}</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- CARD 3: Trusted Pharmacies -->
-            <div class="carousel-card-item">
-              <div class="card-inner-box">
-                <div class="section-header">
-                  <h2 class="section-title">{{ t('الثقة', 'Trust') }}</h2>
-                </div>
-                <div class="trust-features-grid">
-                  <div class="trust-feature-item">
-                    <div class="trust-icon-wrap">
-                      <span class="material-icons-round">verified_user</span>
-                    </div>
-                    <div class="trust-info">
-                      <strong>{{ t('صيدليات موثوقة', 'Verified Pharmacies') }}</strong>
-                      <span>{{ t('جميع الصيدليات تم التحقق منها', 'All pharmacies are verified') }}</span>
-                    </div>
-                  </div>
-                  <div class="trust-feature-item">
-                    <div class="trust-icon-wrap">
-                      <span class="material-icons-round">lock</span>
-                    </div>
-                    <div class="trust-info">
-                      <strong>{{ t('آمن وخاص', 'Safe & Private') }}</strong>
-                      <span>{{ t('بياناتك آمنة', 'Your data is secure') }}</span>
-                    </div>
-                  </div>
-                  <div class="trust-feature-item">
-                    <div class="trust-icon-wrap">
-                      <span class="material-icons-round">price_check</span>
-                    </div>
-                    <div class="trust-info">
-                      <strong>{{ t('أسعار موحدة', 'Unified Prices') }}</strong>
-                      <span>{{ t('أسعار موحدة معتمدة في جميع الصيدليات', 'Approved prices across all pharmacies') }}</span>
-                    </div>
-                  </div>
-                  <div class="trust-feature-item">
-                    <div class="trust-icon-wrap">
-                      <span class="material-icons-round">support_agent</span>
-                    </div>
-                    <div class="trust-info">
-                      <strong>{{ t('دعم على مدار الساعة', '24/7 Support') }}</strong>
-                      <span>{{ t('نحن هنا للمساعدة في أي وقت', 'We are here to help anytime') }}</span>
                     </div>
                   </div>
                 </div>
@@ -214,7 +167,6 @@
         <div class="carousel-nav-indicators">
           <button class="nav-dot" [class.active]="carouselIndex() === 0" (click)="goToSlide(0)" [attr.aria-label]="t('كيف يعمل دواء.كوم', 'How Dawa.com Works')"></button>
           <button class="nav-dot" [class.active]="carouselIndex() === 1" (click)="goToSlide(1)" [attr.aria-label]="t('إحصائيات المنصة', 'Platform Statistics')"></button>
-          <button class="nav-dot" [class.active]="carouselIndex() === 2" (click)="goToSlide(2)" [attr.aria-label]="t('صيدليات موثوقة', 'Trusted Pharmacies')"></button>
         </div>
       </section>
 
@@ -267,7 +219,7 @@
             </div>
             <div class="categories-horizontal-list" [class.is-expanded]="categoriesExpanded()">
               @for (cat of categories(); track cat.id; let i = $index) {
-                <a class="category-pill" [class.cat-hidden]="!categoriesExpanded() && i >= 5"
+                <a class="category-pill" [class.cat-hidden]="!categoriesExpanded() && i >= visibleCategoryCount()"
                    [routerLink]="['/search']" [queryParams]="{category: cat.id}" [id]="'home-cat-' + cat.id">
                   <span class="cat-icon" [style.color]="cat.color">
                     <span class="material-icons-round">{{ cat.icon }}</span>
@@ -365,10 +317,15 @@
 <footer class="site-footer">
   <div class="container footer-inner">
     <div class="footer-brand">
-      <div class="footer-logo">
-        <span class="material-icons-round">local_pharmacy</span>
-        <span>Dawa<span>.com</span></span>
-      </div>
+      <a routerLink="/" class="footer-logo">
+        <img src="/assets/logo/logo-dawa.com.png" alt="Dawa.com" class="brand-logo-img" />
+        <div class="brand-text">
+          <div class="brand-title">
+            <span class="brand-dawa">Dawa</span><span class="brand-com">.com</span>
+          </div>
+          <span class="brand-sub">{{ t('إبحث عن دوائك', 'Find Your Medicine') }}</span>
+        </div>
+      </a>
       <p>{{ t('منصة البحث عن الأدوية الأوثق في مصر', 'Egypt\'s most trusted medicine search platform, helping you find medicines quickly and easily from verified pharmacies near you.') }}</p>
       <div class="footer-socials">
         <a href="#" class="social-icon">f</a>

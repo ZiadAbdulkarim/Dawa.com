@@ -106,7 +106,7 @@
   font-size: clamp(2rem, 5vw, 3.8rem);
   font-weight: 800;
   color: #fff;
-  line-height: 1.15;
+  line-height: 1.45;
   margin: 0;
 }
 
@@ -488,6 +488,248 @@
       gap: var(--space-md);
     }
   }
+
+  &.how-it-works-card,
+  &.platform-stats-card {
+    .card-inner-box {
+      padding: var(--space-md) var(--space-lg);
+      gap: var(--space-sm);
+
+      @media (max-width: 768px) {
+        padding: var(--space-sm) var(--space-md);
+        gap: var(--space-xs);
+      }
+
+      @media (max-width: 480px) {
+        padding: 6px 10px;
+        gap: 4px;
+      }
+    }
+
+    .section-header {
+      margin: 0;
+
+      .section-title {
+        font-size: clamp(1.1rem, 2.2vw, 1.35rem);
+        font-weight: 800;
+        color: var(--text-primary);
+        line-height: 1.2;
+        margin: 0;
+
+        @media (max-width: 480px) {
+          font-size: 13px;
+          line-height: 1.15;
+        }
+      }
+    }
+  }
+
+  &.how-it-works-card {
+    .steps-row {
+      gap: var(--space-md);
+      align-items: flex-start;
+      @media (max-width: 480px) {
+        gap: 4px;
+        margin-top: 2px;
+      }
+    }
+
+    .step-card {
+      gap: 4px;
+      max-width: 240px;
+
+      .step-num {
+        font-size: 12px;
+        font-weight: 800;
+        color: #1A73E8;
+        line-height: 1;
+        margin-bottom: 2px;
+        background: transparent !important;
+      }
+
+      .step-icon {
+        width: 100%;
+        height: 108px;
+        background: transparent !important;
+        border: none !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        margin-bottom: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: visible;
+
+        .step-img {
+          max-width: 100%;
+          max-height: 100%;
+          width: auto;
+          height: auto;
+          object-fit: contain;
+          border-radius: 0 !important;
+        }
+      }
+
+      h4 {
+        font-size: var(--font-size-sm, 13px);
+        font-weight: 700;
+        color: var(--text-primary);
+        margin: 0;
+        line-height: 1.2;
+      }
+
+      p {
+        font-size: var(--font-size-xs, 11px);
+        color: var(--text-secondary);
+        margin: 0;
+        line-height: 1.25;
+      }
+
+      @media (max-width: 480px) {
+        padding: 0;
+        gap: 2px;
+
+        .step-num {
+          font-size: 10px;
+          margin-bottom: 0;
+        }
+
+        .step-icon {
+          height: 56px;
+          width: 100%;
+          margin-bottom: 2px;
+
+          .step-img {
+            max-width: 100%;
+            max-height: 100%;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+          }
+        }
+
+        h4 {
+          font-size: 10px;
+          line-height: 1.15;
+          margin: 0;
+        }
+
+        p {
+          font-size: 8.5px;
+          line-height: 1.15;
+          margin: 0;
+        }
+      }
+    }
+  }
+
+  &.platform-stats-card {
+    .stats-horizontal-row {
+      gap: var(--space-md);
+      align-items: flex-start;
+      justify-content: space-around;
+
+      @media (max-width: 480px) {
+        gap: 4px;
+        margin-top: 2px;
+      }
+    }
+
+    .stat-item {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 4px;
+      min-width: 0;
+
+      .stat-img-wrap {
+        width: 100%;
+        height: 96px;
+        background: transparent !important;
+        border: none !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        margin-bottom: 2px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: visible;
+
+        .stat-img {
+          max-width: 100%;
+          max-height: 100%;
+          width: auto;
+          height: auto;
+          object-fit: contain;
+          border-radius: 0 !important;
+        }
+      }
+
+      .stat-info {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 2px;
+        text-align: center;
+
+        strong {
+          font-size: 20px;
+          font-weight: 800;
+          color: #1A73E8;
+          line-height: 1.1;
+          margin: 0;
+        }
+
+        span {
+          font-size: 13px;
+          font-weight: 600;
+          color: var(--text-secondary);
+          line-height: 1.2;
+          margin: 0;
+          text-align: center;
+        }
+      }
+
+      @media (max-width: 480px) {
+        padding: 0;
+        gap: 2px;
+
+        .stat-img-wrap {
+          height: 52px;
+          width: 100%;
+          margin-bottom: 2px;
+
+          .stat-img {
+            max-width: 100%;
+            max-height: 100%;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+          }
+        }
+
+        .stat-info {
+          gap: 1px;
+
+          strong {
+            font-size: 13px;
+            font-weight: 800;
+            line-height: 1.1;
+          }
+
+          span {
+            font-size: 9.5px;
+            font-weight: 600;
+            line-height: 1.15;
+          }
+        }
+      }
+    }
+  }
 }
 
 .carousel-nav-indicators {
@@ -571,6 +813,14 @@
     justify-content: center;
     flex-shrink: 0;
     margin-bottom: 4px;
+    overflow: hidden;
+
+    .step-img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      border-radius: inherit;
+    }
 
     .material-icons-round {
       font-size: 22px;
@@ -878,9 +1128,12 @@
     font-weight: 700;
     color: var(--text-primary);
     text-align: center;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    white-space: normal;
+    word-break: normal;
+    overflow-wrap: normal;
+    overflow: visible;
+    text-overflow: clip;
+    line-height: 1.25;
     max-width: 100%;
   }
 
@@ -908,10 +1161,12 @@
     }
 
     .cat-name {
-      font-size: 9.5px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      font-size: 9px;
+      white-space: normal;
+      word-break: normal;
+      overflow-wrap: normal;
+      overflow: visible;
+      text-overflow: clip;
       line-height: 1.2;
     }
   }
@@ -1355,17 +1610,47 @@
   p { font-size: var(--font-size-sm); color: rgba(255,255,255,0.65); max-width: 280px; line-height: 1.6; margin: 0; }
 }
 
-// Fix 7: Unified logo colors — dark blue "Dawa" + cyan ".com"
 .footer-logo {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: var(--space-sm);
-  font-size: 22px;
-  font-weight: 800;
-  color: var(--dawa-primary-dark);
+  gap: 10px;
+  text-decoration: none;
 
-  .material-icons-round { font-size: 28px; color: var(--dawa-info); }
-  span span { color: var(--dawa-info); }
+  .brand-logo-img {
+    height: 36px;
+    width: auto;
+    object-fit: contain;
+
+    @media (max-width: 480px) {
+      height: 30px;
+    }
+  }
+
+  .brand-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.15;
+  }
+
+  .brand-title {
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: -0.3px;
+  }
+
+  .brand-dawa {
+    color: #1A73E8;
+  }
+
+  .brand-com {
+    color: #12B88C;
+  }
+
+  .brand-sub {
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 500;
+  }
 }
 
 .footer-socials {
@@ -1525,7 +1810,7 @@
 
   .hero-title {
     font-size: clamp(1.25rem, 4.5vw, 1.75rem);
-    line-height: 1.2;
+    line-height: 1.4;
   }
 
   .hero-sub {

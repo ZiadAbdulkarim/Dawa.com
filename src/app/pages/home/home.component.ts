@@ -1,4 +1,4 @@
-import { Component, inject, signal, OnInit, OnDestroy } from '@angular/core';
+import { Component, inject, signal, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -17,7 +17,7 @@ import { MedicineImageComponent } from '../../shared/components/medicine-image/m
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })
-export class HomeComponent implements OnInit, OnDestroy {
+export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   lang = inject(LanguageService);
   data = inject(DataService);
   router = inject(Router);
@@ -37,6 +37,8 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   // Mobile categories expanded state
   categoriesExpanded = signal<boolean>(false);
+  visibleCategoryCount = signal<number>(4);
+  private resizeObserver?: ResizeObserver;
 
   toggleCategories(): void {
     this.categoriesExpanded.update(v => !v);
@@ -50,9 +52,9 @@ export class HomeComponent implements OnInit, OnDestroy {
   ];
 
   howSteps = [
-    { n: 1, icon: 'search', titleAr: 'ابحث عن دوائك', titleEn: 'Search Your Medicine', descAr: 'اكتب اسم الدواء أو المادة الفعالة', descEn: 'Type the medicine or active ingredient' },
-    { n: 2, icon: 'local_pharmacy', titleAr: 'شاهد الصيدليات', titleEn: 'See Pharmacies', descAr: 'اعرف الصيدليات التي يتوفر بها الدواء', descEn: 'Find pharmacies where the medicine is available' },
-    { n: 3, icon: 'directions_walk', titleAr: 'توجّه للصيدلية', titleEn: 'Go to Pharmacy', descAr: 'اذهب مباشرةً لأقرب صيدلية ووفّر وقتك', descEn: 'Head directly and save your time' },
+    { n: 1, img: '/assets/images/how-dawa.com-works/Search-Your-Medicine.png', titleAr: 'ابحث عن دوائك', titleEn: 'Search Your Medicine', descAr: 'اكتب اسم الدواء أو المادة الفعالة', descEn: 'Type the medicine or active ingredient' },
+    { n: 2, img: '/assets/images/how-dawa.com-works/See-Pharmacies.png', titleAr: 'شاهد الصيدليات', titleEn: 'See Pharmacies', descAr: 'اعرف الصيدليات التي يتوفر بها الدواء', descEn: 'Find pharmacies where the medicine is available' },
+    { n: 3, img: '/assets/images/how-dawa.com-works/Go-to-Pharmacy.png', titleAr: 'توجّه للصيدلية', titleEn: 'Go to Pharmacy', descAr: 'اذهب مباشرةً لأقرب صيدلية ووفّر وقتك', descEn: 'Head directly and save your time' },
   ];
 
   ngOnInit(): void {
@@ -63,15 +65,38 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.startCarouselLoop();
   }
 
+  ngAfterViewInit(): void {
+    if (typeof window !== 'undefined' && 'ResizeObserver' in window) {
+      const container = document.querySelector('.categories-horizontal-list');
+      if (container) {
+        this.resizeObserver = new ResizeObserver(entries => {
+          for (const entry of entries) {
+            const width = entry.contentRect.width;
+            if (width > 0) {
+              const targetWidth = width <= 480 ? 68 : width <= 768 ? 85 : 105;
+              const maxItems = Math.max(3, Math.floor(width / targetWidth));
+              const count = Math.min(this.categories().length, maxItems - 1);
+              this.visibleCategoryCount.set(count);
+            }
+          }
+        });
+        this.resizeObserver.observe(container);
+      }
+    }
+  }
+
   ngOnDestroy(): void {
     if (this.carouselTimer) {
       clearInterval(this.carouselTimer);
+    }
+    if (this.resizeObserver) {
+      this.resizeObserver.disconnect();
     }
   }
 
   startCarouselLoop(): void {
     this.carouselTimer = setInterval(() => {
-      this.carouselIndex.update(idx => (idx + 1) % 3);
+      this.carouselIndex.update(idx => (idx + 1) % 2);
     }, 5500);
   }
 
@@ -119,7 +144,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) >= threshold) {
       const isArabic = this.lang.isArabic;
-      const totalSlides = 3;
+      const totalSlides = 2;
       const current = this.carouselIndex();
 
       if (deltaX < 0) {
